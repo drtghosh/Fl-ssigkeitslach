@@ -22,6 +22,7 @@ add_subdirectory(app)
 add_subdirectory(geometry)
 add_subdirectory(kernel)
 add_subdirectory(mcubes)
+add_subdirectory(PBF)
 add_subdirectory(SPH)
 add_subdirectory(tests)
 

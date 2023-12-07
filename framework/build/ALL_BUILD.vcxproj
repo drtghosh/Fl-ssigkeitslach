@@ -177,6 +177,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{F8B13337-E8F4-3EFF-9DDD-4875D32D2599}</Project>
       <Name>CompactNSearch</Name>
     </ProjectReference>
+    <ProjectReference Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\build\PBF\PBF.vcxproj">
+      <Project>{7DDDDFE4-E5AE-3E51-8F65-32FABC38A95D}</Project>
+      <Name>PBF</Name>
+    </ProjectReference>
     <ProjectReference Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\build\SPH\SPH.vcxproj">
       <Project>{54F9F313-7337-3884-B5C1-57802805AB4F}</Project>
       <Name>SPH</Name>
