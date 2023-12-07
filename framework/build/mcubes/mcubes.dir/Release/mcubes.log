@@ -1,0 +1,10 @@
+﻿  marching_cubes.cpp
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\mcubes\marching_cubes.cpp(152,25): warning C4244: 'initializing': conversion from 'unsigned __int64' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\mcubes\marching_cubes.cpp(179,23): warning C4244: 'initializing': conversion from '_Ty1' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\mcubes\marching_cubes.cpp(179,23): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\mcubes\marching_cubes.cpp(179,23): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\mcubes\marching_cubes.cpp(179,23): warning C4244:             _Ty1=const uint64_t
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\mcubes\marching_cubes.cpp(179,23): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\mcubes\marching_cubes.cpp(365,17): warning C4244: 'initializing': conversion from 'unsigned __int64' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\mcubes\marching_cubes.cpp(398,22): warning C4244: 'initializing': conversion from 'unsigned __int64' to 'int', possible loss of data
+  mcubes.vcxproj -> C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\build\mcubes\Release\mcubes.lib

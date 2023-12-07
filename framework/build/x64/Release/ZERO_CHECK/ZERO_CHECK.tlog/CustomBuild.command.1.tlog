@@ -1,0 +1,10 @@
+^C:\USERS\ACER\DOCUMENTS\ALL_OF_RWTH\SEMESTER3\LAB\FLÜSSIGKEITSLACH\FRAMEWORK\BUILD\CMAKEFILES\4F258F2DA569A903669139D81899397E\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework -BC:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework/build/Fluid.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -1,0 +1,435 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/CMakeDetermineSystem.cmake:233 (message)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      The system is: Windows - 10.0.22621 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler:  
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      MSBuild-Version 17.8.3+195e7f5a3 f\xc2\x81r .NET Framework
+      Der Buildvorgang wurde am 06-12-2023 16:52:38 gestartet.
+      
+      Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\3.28.0-rc5\\CompilerIdC\\CompilerIdC.vcxproj" auf Knoten "1" (Standardziele).
+      PrepareForBuild:
+        Das Verzeichnis "Debug\\" wird erstellt.
+        Die strukturierte Ausgabe ist aktiviert. Die Formatierung der Compilerdiagnose spiegelt die Fehlerhierarchie wider. Weitere Informationen finden Sie unter https://aka.ms/cpp/structured-output.
+        Das Verzeichnis "Debug\\CompilerIdC.tlog\\" wird erstellt.
+      InitializeBuildStatus:
+        "Debug\\CompilerIdC.tlog\\unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+        Aktualisieren des Timestamps von "Debug\\CompilerIdC.tlog\\unsuccessfulbuild".
+      ClCompile:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TC /FC /errorReport:queue CMakeCCompilerId.c
+        CMakeCCompilerId.c
+      Link:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdC.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdC.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdC.lib" /MACHINE:X64 Debug\\CMakeCCompilerId.obj
+        CompilerIdC.vcxproj -> C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\3.28.0-rc5\\CompilerIdC\\CompilerIdC.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_C_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_C_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        Die Datei "Debug\\CompilerIdC.tlog\\unsuccessfulbuild" wird gel”scht.
+        Aktualisieren des Timestamps von "Debug\\CompilerIdC.tlog\\CompilerIdC.lastbuildstate".
+      Die Erstellung von Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\3.28.0-rc5\\CompilerIdC\\CompilerIdC.vcxproj" ist abgeschlossen (Standardziele).
+      
+      Der Buildvorgang wurde erfolgreich ausgef\xc2\x81hrt.
+          0 Warnung(en)
+          0 Fehler
+      
+      Verstrichene Zeit 00:00:00.93
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcxproj"
+      
+      The C compiler identification is MSVC, found in:
+        C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework/build/CMakeFiles/3.28.0-rc5/CompilerIdC/CompilerIdC.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler:  
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      MSBuild-Version 17.8.3+195e7f5a3 f\xc2\x81r .NET Framework
+      Der Buildvorgang wurde am 06-12-2023 16:52:39 gestartet.
+      
+      Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\3.28.0-rc5\\CompilerIdCXX\\CompilerIdCXX.vcxproj" auf Knoten "1" (Standardziele).
+      PrepareForBuild:
+        Das Verzeichnis "Debug\\" wird erstellt.
+        Die strukturierte Ausgabe ist aktiviert. Die Formatierung der Compilerdiagnose spiegelt die Fehlerhierarchie wider. Weitere Informationen finden Sie unter https://aka.ms/cpp/structured-output.
+        Das Verzeichnis "Debug\\CompilerIdCXX.tlog\\" wird erstellt.
+      InitializeBuildStatus:
+        "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+        Aktualisieren des Timestamps von "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild".
+      ClCompile:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TP /FC /errorReport:queue CMakeCXXCompilerId.cpp
+        CMakeCXXCompilerId.cpp
+      Link:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdCXX.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdCXX.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdCXX.lib" /MACHINE:X64 Debug\\CMakeCXXCompilerId.obj
+        CompilerIdCXX.vcxproj -> C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\3.28.0-rc5\\CompilerIdCXX\\CompilerIdCXX.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_CXX_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_CXX_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        Die Datei "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild" wird gel”scht.
+        Aktualisieren des Timestamps von "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.lastbuildstate".
+      Die Erstellung von Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\3.28.0-rc5\\CompilerIdCXX\\CompilerIdCXX.vcxproj" ist abgeschlossen (Standardziele).
+      
+      Der Buildvorgang wurde erfolgreich ausgef\xc2\x81hrt.
+          0 Warnung(en)
+          0 Fehler
+      
+      Verstrichene Zeit 00:00:00.92
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.vcxproj"
+      
+      The CXX compiler identification is MSVC, found in:
+        C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework/build/CMakeFiles/3.28.0-rc5/CompilerIdCXX/CompilerIdCXX.exe
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\u00fcssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-k24ceo"
+      binary: "C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\u00fcssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-k24ceo"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-k24ceo'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_b9c40.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild-Version 17.8.3+195e7f5a3 f\xc2\x81r .NET Framework
+        Der Buildvorgang wurde am 06-12-2023 16:52:41 gestartet.
+        
+        Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-k24ceo\\cmTC_b9c40.vcxproj" auf Knoten "1" (Standardziele).
+        PrepareForBuild:
+          Das Verzeichnis "cmTC_b9c40.dir\\Debug\\" wird erstellt.
+          Die strukturierte Ausgabe ist aktiviert. Die Formatierung der Compilerdiagnose spiegelt die Fehlerhierarchie wider. Weitere Informationen finden Sie unter https://aka.ms/cpp/structured-output.
+          Das Verzeichnis "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-k24ceo\\Debug\\" wird erstellt.
+          Das Verzeichnis "cmTC_b9c40.dir\\Debug\\cmTC_b9c40.tlog\\" wird erstellt.
+        InitializeBuildStatus:
+          "cmTC_b9c40.dir\\Debug\\cmTC_b9c40.tlog\\unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+          Aktualisieren des Timestamps von "cmTC_b9c40.dir\\Debug\\cmTC_b9c40.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_b9c40.dir\\Debug\\\\" /Fd"cmTC_b9c40.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.28\\Modules\\CMakeCCompilerABI.c"
+          Microsoft (R) C/C++-Optimierungscompiler Version 19.38.33130 f\xc2\x81r x64
+          Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_b9c40.dir\\Debug\\\\" /Fd"cmTC_b9c40.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.28\\Modules\\CMakeCCompilerABI.c"
+          CMakeCCompilerABI.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-k24ceo\\Debug\\cmTC_b9c40.exe" /INCREMENTAL /ILK:"cmTC_b9c40.dir\\Debug\\cmTC_b9c40.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\xc2\x81ssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-k24ceo/Debug/cmTC_b9c40.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\xc2\x81ssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-k24ceo/Debug/cmTC_b9c40.lib" /MACHINE:X64  /machine:x64 cmTC_b9c40.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_b9c40.vcxproj -> C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-k24ceo\\Debug\\cmTC_b9c40.exe
+        FinalizeBuildStatus:
+          Die Datei "cmTC_b9c40.dir\\Debug\\cmTC_b9c40.tlog\\unsuccessfulbuild" wird gel”scht.
+          Aktualisieren des Timestamps von "cmTC_b9c40.dir\\Debug\\cmTC_b9c40.tlog\\cmTC_b9c40.lastbuildstate".
+        Die Erstellung von Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-k24ceo\\cmTC_b9c40.vcxproj" ist abgeschlossen (Standardziele).
+        
+        Der Buildvorgang wurde erfolgreich ausgef\xc2\x81hrt.
+            0 Warnung(en)
+            0 Fehler
+        
+        Verstrichene Zeit 00:00:00.81
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\u00fcssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-8ne18k"
+      binary: "C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\u00fcssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-8ne18k"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /W3 /GR /EHsc"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-8ne18k'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_74288.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild-Version 17.8.3+195e7f5a3 f\xc2\x81r .NET Framework
+        Der Buildvorgang wurde am 06-12-2023 16:52:42 gestartet.
+        
+        Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8ne18k\\cmTC_74288.vcxproj" auf Knoten "1" (Standardziele).
+        PrepareForBuild:
+          Das Verzeichnis "cmTC_74288.dir\\Debug\\" wird erstellt.
+          Die strukturierte Ausgabe ist aktiviert. Die Formatierung der Compilerdiagnose spiegelt die Fehlerhierarchie wider. Weitere Informationen finden Sie unter https://aka.ms/cpp/structured-output.
+          Das Verzeichnis "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8ne18k\\Debug\\" wird erstellt.
+          Das Verzeichnis "cmTC_74288.dir\\Debug\\cmTC_74288.tlog\\" wird erstellt.
+        InitializeBuildStatus:
+          "cmTC_74288.dir\\Debug\\cmTC_74288.tlog\\unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+          Aktualisieren des Timestamps von "cmTC_74288.dir\\Debug\\cmTC_74288.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_74288.dir\\Debug\\\\" /Fd"cmTC_74288.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.28\\Modules\\CMakeCXXCompilerABI.cpp"
+          Microsoft (R) C/C++-Optimierungscompiler Version 19.38.33130 f\xc2\x81r x64
+          Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_74288.dir\\Debug\\\\" /Fd"cmTC_74288.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.28\\Modules\\CMakeCXXCompilerABI.cpp"
+          CMakeCXXCompilerABI.cpp
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8ne18k\\Debug\\cmTC_74288.exe" /INCREMENTAL /ILK:"cmTC_74288.dir\\Debug\\cmTC_74288.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\xc2\x81ssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-8ne18k/Debug/cmTC_74288.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\xc2\x81ssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-8ne18k/Debug/cmTC_74288.lib" /MACHINE:X64  /machine:x64 cmTC_74288.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_74288.vcxproj -> C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8ne18k\\Debug\\cmTC_74288.exe
+        FinalizeBuildStatus:
+          Die Datei "cmTC_74288.dir\\Debug\\cmTC_74288.tlog\\unsuccessfulbuild" wird gel”scht.
+          Aktualisieren des Timestamps von "cmTC_74288.dir\\Debug\\cmTC_74288.tlog\\cmTC_74288.lastbuildstate".
+        Die Erstellung von Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8ne18k\\cmTC_74288.vcxproj" ist abgeschlossen (Standardziele).
+        
+        Der Buildvorgang wurde erfolgreich ausgef\xc2\x81hrt.
+            0 Warnung(en)
+            0 Fehler
+        
+        Verstrichene Zeit 00:00:00.92
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/FindOpenMP.cmake:219 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/FindOpenMP.cmake:486 (_OPENMP_GET_FLAGS)"
+      - "CMakeLists.txt:10 (find_package)"
+    description: "Detecting C OpenMP compiler info"
+    directories:
+      source: "C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\u00fcssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-8o2md4"
+      binary: "C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\u00fcssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-8o2md4"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "OpenMP_COMPILE_RESULT_C_openmp"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-8o2md4'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_98ca1.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild-Version 17.8.3+195e7f5a3 f\xc2\x81r .NET Framework
+        Der Buildvorgang wurde am 06-12-2023 16:52:43 gestartet.
+        
+        Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8o2md4\\cmTC_98ca1.vcxproj" auf Knoten "1" (Standardziele).
+        PrepareForBuild:
+          Das Verzeichnis "cmTC_98ca1.dir\\Debug\\" wird erstellt.
+          Die strukturierte Ausgabe ist aktiviert. Die Formatierung der Compilerdiagnose spiegelt die Fehlerhierarchie wider. Weitere Informationen finden Sie unter https://aka.ms/cpp/structured-output.
+          Das Verzeichnis "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8o2md4\\Debug\\" wird erstellt.
+          Das Verzeichnis "cmTC_98ca1.dir\\Debug\\cmTC_98ca1.tlog\\" wird erstellt.
+        InitializeBuildStatus:
+          "cmTC_98ca1.dir\\Debug\\cmTC_98ca1.tlog\\unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+          Aktualisieren des Timestamps von "cmTC_98ca1.dir\\Debug\\cmTC_98ca1.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /openmp /Fo"cmTC_98ca1.dir\\Debug\\\\" /Fd"cmTC_98ca1.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8o2md4\\OpenMPTryFlag.c"
+          Microsoft (R) C/C++-Optimierungscompiler Version 19.38.33130 f\xc2\x81r x64
+          Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /openmp /Fo"cmTC_98ca1.dir\\Debug\\\\" /Fd"cmTC_98ca1.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8o2md4\\OpenMPTryFlag.c"
+          OpenMPTryFlag.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8o2md4\\Debug\\cmTC_98ca1.exe" /INCREMENTAL /ILK:"cmTC_98ca1.dir\\Debug\\cmTC_98ca1.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\xc2\x81ssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-8o2md4/Debug/cmTC_98ca1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\xc2\x81ssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-8o2md4/Debug/cmTC_98ca1.lib" /MACHINE:X64  /machine:x64 cmTC_98ca1.dir\\Debug\\OpenMPTryFlag.obj
+          cmTC_98ca1.vcxproj -> C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8o2md4\\Debug\\cmTC_98ca1.exe
+        FinalizeBuildStatus:
+          Die Datei "cmTC_98ca1.dir\\Debug\\cmTC_98ca1.tlog\\unsuccessfulbuild" wird gel”scht.
+          Aktualisieren des Timestamps von "cmTC_98ca1.dir\\Debug\\cmTC_98ca1.tlog\\cmTC_98ca1.lastbuildstate".
+        Die Erstellung von Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8o2md4\\cmTC_98ca1.vcxproj" ist abgeschlossen (Standardziele).
+        
+        Der Buildvorgang wurde erfolgreich ausgef\xc2\x81hrt.
+            0 Warnung(en)
+            0 Fehler
+        
+        Verstrichene Zeit 00:00:00.91
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/FindOpenMP.cmake:219 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/FindOpenMP.cmake:486 (_OPENMP_GET_FLAGS)"
+      - "CMakeLists.txt:10 (find_package)"
+    description: "Detecting CXX OpenMP compiler info"
+    directories:
+      source: "C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\u00fcssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-b5592q"
+      binary: "C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\u00fcssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-b5592q"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MP"
+    buildResult:
+      variable: "OpenMP_COMPILE_RESULT_CXX_openmp"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-b5592q'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_09623.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild-Version 17.8.3+195e7f5a3 f\xc2\x81r .NET Framework
+        Der Buildvorgang wurde am 06-12-2023 16:52:44 gestartet.
+        
+        Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b5592q\\cmTC_09623.vcxproj" auf Knoten "1" (Standardziele).
+        PrepareForBuild:
+          Das Verzeichnis "cmTC_09623.dir\\Debug\\" wird erstellt.
+          Die strukturierte Ausgabe ist aktiviert. Die Formatierung der Compilerdiagnose spiegelt die Fehlerhierarchie wider. Weitere Informationen finden Sie unter https://aka.ms/cpp/structured-output.
+          Das Verzeichnis "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b5592q\\Debug\\" wird erstellt.
+          Das Verzeichnis "cmTC_09623.dir\\Debug\\cmTC_09623.tlog\\" wird erstellt.
+        InitializeBuildStatus:
+          "cmTC_09623.dir\\Debug\\cmTC_09623.tlog\\unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+          Aktualisieren des Timestamps von "cmTC_09623.dir\\Debug\\cmTC_09623.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /MP /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /openmp /Fo"cmTC_09623.dir\\Debug\\\\" /Fd"cmTC_09623.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b5592q\\OpenMPTryFlag.cpp"
+          Microsoft (R) C/C++-Optimierungscompiler Version 19.38.33130 f\xc2\x81r x64
+          Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
+          cl /c /Zi /W3 /WX- /diagnostics:column /MP /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /openmp /Fo"cmTC_09623.dir\\Debug\\\\" /Fd"cmTC_09623.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b5592q\\OpenMPTryFlag.cpp"
+          OpenMPTryFlag.cpp
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b5592q\\Debug\\cmTC_09623.exe" /INCREMENTAL /ILK:"cmTC_09623.dir\\Debug\\cmTC_09623.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\xc2\x81ssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-b5592q/Debug/cmTC_09623.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\xc2\x81ssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-b5592q/Debug/cmTC_09623.lib" /MACHINE:X64  /machine:x64 cmTC_09623.dir\\Debug\\OpenMPTryFlag.obj
+          cmTC_09623.vcxproj -> C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b5592q\\Debug\\cmTC_09623.exe
+        FinalizeBuildStatus:
+          Die Datei "cmTC_09623.dir\\Debug\\cmTC_09623.tlog\\unsuccessfulbuild" wird gel”scht.
+          Aktualisieren des Timestamps von "cmTC_09623.dir\\Debug\\cmTC_09623.tlog\\cmTC_09623.lastbuildstate".
+        Die Erstellung von Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b5592q\\cmTC_09623.vcxproj" ist abgeschlossen (Standardziele).
+        
+        Der Buildvorgang wurde erfolgreich ausgef\xc2\x81hrt.
+            0 Warnung(en)
+            0 Fehler
+        
+        Verstrichene Zeit 00:00:00.99
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/FindOpenMP.cmake:420 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/FindOpenMP.cmake:560 (_OPENMP_GET_SPEC_DATE)"
+      - "CMakeLists.txt:10 (find_package)"
+    description: "Detecting C OpenMP version"
+    directories:
+      source: "C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\u00fcssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-ure9ab"
+      binary: "C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\u00fcssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-ure9ab"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "OpenMP_SPECTEST_C_"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-ure9ab'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_e8b37.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild-Version 17.8.3+195e7f5a3 f\xc2\x81r .NET Framework
+        Der Buildvorgang wurde am 06-12-2023 16:52:45 gestartet.
+        
+        Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ure9ab\\cmTC_e8b37.vcxproj" auf Knoten "1" (Standardziele).
+        PrepareForBuild:
+          Das Verzeichnis "cmTC_e8b37.dir\\Debug\\" wird erstellt.
+          Die strukturierte Ausgabe ist aktiviert. Die Formatierung der Compilerdiagnose spiegelt die Fehlerhierarchie wider. Weitere Informationen finden Sie unter https://aka.ms/cpp/structured-output.
+          Das Verzeichnis "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ure9ab\\Debug\\" wird erstellt.
+          Das Verzeichnis "cmTC_e8b37.dir\\Debug\\cmTC_e8b37.tlog\\" wird erstellt.
+        InitializeBuildStatus:
+          "cmTC_e8b37.dir\\Debug\\cmTC_e8b37.tlog\\unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+          Aktualisieren des Timestamps von "cmTC_e8b37.dir\\Debug\\cmTC_e8b37.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /openmp /Fo"cmTC_e8b37.dir\\Debug\\\\" /Fd"cmTC_e8b37.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ure9ab\\OpenMPCheckVersion.c"
+          Microsoft (R) C/C++-Optimierungscompiler Version 19.38.33130 f\xc2\x81r x64
+          Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /openmp /Fo"cmTC_e8b37.dir\\Debug\\\\" /Fd"cmTC_e8b37.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ure9ab\\OpenMPCheckVersion.c"
+          OpenMPCheckVersion.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ure9ab\\Debug\\cmTC_e8b37.exe" /INCREMENTAL /ILK:"cmTC_e8b37.dir\\Debug\\cmTC_e8b37.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\xc2\x81ssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-ure9ab/Debug/cmTC_e8b37.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\xc2\x81ssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-ure9ab/Debug/cmTC_e8b37.lib" /MACHINE:X64  /machine:x64 cmTC_e8b37.dir\\Debug\\OpenMPCheckVersion.obj
+          cmTC_e8b37.vcxproj -> C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ure9ab\\Debug\\cmTC_e8b37.exe
+        FinalizeBuildStatus:
+          Die Datei "cmTC_e8b37.dir\\Debug\\cmTC_e8b37.tlog\\unsuccessfulbuild" wird gel”scht.
+          Aktualisieren des Timestamps von "cmTC_e8b37.dir\\Debug\\cmTC_e8b37.tlog\\cmTC_e8b37.lastbuildstate".
+        Die Erstellung von Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ure9ab\\cmTC_e8b37.vcxproj" ist abgeschlossen (Standardziele).
+        
+        Der Buildvorgang wurde erfolgreich ausgef\xc2\x81hrt.
+            0 Warnung(en)
+            0 Fehler
+        
+        Verstrichene Zeit 00:00:01.16
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/FindOpenMP.cmake:420 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.28/Modules/FindOpenMP.cmake:560 (_OPENMP_GET_SPEC_DATE)"
+      - "CMakeLists.txt:10 (find_package)"
+    description: "Detecting CXX OpenMP version"
+    directories:
+      source: "C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\u00fcssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-ktlvit"
+      binary: "C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\u00fcssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-ktlvit"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MP"
+    buildResult:
+      variable: "OpenMP_SPECTEST_CXX_"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-ktlvit'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_1dc21.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild-Version 17.8.3+195e7f5a3 f\xc2\x81r .NET Framework
+        Der Buildvorgang wurde am 06-12-2023 16:52:47 gestartet.
+        
+        Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ktlvit\\cmTC_1dc21.vcxproj" auf Knoten "1" (Standardziele).
+        PrepareForBuild:
+          Das Verzeichnis "cmTC_1dc21.dir\\Debug\\" wird erstellt.
+          Die strukturierte Ausgabe ist aktiviert. Die Formatierung der Compilerdiagnose spiegelt die Fehlerhierarchie wider. Weitere Informationen finden Sie unter https://aka.ms/cpp/structured-output.
+          Das Verzeichnis "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ktlvit\\Debug\\" wird erstellt.
+          Das Verzeichnis "cmTC_1dc21.dir\\Debug\\cmTC_1dc21.tlog\\" wird erstellt.
+        InitializeBuildStatus:
+          "cmTC_1dc21.dir\\Debug\\cmTC_1dc21.tlog\\unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+          Aktualisieren des Timestamps von "cmTC_1dc21.dir\\Debug\\cmTC_1dc21.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /MP /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /openmp /Fo"cmTC_1dc21.dir\\Debug\\\\" /Fd"cmTC_1dc21.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ktlvit\\OpenMPCheckVersion.cpp"
+          Microsoft (R) C/C++-Optimierungscompiler Version 19.38.33130 f\xc2\x81r x64
+          Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
+          cl /c /Zi /W3 /WX- /diagnostics:column /MP /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /openmp /Fo"cmTC_1dc21.dir\\Debug\\\\" /Fd"cmTC_1dc21.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ktlvit\\OpenMPCheckVersion.cpp"
+          OpenMPCheckVersion.cpp
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ktlvit\\Debug\\cmTC_1dc21.exe" /INCREMENTAL /ILK:"cmTC_1dc21.dir\\Debug\\cmTC_1dc21.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\xc2\x81ssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-ktlvit/Debug/cmTC_1dc21.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl\xc2\x81ssigkeitslach/framework/build/CMakeFiles/CMakeScratch/TryCompile-ktlvit/Debug/cmTC_1dc21.lib" /MACHINE:X64  /machine:x64 cmTC_1dc21.dir\\Debug\\OpenMPCheckVersion.obj
+          cmTC_1dc21.vcxproj -> C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ktlvit\\Debug\\cmTC_1dc21.exe
+        FinalizeBuildStatus:
+          Die Datei "cmTC_1dc21.dir\\Debug\\cmTC_1dc21.tlog\\unsuccessfulbuild" wird gel”scht.
+          Aktualisieren des Timestamps von "cmTC_1dc21.dir\\Debug\\cmTC_1dc21.tlog\\cmTC_1dc21.lastbuildstate".
+        Die Erstellung von Projekt "C:\\Users\\Acer\\Documents\\All_of_RWTH\\Semester3\\Lab\\Fl\xc2\x81ssigkeitslach\\framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ktlvit\\cmTC_1dc21.vcxproj" ist abgeschlossen (Standardziele).
+        
+        Der Buildvorgang wurde erfolgreich ausgef\xc2\x81hrt.
+            0 Warnung(en)
+            0 Fehler
+        
+        Verstrichene Zeit 00:00:01.12
+        
+      exitCode: 0
+...

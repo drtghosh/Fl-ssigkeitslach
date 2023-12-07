@@ -1,0 +1,5 @@
+﻿  Building Custom Rule C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework/kernel/CMakeLists.txt
+  kernel.cpp
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\kernel\kernel.cpp(35): warning C4715: 'kernel::Kernel::cubic_spline': not all control paths return a value
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\kernel\kernel.cpp(59): warning C4715: 'kernel::Kernel::cubic_grad_spline': not all control paths return a value
+  kernel.vcxproj -> C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\build\kernel\Release\kernel.lib

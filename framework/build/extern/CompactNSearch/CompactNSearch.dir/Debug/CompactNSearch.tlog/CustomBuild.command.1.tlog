@@ -1,0 +1,10 @@
+^C:\USERS\ACER\DOCUMENTS\ALL_OF_RWTH\SEMESTER3\LAB\FLÜSSIGKEITSLACH\FRAMEWORK\EXTERN\COMPACTNSEARCH\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework -BC:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework/build --check-stamp-file C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework/build/extern/CompactNSearch/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
