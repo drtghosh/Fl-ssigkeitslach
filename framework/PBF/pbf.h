@@ -21,7 +21,7 @@ namespace PBD
 		MC::MarchingCubes marching_cubes{ mcparameters };
 
 		int timesteps;
-		int pbf_iterations = 10; // Need to check what's a good value
+		int pbf_iterations = 5; // Need to check what's a good value
 		int duration = 0;
 		//CompactNSearch::NeighborhoodSearch cns{ parameters.compact_support };
 		CompactNSearch::NeighborhoodSearch cns_boundary{ 1.0 };
@@ -30,6 +30,7 @@ namespace PBD
 
 		// Particle data for fluid
 		std::vector<PBD::Vector> fluid_particles;
+		std::vector<PBD::Vector> old_fluid_particles;
 		std::vector<PBD::Vector> fluid_velocities;
 		std::vector<PBD::Vector> fluid_accelerations;
 		std::vector<PBD::Vector> pressure_accelerations;
@@ -81,7 +82,7 @@ namespace PBD
 		void calculate_other_acceleration();
 		void update_time_step_size();
 		void check_particle_positions();
-		void update_particle_positions();
+		void update_particle_positions(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id);
 		void update_particle_velocities();
 		void export_data(unsigned int frame);
 		void export_data_with_surface(unsigned int frame);
