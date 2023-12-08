@@ -45,8 +45,6 @@ namespace PBD
 			CompactNSearch::PointSet const& pointset_boundary = this->cns_boundary.point_set(boundary_particles_id);
 			compute_boundary_mass(boundary_particles_id, pointset_boundary);
 		}
-		// Needed later for particle density calculation
-		//unsigned int boundary_particles_id_fluid = this->cns.add_point_set(boundary_particles.front().data(), boundary_particles.size());
 
 		// Simulation loop
 		CompactNSearch::Real t_sim = 0.0;
@@ -77,7 +75,7 @@ namespace PBD
 				calculate_particle_density(fluid_particles_id, pointset_fluid, boundary_particles_id);
 
 				// Compute pressure
-				calculate_pressure(t_sim == 0.0);
+				//calculate_pressure(t_sim == 0.0);
 			}
 			// Compute accelerations
 			calculate_acceleration(fluid_particles_id, pointset_fluid, boundary_particles_id);
@@ -88,6 +86,13 @@ namespace PBD
 			// Check particle positions
 			if (has_boundary) {
 				check_particle_positions();
+			}
+
+			cns.resize_point_set(fluid_particles_id, fluid_particles.front().data(), fluid_particles.size());
+
+			for (int iter = 0; iter < this->pbf_iterations; iter++) {
+				// do a pbf iteration
+				update_particle_positions(); //TODO check if this is correct
 			}
 
 			//Export VTK
@@ -263,7 +268,7 @@ namespace PBD
 		}
 	}
 
-	void PBF::calculate_pressure(bool first_step) {
+	/*void PBF::calculate_pressure(bool first_step) {
 		CompactNSearch::Real subtractive_density = parameters.fluid_rest_density;
 		if (first_step) {
 			subtractive_density *= 1.02;
@@ -273,7 +278,7 @@ namespace PBD
 			const CompactNSearch::Real pressure = std::max(parameters.fluid_pressure_stiffness * (fluid_densities.at(i) - subtractive_density), 0.0);
 			fluid_pressures[i] = pressure;
 		}
-	}
+	}*/
 
 	void PBF::calculate_acceleration(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id) {
 		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
@@ -282,14 +287,14 @@ namespace PBD
 		}
 
 		if (!gravity_only) {
-			calculate_pressure_acceleration(fluid_id, ps_fluid, boundary_id);
+			//calculate_pressure_acceleration(fluid_id, ps_fluid, boundary_id);
 			calculate_viscosity_acceleration(fluid_id, ps_fluid, boundary_id);
 		}
 
 		calculate_other_acceleration();
 	}
 
-	void PBF::calculate_pressure_acceleration(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id) {
+	/*void PBF::calculate_pressure_acceleration(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id) {
 		// Loop over all fluid particles
 		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
 		for (int i = 0; i < ps_fluid.n_points(); ++i) {
@@ -316,7 +321,7 @@ namespace PBD
 			}
 			fluid_accelerations[i] += acceleration;
 		}
-	}
+	}*/
 
 	void PBF::calculate_viscosity_acceleration(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id) {
 		// Loop over all fluid particles
@@ -414,6 +419,14 @@ namespace PBD
 		this->fluid_densities = new_densities;
 		this->fluid_pressures = new_pressures;
 
+	}
+
+	void PBF::update_particle_positions() {
+		//TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < (int)fluid_particles.size(); i++) {
+			fluid_particles[i] += parameters.dt * fluid_velocities[i];
+		}
 	}
 	
 	void PBF::turn_off_gravity() {

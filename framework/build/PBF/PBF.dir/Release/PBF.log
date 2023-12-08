@@ -1,33 +1,32 @@
-﻿  Building Custom Rule C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework/PBF/CMakeLists.txt
-  pbf.cpp
+﻿  pbf.cpp
 C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(27,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
 C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(27,28): warning C4244:         with
 C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(27,28): warning C4244:         [
 C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(27,28): warning C4244:             _Rep=__int64
 C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(27,28): warning C4244:         ]
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(129,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(129,28): warning C4244:         with
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(129,28): warning C4244:         [
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(129,28): warning C4244:             _Rep=__int64
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(129,28): warning C4244:         ]
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(195,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(195,28): warning C4244:         with
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(195,28): warning C4244:         [
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(195,28): warning C4244:             _Rep=__int64
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(195,28): warning C4244:         ]
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(445,33): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(451,44): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(451,44): warning C4244:         with
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(451,44): warning C4244:         [
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(451,44): warning C4244:             _Ty=CompactNSearch::Real
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(451,44): warning C4244:         ]
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(461,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(464,40): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(464,40): warning C4244:         with
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(464,40): warning C4244:         [
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(464,40): warning C4244:             _Ty=CompactNSearch::Real
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(464,40): warning C4244:         ]
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(542,15): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(543,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(544,17): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(134,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(134,28): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(134,28): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(134,28): warning C4244:             _Rep=__int64
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(134,28): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(200,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(200,28): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(200,28): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(200,28): warning C4244:             _Rep=__int64
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(200,28): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(458,33): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(464,44): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(464,44): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(464,44): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(464,44): warning C4244:             _Ty=CompactNSearch::Real
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(464,44): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(474,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(477,40): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(477,40): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(477,40): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(477,40): warning C4244:             _Ty=CompactNSearch::Real
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(477,40): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(555,15): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(556,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\PBF\pbf.cpp(557,17): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
   PBF.vcxproj -> C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\build\PBF\Release\PBF.lib
