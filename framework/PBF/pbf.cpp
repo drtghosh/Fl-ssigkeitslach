@@ -55,7 +55,7 @@ namespace PBD
 
 		while (t_sim < t_end) {
 			if (this->fluid_particles.size() == 0) {
-				break;
+				break; // Continue if there are no particles left TODO: when we do emitters, this should be changed
 			}
 			// Update dt
 			update_time_step_size();
@@ -83,16 +83,19 @@ namespace PBD
 			// Time integration
 			semi_implicit_euler();
 
-			// Check particle positions
-			if (has_boundary) {
-				check_particle_positions();
-			}
-
 			cns.resize_point_set(fluid_particles_id, fluid_particles.front().data(), fluid_particles.size());
 
 			for (int iter = 0; iter < this->pbf_iterations; iter++) {
 				// do a pbf iteration
 				update_particle_positions(); //TODO check if this is correct
+			}
+
+			update_particle_velocities();
+			
+			// Resolve if it's needed at all
+			// Check particle positions
+			if (has_boundary) {
+				check_particle_positions();
 			}
 
 			//Export VTK
@@ -365,6 +368,7 @@ namespace PBD
 	}
 
 	void PBF::update_time_step_size() {
+		// TOOOOOOOOO DOOOOOOOOOOOOOOO: use squared norm in stead of norm to check max velocity
 		CompactNSearch::Real max_norm = 0.0;
 		for (size_t i = 0; i < fluid_velocities.size(); i++) {
 			CompactNSearch::Real norm = fluid_velocities[i].norm();
@@ -426,6 +430,14 @@ namespace PBD
 		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
 		for (int i = 0; i < (int)fluid_particles.size(); i++) {
 			fluid_particles[i] += parameters.dt * fluid_velocities[i];
+		}
+	}
+
+	void PBF::update_particle_velocities() {
+		//TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < (int)fluid_velocities.size(); i++) {
+			fluid_velocities[i] += parameters.dt * fluid_accelerations[i];
 		}
 	}
 	
