@@ -1,32 +1,32 @@
 ﻿  sph.cpp
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(27,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(27,28): warning C4244:         with
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(27,28): warning C4244:         [
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(27,28): warning C4244:             _Rep=__int64
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(27,28): warning C4244:         ]
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(129,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(129,28): warning C4244:         with
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(129,28): warning C4244:         [
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(129,28): warning C4244:             _Rep=__int64
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(129,28): warning C4244:         ]
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(195,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(195,28): warning C4244:         with
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(195,28): warning C4244:         [
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(195,28): warning C4244:             _Rep=__int64
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(195,28): warning C4244:         ]
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(445,33): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(451,44): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(451,44): warning C4244:         with
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(451,44): warning C4244:         [
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(451,44): warning C4244:             _Ty=CompactNSearch::Real
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(451,44): warning C4244:         ]
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(461,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(464,40): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(464,40): warning C4244:         with
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(464,40): warning C4244:         [
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(464,40): warning C4244:             _Ty=CompactNSearch::Real
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(464,40): warning C4244:         ]
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(542,15): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(543,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(544,17): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(28,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(28,28): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(28,28): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(28,28): warning C4244:             _Rep=__int64
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(28,28): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(148,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(148,28): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(148,28): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(148,28): warning C4244:             _Rep=__int64
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(148,28): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(214,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(214,28): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(214,28): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(214,28): warning C4244:             _Rep=__int64
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(214,28): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(464,33): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(470,44): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(470,44): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(470,44): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(470,44): warning C4244:             _Ty=CompactNSearch::Real
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(470,44): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(480,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(483,40): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(483,40): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(483,40): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(483,40): warning C4244:             _Ty=CompactNSearch::Real
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(483,40): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(562,15): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(563,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(564,17): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
   SPH.vcxproj -> C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\build\SPH\Release\SPH.lib

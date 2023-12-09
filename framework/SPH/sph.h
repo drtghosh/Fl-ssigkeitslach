@@ -24,6 +24,7 @@ namespace WCSPH
 		int duration = 0;
 		//CompactNSearch::NeighborhoodSearch cns{ parameters.compact_support };
 		CompactNSearch::NeighborhoodSearch cns_boundary{ 1.0 };
+		CompactNSearch::NeighborhoodSearch cns{ 1.0 };
 		bool gravity_only{ false };
 		bool with_initial_velocity{ false };
 
@@ -71,12 +72,12 @@ namespace WCSPH
 		// Functions
 		void initialize();
 		void compute_boundary_mass(unsigned int boundary_id, CompactNSearch::PointSet const& ps_boundary);
-		void calculate_particle_density(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id);
+		void calculate_particle_density(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
 		void semi_implicit_euler();
-		void calculate_acceleration(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id);
+		void calculate_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
 		void calculate_pressure(bool first_step);
-		void calculate_pressure_acceleration(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id);
-		void calculate_viscosity_acceleration(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id);
+		void calculate_pressure_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
+		void calculate_viscosity_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
 		void calculate_other_acceleration();
 		void update_time_step_size();
 		void check_particle_positions();
@@ -85,7 +86,7 @@ namespace WCSPH
 
 		void create_grid();
 		void reset_grid_values();
-		void update_grid_values();
+		void update_grid_values(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid);
 		void calculate_mc_normals();
 
 

@@ -136,7 +136,7 @@ TEST_CASE("Incremental SPH", "[Incremental SPH]")
 	}
 }*/
 
-/*TEST_CASE("Dam break", "[Dam break]")
+TEST_CASE("Dam break", "[Dam break]")
 {
 	std::cout << "Testing dam break" << std::endl;
 	WCSPH::Vector boundary_size = { 0.18, 0.8, 1.0 };
@@ -174,7 +174,7 @@ TEST_CASE("Incremental SPH", "[Incremental SPH]")
 	sph.printStats("Dam break");
 }
 
-TEST_CASE("Crazy stuff", "[Crazy stuff]")
+/*TEST_CASE("Crazy stuff", "[Crazy stuff]")
 {
 	std::cout << "Testing crazy stuff" << std::endl;
 	WCSPH::Vector boundary_size = { 2, 1, 2 };
