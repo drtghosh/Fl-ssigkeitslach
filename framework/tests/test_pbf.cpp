@@ -5,7 +5,7 @@
 #include "../geometry/io.h"
 
 
-TEST_CASE("Dam break", "[Dam break]")
+/*TEST_CASE("Dam break", "[Dam break]")
 {
 	std::cout << "Testing dam break in PBF" << std::endl;
 	PBD::Vector boundary_size = { 0.18, 0.8, 1.0 };
@@ -44,7 +44,7 @@ TEST_CASE("Dam break", "[Dam break]")
 	pbf.printStats("Dam break");
 }
 
-/*TEST_CASE("Crazy stuff", "[Crazy stuff]")
+TEST_CASE("Crazy stuff", "[Crazy stuff]")
 {
 	std::cout << "Testing crazy stuff" << std::endl;
 	WCSPH::Vector boundary_size = { 2, 1, 2 };
