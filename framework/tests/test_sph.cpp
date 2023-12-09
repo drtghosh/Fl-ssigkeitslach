@@ -7,7 +7,7 @@
 
 
 // Check out https://github.com/catchorg/Catch2 for more information about how to use Catch2
-TEST_CASE("Gravity only", "[Gravity only]")
+/*TEST_CASE("Gravity only", "[Gravity only]")
 {
 	std::cout << "Testing gravity only" << std::endl;
 	//const std::vector<learnSPH::TriMesh> meshes = learnSPH::read_tri_meshes_from_obj("../res/box.obj");
@@ -134,7 +134,7 @@ TEST_CASE("Incremental SPH", "[Incremental SPH]")
 		sph.simulate(1);
 		sph.printStats("Floor + gravity + boundary viscosity");
 	}
-}
+}*/
 
 /*TEST_CASE("Dam break", "[Dam break]")
 {

@@ -117,7 +117,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>..\SPH\Debug\SPH.lib;..\kernel\Debug\kernel.lib;..\geometry\Debug\geometry.lib;..\mcubes\Debug\mcubes.lib;..\extern\CompactNSearch\Debug\CompactNSearch.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\SPH\Debug\SPH.lib;..\PBF\Debug\PBF.lib;..\kernel\Debug\kernel.lib;..\geometry\Debug\geometry.lib;..\mcubes\Debug\mcubes.lib;..\extern\CompactNSearch\Debug\CompactNSearch.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -163,7 +163,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>..\SPH\Release\SPH.lib;..\kernel\Release\kernel.lib;..\geometry\Release\geometry.lib;..\mcubes\Release\mcubes.lib;..\extern\CompactNSearch\Release\CompactNSearch.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\SPH\Release\SPH.lib;..\PBF\Release\PBF.lib;..\kernel\Release\kernel.lib;..\geometry\Release\geometry.lib;..\mcubes\Release\mcubes.lib;..\extern\CompactNSearch\Release\CompactNSearch.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -209,7 +209,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>..\SPH\MinSizeRel\SPH.lib;..\kernel\MinSizeRel\kernel.lib;..\geometry\MinSizeRel\geometry.lib;..\mcubes\MinSizeRel\mcubes.lib;..\extern\CompactNSearch\MinSizeRel\CompactNSearch.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\SPH\MinSizeRel\SPH.lib;..\PBF\MinSizeRel\PBF.lib;..\kernel\MinSizeRel\kernel.lib;..\geometry\MinSizeRel\geometry.lib;..\mcubes\MinSizeRel\mcubes.lib;..\extern\CompactNSearch\MinSizeRel\CompactNSearch.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -254,7 +254,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>..\SPH\RelWithDebInfo\SPH.lib;..\kernel\RelWithDebInfo\kernel.lib;..\geometry\RelWithDebInfo\geometry.lib;..\mcubes\RelWithDebInfo\mcubes.lib;..\extern\CompactNSearch\RelWithDebInfo\CompactNSearch.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\SPH\RelWithDebInfo\SPH.lib;..\PBF\RelWithDebInfo\PBF.lib;..\kernel\RelWithDebInfo\kernel.lib;..\geometry\RelWithDebInfo\geometry.lib;..\mcubes\RelWithDebInfo\mcubes.lib;..\extern\CompactNSearch\RelWithDebInfo\CompactNSearch.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -330,6 +330,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\tests\test_kernel.cpp" />
     <ClCompile Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\tests\test_marching_cubes.cpp" />
     <ClCompile Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\tests\test_nSearch.cpp" />
+    <ClCompile Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\tests\test_pbf.cpp" />
     <ClCompile Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\tests\test_sph.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -342,6 +343,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ProjectReference Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\build\extern\CompactNSearch\CompactNSearch.vcxproj">
       <Project>{F8B13337-E8F4-3EFF-9DDD-4875D32D2599}</Project>
       <Name>CompactNSearch</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\build\PBF\PBF.vcxproj">
+      <Project>{7DDDDFE4-E5AE-3E51-8F65-32FABC38A95D}</Project>
+      <Name>PBF</Name>
     </ProjectReference>
     <ProjectReference Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\build\SPH\SPH.vcxproj">
       <Project>{54F9F313-7337-3884-B5C1-57802805AB4F}</Project>

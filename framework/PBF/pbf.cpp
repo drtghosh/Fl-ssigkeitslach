@@ -67,7 +67,7 @@ namespace PBD
 				boundary_particles_id = cns.add_point_set(boundary_particles.front().data(), boundary_particles.size());
 			}
 			unsigned int fluid_particles_id = cns.add_point_set(fluid_particles.front().data(), fluid_particles.size());
-			CompactNSearch::PointSet const& pointset_fluid = cns.point_set(fluid_particles_id);
+			CompactNSearch::PointSet& pointset_fluid = cns.point_set(fluid_particles_id);
 			cns.find_neighbors();
 
 			if (!gravity_only) {
@@ -84,15 +84,16 @@ namespace PBD
 			semi_implicit_euler();
 
 			cns.resize_point_set(fluid_particles_id, fluid_particles.front().data(), fluid_particles.size());
+			pointset_fluid = cns.point_set(fluid_particles_id);
+			cns.find_neighbors();
 
 			for (int iter = 0; iter < this->pbf_iterations; iter++) {
 				// do a pbf iteration
-				update_particle_positions(); //TODO check if this is correct
+				update_particle_positions(fluid_particles_id, pointset_fluid, boundary_particles_id); //TODO check if this is correct
 			}
 
 			update_particle_velocities();
 			
-			// Resolve if it's needed at all
 			// Check particle positions
 			if (has_boundary) {
 				check_particle_positions();
@@ -100,7 +101,7 @@ namespace PBD
 
 			//Export VTK
 			if (t_sim >= t_next_frame) {
-				if (Parameters::export_type::EXPORT_WITH_SURFACE) {
+				if (parameters.export_type) {
 					create_grid();
 					reset_grid_values();
 					update_grid_values();
@@ -266,7 +267,7 @@ namespace PBD
 			PBD::Vector new_v = fluid_velocities[i] + parameters.dt * fluid_accelerations[i];
 			PBD::Vector new_x = fluid_particles[i] + parameters.dt * new_v;
 
-			fluid_velocities[i] = new_v;
+			//fluid_velocities[i] = new_v; // TODO: check if this is not needed later
 			fluid_particles[i] = new_x;
 		}
 	}
@@ -385,6 +386,96 @@ namespace PBD
 		parameters.dt = std::min(parameters.max_dt, dt_cfl);
 	}
 
+	void PBF::update_particle_positions(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id) {
+		//TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+		// Compute fluid particles density
+		calculate_particle_density(fluid_id, ps_fluid, boundary_id);
+		// Inititalize lambda values
+		std::vector<CompactNSearch::Real> lambdas(fluid_particles.size(), 0.0);
+		// Store new positions
+		std::vector<PBD::Vector> new_positions(fluid_particles.size());
+		// Keep old positions
+		this->old_fluid_particles = fluid_particles;
+		
+		// Compute lambdas...............................................................................................................
+		// Loop over all fluid particles
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < ps_fluid.n_points(); ++i) {
+			// Calculate S(i)
+			// Inititalize first term of S(i) as vector
+			PBD::Vector first_vector = { 0.0, 0.0, 0.0 };
+			// Inititalize second term of S(i)
+			CompactNSearch::Real second_term = 0.0;
+			// Get fluid neighbors of particles
+			for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
+				// Return the point id of the jth neighbor of the ith particle
+				const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
+				PBD::Vector temp_vector = this->particle_mass * kernel.cubic_grad_spline(fluid_particles.at(i), fluid_particles.at(fpid)) / parameters.fluid_rest_density;
+				CompactNSearch::Real norm_second = (-1.0 * temp_vector).norm();
+				// Add vector to first term of S(i)
+				first_vector += (temp_vector);
+				// Add to second term of S(i)
+				second_term += (norm_second * norm_second);
+			}
+			// Get boundary neighbors of particles
+			if (ps_fluid.n_neighbors(boundary_id, i) > 0 && has_boundary) {
+				for (int j = 0; j < ps_fluid.n_neighbors(boundary_id, i); ++j) {
+					// Return the point id of the jth neighbor of the ith particle
+					const unsigned int bpid = ps_fluid.neighbor(boundary_id, i, j);
+					// Add vector to first term of S(i)
+					first_vector += (this->boundary_volumes.at(bpid) * kernel.cubic_grad_spline(fluid_particles.at(i), boundary_particles.at(bpid)));
+				}
+			}
+			CompactNSearch::Real norm_first = first_vector.norm();
+			CompactNSearch::Real S_i = (norm_first * norm_first) + second_term;
+			S_i /= this->particle_mass;
+			// Calculate lambda(i)
+			CompactNSearch::Real lambda_i = 0;
+			CompactNSearch::Real eps = 0.0001;
+			if (fluid_densities.at(i) > parameters.fluid_rest_density) {
+				CompactNSearch::Real C_i = fluid_densities.at(i) / parameters.fluid_rest_density - 1.0;
+				lambda_i = -1.0 * C_i / (S_i + eps);
+			}
+			lambdas.at(i) = lambda_i;
+		}
+
+		// Compute new positions...............................................................................................................
+		// Loop over all fluid particles
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < ps_fluid.n_points(); ++i) {
+			// Inititalize position change vector
+			PBD::Vector deltax_i = { 0.0, 0.0, 0.0 };
+			// Get fluid neighbors of particles
+			for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
+				// Return the point id of the jth neighbor of the ith particle
+				const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
+				deltax_i += ((lambdas.at(i) + lambdas.at(fpid)) * kernel.cubic_grad_spline(fluid_particles.at(i), fluid_particles.at(fpid)));
+			}
+			// Get boundary neighbors of particles
+			if (ps_fluid.n_neighbors(boundary_id, i) > 0 && has_boundary) {
+				for (int j = 0; j < ps_fluid.n_neighbors(boundary_id, i); ++j) {
+					// Return the point id of the jth neighbor of the ith particle
+					const unsigned int bpid = ps_fluid.neighbor(boundary_id, i, j);
+					deltax_i += (boundary_masses.at(bpid) * lambdas.at(i) * kernel.cubic_grad_spline(fluid_particles.at(i), boundary_particles.at(bpid)) / this->particle_mass);
+				}
+			}
+			deltax_i /= parameters.fluid_rest_density;
+			new_positions.at(i) = fluid_particles.at(i) + deltax_i;
+		}
+
+		// Update positions
+		fluid_particles = new_positions;
+	}
+
+	void PBF::update_particle_velocities() {
+		//TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+		fluid_velocities.resize(fluid_particles.size());
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < (int)fluid_velocities.size(); i++) {
+			fluid_velocities[i] = (fluid_particles[i] - old_fluid_particles[i]) / parameters.dt;
+		}
+	}
+
 	void PBF::check_particle_positions() {
 		int old_size = (int)fluid_particles.size();
 		//learnSPH::Vector bottom_left= boundary_bounds.corner(boundary_bounds.BottomLeftFloor);
@@ -422,23 +513,6 @@ namespace PBD
 		this->fluid_accelerations = new_accelerations;
 		this->fluid_densities = new_densities;
 		this->fluid_pressures = new_pressures;
-
-	}
-
-	void PBF::update_particle_positions() {
-		//TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
-		for (int i = 0; i < (int)fluid_particles.size(); i++) {
-			fluid_particles[i] += parameters.dt * fluid_velocities[i];
-		}
-	}
-
-	void PBF::update_particle_velocities() {
-		//TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
-		for (int i = 0; i < (int)fluid_velocities.size(); i++) {
-			fluid_velocities[i] += parameters.dt * fluid_accelerations[i];
-		}
 	}
 	
 	void PBF::turn_off_gravity() {
