@@ -101,7 +101,7 @@ namespace PBD
 
 			//Export VTK
 			if (t_sim >= t_next_frame) {
-				if (Parameters::export_type::EXPORT_WITH_SURFACE) {
+				if (parameters.export_type) {
 					create_grid();
 					reset_grid_values();
 					update_grid_values();
