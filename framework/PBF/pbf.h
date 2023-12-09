@@ -23,8 +23,8 @@ namespace PBD
 		int timesteps;
 		int pbf_iterations = 5; // Need to check what's a good value
 		int duration = 0;
-		//CompactNSearch::NeighborhoodSearch cns{ parameters.compact_support };
 		CompactNSearch::NeighborhoodSearch cns_boundary{ 1.0 };
+		CompactNSearch::NeighborhoodSearch cns{ 1.0 };
 		bool gravity_only{ false };
 		bool with_initial_velocity{ false };
 
@@ -89,7 +89,7 @@ namespace PBD
 
 		void create_grid();
 		void reset_grid_values();
-		void update_grid_values();
+		void update_grid_values(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid);
 		void calculate_mc_normals();
 
 

@@ -22,7 +22,6 @@ namespace WCSPH
 
 		int timesteps;
 		int duration = 0;
-		//CompactNSearch::NeighborhoodSearch cns{ parameters.compact_support };
 		CompactNSearch::NeighborhoodSearch cns_boundary{ 1.0 };
 		CompactNSearch::NeighborhoodSearch cns{ 1.0 };
 		bool gravity_only{ false };

@@ -19,6 +19,7 @@ namespace PBD
 
 		this->kernel = kernel::Kernel(parameters.smoothing_length);
 		this->cns_boundary = CompactNSearch::NeighborhoodSearch(parameters.compact_support);
+		this->cns = CompactNSearch::NeighborhoodSearch(parameters.compact_support);
 		this->marching_cubes = MC::MarchingCubes(mcparams, 0.0);
 
 		auto end = std::chrono::system_clock::now();
@@ -37,14 +38,22 @@ namespace PBD
 			add_relative_velocity(this->relative_velocity);
 		}
 
-		// Compute boundary mass
+		// Compute boundary mass and add boundary particles to cns
+		unsigned int boundary_particles_id = 0;
 		if (!gravity_only && has_boundary) {
 			unsigned int boundary_particles_id = this->cns_boundary.add_point_set(boundary_particles.front().data(), boundary_particles.size());
 			this->cns_boundary.find_neighbors();
 
 			CompactNSearch::PointSet const& pointset_boundary = this->cns_boundary.point_set(boundary_particles_id);
 			compute_boundary_mass(boundary_particles_id, pointset_boundary);
+
+			boundary_particles_id = this->cns.add_point_set(boundary_particles.front().data(), boundary_particles.size());
 		}
+
+		//Add fluid particles to cns
+		unsigned int fluid_particles_id = this->cns.add_point_set(fluid_particles.front().data(), fluid_particles.size());
+		CompactNSearch::PointSet& pointset_fluid = this->cns.point_set(fluid_particles_id);
+		this->cns.find_neighbors();
 
 		// Simulation loop
 		CompactNSearch::Real t_sim = 0.0;
@@ -61,14 +70,9 @@ namespace PBD
 			update_time_step_size();
 
 			// Neighborhood Search
-			CompactNSearch::NeighborhoodSearch cns{ parameters.compact_support };
-			unsigned int boundary_particles_id = 0;
-			if (has_boundary) {
-				boundary_particles_id = cns.add_point_set(boundary_particles.front().data(), boundary_particles.size());
-			}
-			unsigned int fluid_particles_id = cns.add_point_set(fluid_particles.front().data(), fluid_particles.size());
+			this->cns.resize_point_set(fluid_particles_id, fluid_particles.front().data(), fluid_particles.size());
 			CompactNSearch::PointSet& pointset_fluid = cns.point_set(fluid_particles_id);
-			cns.find_neighbors();
+			this->cns.find_neighbors();
 
 			if (!gravity_only) {
 				// Compute fluid density
@@ -104,7 +108,10 @@ namespace PBD
 				if (parameters.export_type) {
 					create_grid();
 					reset_grid_values();
-					update_grid_values();
+					this->cns.resize_point_set(fluid_particles_id, fluid_particles.front().data(), fluid_particles.size());
+					pointset_fluid = this->cns.point_set(fluid_particles_id);
+					this->cns.find_neighbors();
+					update_grid_values(fluid_particles_id, pointset_fluid);
 					surface_vertices.clear();
 					surface_triangles.clear();
 					surface_normals.clear();
@@ -614,19 +621,15 @@ namespace PBD
 		}
 	}
 
-	void PBF::update_grid_values() {
-		CompactNSearch::NeighborhoodSearch cns_mc{ parameters.compact_support };
-		unsigned int fluid_id_mc = cns_mc.add_point_set(this->fluid_particles.front().data(), this->fluid_particles.size());
-		CompactNSearch::PointSet const& ps_fluid_mc = cns_mc.point_set(fluid_id_mc);
-		cns_mc.find_neighbors();
+	void PBF::update_grid_values(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid) {
 		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
-		for (int i = 0; i < ps_fluid_mc.n_points(); ++i) {
+		for (int i = 0; i < ps_fluid.n_points(); ++i) {
 			// Inititalize density
 			CompactNSearch::Real normalized_density = 0.0;
 			// Get neighbors among fluid particles
-			for (int j = 0; j < ps_fluid_mc.n_neighbors(fluid_id_mc, i); ++j) {
+			for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
 				// Return the point id of the jth neighbor of the ith particle
-				const unsigned int fpid = ps_fluid_mc.neighbor(fluid_id_mc, i, j);
+				const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
 				normalized_density += kernel.cubic_spline(fluid_particles.at(i), fluid_particles.at(fpid));
 			}
 			// Add contribution of fluid particle itself

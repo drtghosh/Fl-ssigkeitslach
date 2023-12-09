@@ -5,7 +5,7 @@
 #include "../geometry/io.h"
 
 
-/*TEST_CASE("Dam break", "[Dam break]")
+TEST_CASE("Dam break PBF", "[Dam break PBF]")
 {
 	std::cout << "Testing dam break in PBF" << std::endl;
 	PBD::Vector boundary_size = { 0.18, 0.8, 1.0 };
@@ -40,11 +40,11 @@
 
 	PBD::PBF pbf(false, false, "../res/dam_break_pbf/dam_break_pbf_", params, mcparams);
 	pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
-	pbf.simulate(4);
-	pbf.printStats("Dam break");
+	pbf.simulate(1);
+	pbf.printStats("Dam break PBF");
 }
 
-TEST_CASE("Crazy stuff", "[Crazy stuff]")
+/*TEST_CASE("Crazy stuff", "[Crazy stuff]")
 {
 	std::cout << "Testing crazy stuff" << std::endl;
 	WCSPH::Vector boundary_size = { 2, 1, 2 };
