@@ -170,7 +170,7 @@ TEST_CASE("Dam break", "[Dam break]")
 
 	WCSPH::SPH sph(false, false, "../res/dam_break/dam_break_", params, mcparams);
 	sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
-	sph.simulate(1);
+	sph.simulate(0.5);
 	sph.printStats("Dam break");
 }
 
