@@ -95,7 +95,7 @@ TEST_CASE("Marching Cubes", "[Marching Cubes]")
 	geometry::write_tri_mesh_to_vtk(file, vertices, triangles, normals);
 }
 
-TEST_CASE("Dam Break with Surface Construction", "[Dam Break with Surface Construction]")
+/*TEST_CASE("Dam Break with Surface Construction", "[Dam Break with Surface Construction]")
 {
 	std::cout << "Testing dam break with surface construction" << std::endl;
 
@@ -159,7 +159,7 @@ TEST_CASE("Dam Break with Surface Construction", "[Dam Break with Surface Constr
 	//}
 }
 
-/*TEST_CASE("Crazy Stuff with Surface Construction", "[Crazy Stuff with Surface Construction]")
+TEST_CASE("Crazy Stuff with Surface Construction", "[Crazy Stuff with Surface Construction]")
 {
 	std::cout << "Testing crazy stuff with surface construction" << std::endl;
 	WCSPH::Vector boundary_size = { 1.75, 1, 1.25 };

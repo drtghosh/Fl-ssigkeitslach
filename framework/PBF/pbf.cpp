@@ -69,6 +69,9 @@ namespace PBD
 			// Update dt
 			update_time_step_size();
 
+			// Retain old particle positions
+			this->old_fluid_particles = fluid_particles;
+
 			// Neighborhood Search
 			this->cns.resize_point_set(fluid_particles_id, fluid_particles.front().data(), fluid_particles.size());
 			CompactNSearch::PointSet& pointset_fluid = cns.point_set(fluid_particles_id);
@@ -274,7 +277,7 @@ namespace PBD
 			PBD::Vector new_v = fluid_velocities[i] + parameters.dt * fluid_accelerations[i];
 			PBD::Vector new_x = fluid_particles[i] + parameters.dt * new_v;
 
-			//fluid_velocities[i] = new_v; // TODO: check if this is not needed later
+			fluid_velocities[i] = new_v; // Do we need this?
 			fluid_particles[i] = new_x;
 		}
 	}
@@ -401,8 +404,8 @@ namespace PBD
 		std::vector<CompactNSearch::Real> lambdas(fluid_particles.size(), 0.0);
 		// Store new positions
 		std::vector<PBD::Vector> new_positions(fluid_particles.size());
-		// Keep old positions
-		this->old_fluid_particles = fluid_particles;
+		// Keep old positions // Not here
+		//this->old_fluid_particles = fluid_particles;
 		
 		// Compute lambdas...............................................................................................................
 		// Loop over all fluid particles
@@ -440,7 +443,7 @@ namespace PBD
 			CompactNSearch::Real lambda_i = 0;
 			CompactNSearch::Real eps = 0.0001;
 			if (fluid_densities.at(i) > parameters.fluid_rest_density) {
-				CompactNSearch::Real C_i = fluid_densities.at(i) / parameters.fluid_rest_density - 1.0;
+				CompactNSearch::Real C_i = (fluid_densities.at(i) / parameters.fluid_rest_density) - 1.0;
 				lambda_i = -1.0 * C_i / (S_i + eps);
 			}
 			lambdas.at(i) = lambda_i;
@@ -476,7 +479,6 @@ namespace PBD
 
 	void PBF::update_particle_velocities() {
 		//TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-		fluid_velocities.resize(fluid_particles.size());
 		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
 		for (int i = 0; i < (int)fluid_velocities.size(); i++) {
 			fluid_velocities[i] = (fluid_particles[i] - old_fluid_particles[i]) / parameters.dt;
