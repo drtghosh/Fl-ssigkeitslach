@@ -134,7 +134,7 @@ TEST_CASE("Incremental SPH", "[Incremental SPH]")
 		sph.simulate(1);
 		sph.printStats("Floor + gravity + boundary viscosity");
 	}
-}*/
+}
 
 TEST_CASE("Dam break", "[Dam break]")
 {
@@ -174,7 +174,7 @@ TEST_CASE("Dam break", "[Dam break]")
 	sph.printStats("Dam break");
 }
 
-/*TEST_CASE("Crazy stuff", "[Crazy stuff]")
+TEST_CASE("Crazy stuff", "[Crazy stuff]")
 {
 	std::cout << "Testing crazy stuff" << std::endl;
 	WCSPH::Vector boundary_size = { 2, 1, 2 };

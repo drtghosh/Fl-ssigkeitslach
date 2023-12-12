@@ -21,11 +21,11 @@ TEST_CASE("Dam break PBF", "[Dam break PBF]")
 
 	Parameters params;
 	MCParameters mcparams;
-	params.dt = 0.0005;
+	params.dt = 0.0025;
 	params.dt_next_frame = 0.01;
 	params.particle_radius = 0.005;
 	params.fluid_rest_density = 1000;
-	params.max_dt = 0.001;
+	params.max_dt = 0.005;
 	params.fluid_pressure_stiffness = 1000.0;
 	params.fluid_viscosity = 0.0025;
 	params.boundary_viscosity = 0.0;
@@ -40,7 +40,7 @@ TEST_CASE("Dam break PBF", "[Dam break PBF]")
 
 	PBD::PBF pbf(false, false, "../res/dam_break_pbf/dam_break_pbf_", params, mcparams);
 	pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
-	pbf.simulate(1);
+	pbf.simulate(4);
 	pbf.printStats("Dam break PBF");
 }
 
