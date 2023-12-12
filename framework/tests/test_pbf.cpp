@@ -80,7 +80,7 @@ TEST_CASE("Dam break PBF", "[Dam break PBF]")
 	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
 	params.compact_support = 2 * params.smoothing_length;
 
-	WCSPH::SPH sph(false, false, "../res/crazy_stuff/crazy_stuff_", params, mcparams);
+	WCSPH::SPH sph(false, false, "../res/crazy_stuff_pbf/crazy_stuff_pbf_", params, mcparams);
 	sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	sph.simulate(0.1);
 	sph.printStats("Crazy stuff");
@@ -122,7 +122,7 @@ TEST_CASE("Crazy stuff2", "[Crazy stuff2]")
 	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
 	params.compact_support = 2 * params.smoothing_length;
 
-	WCSPH::SPH sph(false, false, "../res/crazy_stuff2/crazy_stuff2_", params, mcparams);
+	WCSPH::SPH sph(false, false, "../res/crazy_stuff2_pbf/crazy_stuff2_pbf_", params, mcparams);
 	sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	sph.simulate(0.1);
 	sph.printStats("Crazy stuff 2");
