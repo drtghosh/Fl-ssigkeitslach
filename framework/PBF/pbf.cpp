@@ -14,7 +14,7 @@
 namespace PBD
 {
 
-	PBF::PBF(bool gravity_only, bool with_initial_velocity, std::string result_path, Parameters params, MCParameters mcparams) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), result_path(result_path), parameters(params), mcparameters(mcparams) {
+	PBF::PBF(bool gravity_only, bool with_initial_velocity, std::string result_path, PBFParameters params, MCParameters mcparams) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), result_path(result_path), parameters(params), mcparameters(mcparams) {
 		auto start = std::chrono::system_clock::now();
 
 		this->kernel = kernel::Kernel(parameters.smoothing_length);
@@ -62,6 +62,8 @@ namespace PBD
 		CompactNSearch::Real cx = 0.0;
 		timesteps = 0;
 
+		export_boundary();
+
 		while (t_sim < t_end) {
 			if (this->fluid_particles.size() == 0) {
 				break; // Continue if there are no particles left TODO: when we do emitters, this should be changed
@@ -94,7 +96,7 @@ namespace PBD
 			pointset_fluid = cns.point_set(fluid_particles_id);
 			cns.find_neighbors();
 
-			for (int iter = 0; iter < this->pbf_iterations; iter++) {
+			for (int iter = 0; iter < parameters.pbf_iterations; iter++) {
 				// do a pbf iteration
 				update_particle_positions(fluid_particles_id, pointset_fluid, boundary_particles_id); //TODO check if this is correct
 			}
@@ -108,7 +110,7 @@ namespace PBD
 
 			//Export VTK
 			if (t_sim >= t_next_frame) {
-				if (parameters.export_type) {
+				if (parameters.export_type == PBFParameters::export_type::EXPORT_WITH_SURFACE) {
 					create_grid();
 					reset_grid_values();
 					this->cns.resize_point_set(fluid_particles_id, fluid_particles.front().data(), fluid_particles.size());
@@ -123,10 +125,10 @@ namespace PBD
 				}
 
 				switch(parameters.export_type) {
-					case Parameters::export_type::EXPORT : 
+					case PBFParameters::export_type::EXPORT : 
 						export_data(frame_idx);
 						break;
-					case Parameters::export_type::EXPORT_WITH_SURFACE:
+					case PBFParameters::export_type::EXPORT_WITH_SURFACE:
 						export_data_with_surface(frame_idx);
 						break;
 					default:
@@ -172,7 +174,7 @@ namespace PBD
 		}
 	}
 
-	void PBF::load_geometry(bool has_boundary, PBD::Vector& boundary_size, PBD::Vector& bottom_left_boundary, std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid) {
+	void PBF::load_geometry(bool has_boundary, PBD::Vector& boundary_size, PBD::Vector& bottom_left_boundary, std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid, std::vector<std::array<PBD::Vector, 4>>& obstacle_squares) {
 		auto start = std::chrono::system_clock::now();
 		
 		this->has_boundary = has_boundary;
@@ -185,6 +187,21 @@ namespace PBD
 
 			std::vector<std::array<int, 3>> triangles = { {1, 2, 0}, {3, 6, 2}, {7, 4, 6}, {5, 0, 4}, {6, 0, 2}, {3, 5, 7},
 														{1, 3, 2}, {3, 7, 6}, {7, 5, 4}, {5, 1, 0}, {6, 4, 0}, {3, 1, 5} };
+
+			int vertices_before = vertices.size();
+
+			if (obstacle_squares.size() > 0) {
+				for (int i = 0; i < obstacle_squares.size(); i++) {
+					std::array<PBD::Vector, 4> square = obstacle_squares[i];
+					for (int j = 0; j < square.size(); j++) {
+						vertices.push_back(square[j]);
+					}
+					triangles.push_back({ vertices_before , vertices_before + 1 ,  vertices_before + 2 });
+					triangles.push_back({ vertices_before + 2 , vertices_before + 3 ,  vertices_before });
+					vertices_before += 4;
+				}
+			}
+
 			this->boundary_mesh_vertices = vertices;
 			this->boundary_mesh_faces = triangles;
 			geometry::sampling::triangle_mesh(this->boundary_particles, this->boundary_mesh_vertices, this->boundary_mesh_faces, this->parameters.boundary_sampling_distance);
@@ -718,6 +735,11 @@ namespace PBD
 		// Save output
 		const std::string filename = this->result_path + std::to_string(frame) + ".vtk";
 		geometry::write_tri_mesh_to_vtk(filename, surface_vertices, surface_triangles, surface_normals);
+	}
+
+	void PBF::export_boundary() {
+		const std::string filename = this->result_path + "boundary.vtk";
+		geometry::write_tri_mesh_to_vtk(filename, boundary_mesh_vertices, boundary_mesh_faces);
 	}
 
 }

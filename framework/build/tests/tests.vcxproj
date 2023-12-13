@@ -328,7 +328,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\tests\test_main.cpp" />
     <ClCompile Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\tests\sample_tests.cpp" />
     <ClCompile Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\tests\test_kernel.cpp" />
-    <ClCompile Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\tests\test_marching_cubes.cpp" />
+    <ClCompile Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\tests\test_marching_cubes_pbf.cpp" />
+    <ClCompile Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\tests\test_marching_cubes_sph.cpp" />
     <ClCompile Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\tests\test_nSearch.cpp" />
     <ClCompile Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\tests\test_pbf.cpp" />
     <ClCompile Include="C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\tests\test_sph.cpp" />

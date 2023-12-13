@@ -7,7 +7,7 @@
 
 
 // Check out https://github.com/catchorg/Catch2 for more information about how to use Catch2
-/*TEST_CASE("Gravity only", "[Gravity only]")
+TEST_CASE("Gravity only", "[Gravity only]")
 {
 	std::cout << "Testing gravity only" << std::endl;
 	//const std::vector<learnSPH::TriMesh> meshes = learnSPH::read_tri_meshes_from_obj("../res/box.obj");
@@ -23,7 +23,7 @@
 	std::vector<WCSPH::Vector> fluid_lefts;
 	fluid_lefts.push_back(fluid_left);
 
-	Parameters params;
+	SPHParameters params;
 	MCParameters mcparams;
 	params.dt = 0.01;
 	params.dt_next_frame = 0.01;
@@ -54,7 +54,7 @@ TEST_CASE("Incremental SPH", "[Incremental SPH]")
 	fluid_lefts.push_back(fluid_left);
 
 
-	Parameters params;
+	SPHParameters params;
 	MCParameters mcparams;
 	params.dt = 0.001;
 	params.dt_next_frame = 0.1;
@@ -136,9 +136,9 @@ TEST_CASE("Incremental SPH", "[Incremental SPH]")
 	}
 }
 
-TEST_CASE("Dam break", "[Dam break]")
+TEST_CASE("Dam break SPH", "[Dam break SPH]")
 {
-	std::cout << "Testing dam break" << std::endl;
+	std::cout << "Testing dam break in SPH" << std::endl;
 	WCSPH::Vector boundary_size = { 0.18, 0.8, 1.0 };
 	WCSPH::Vector boundary_left = { -0.015, -0.015, -0.015 };
 	WCSPH::Vector fluid_size = { 0.15, 0.25, 0.5 };
@@ -150,7 +150,7 @@ TEST_CASE("Dam break", "[Dam break]")
 	std::vector<WCSPH::Vector> fluid_lefts;
 	fluid_lefts.push_back(fluid_left);
 
-	Parameters params;
+	SPHParameters params;
 	MCParameters mcparams;
 	params.dt = 0.00025;
 	params.dt_next_frame = 0.01;
@@ -170,11 +170,11 @@ TEST_CASE("Dam break", "[Dam break]")
 
 	WCSPH::SPH sph(false, false, "../res/dam_break_sph/dam_break_sph_", params, mcparams);
 	sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
-	sph.simulate(0.5);
-	sph.printStats("Dam break");
+	sph.simulate(1);
+	sph.printStats("Dam break SPH");
 }
 
-TEST_CASE("Crazy stuff", "[Crazy stuff]")
+/*TEST_CASE("Crazy stuff", "[Crazy stuff]")
 {
 	std::cout << "Testing crazy stuff" << std::endl;
 	WCSPH::Vector boundary_size = { 2, 1, 2 };
@@ -192,7 +192,7 @@ TEST_CASE("Crazy stuff", "[Crazy stuff]")
 	fluid_lefts.push_back(fluid_left);
 	fluid_lefts.push_back(fluid_left2);
 
-	Parameters params;
+	SPHParameters params;
 	MCParameters mcparams;
 	params.dt = 0.0001;
 	params.dt_next_frame = 0.01;
@@ -234,7 +234,7 @@ TEST_CASE("Crazy stuff2", "[Crazy stuff2]")
 	fluid_lefts.push_back(fluid_left);
 	fluid_lefts.push_back(fluid_left2);
 
-	Parameters params;
+	SPHParameters params;
 	MCParameters mcparams;
 	params.dt = 0.0001;
 	params.dt_next_frame = 0.01;

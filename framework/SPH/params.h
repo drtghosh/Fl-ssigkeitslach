@@ -1,7 +1,7 @@
 #pragma once
 #include <CompactNSearch/Config.h>
 
-class Parameters
+class SPHParameters
 {
 public:
 	enum export_type { EXPORT, EXPORT_WITH_SURFACE };
