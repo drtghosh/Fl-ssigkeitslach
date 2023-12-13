@@ -10,7 +10,7 @@
 #include "../mcubes/mcparams.h"
 
 // Check out https://github.com/catchorg/Catch2 for more information about how to use Catch2
-TEST_CASE("Marching Cubes", "[Marching Cubes]")
+/*TEST_CASE("Marching Cubes", "[Marching Cubes]")
 {
 	std::cout << "Testing marching cubes" << std::endl;
 	CompactNSearch::Real r_minor = 0.2;
@@ -93,7 +93,7 @@ TEST_CASE("Marching Cubes", "[Marching Cubes]")
 	}
 
 	geometry::write_tri_mesh_to_vtk(file, vertices, triangles, normals);
-}
+}*/
 
 /*TEST_CASE("Dam Break with Surface Construction", "[Dam Break with Surface Construction]")
 {

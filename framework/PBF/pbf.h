@@ -86,6 +86,7 @@ namespace PBD
 		void update_particle_velocities();
 		void export_data(unsigned int frame);
 		void export_data_with_surface(unsigned int frame);
+		void export_boundary();
 
 		void create_grid();
 		void reset_grid_values();
@@ -102,7 +103,7 @@ namespace PBD
 
 		// Functions
 		void simulate(CompactNSearch::Real t_end);
-		void load_geometry(bool has_boundary, PBD::Vector& boundary_size, PBD::Vector& bottom_left_boundary, std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid);
+		void load_geometry(bool has_boundary, PBD::Vector& boundary_size, PBD::Vector& bottom_left_boundary, std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid, std::vector<std::array<PBD::Vector,4>>& obstacle_squares=std::vector<std::array<PBD::Vector, 4>>());
 		void turn_off_gravity();
 		void turn_on_gravity();
 		void add_initial_velocity(std::vector<PBD::Vector> velocities);
