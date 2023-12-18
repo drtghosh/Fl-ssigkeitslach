@@ -738,7 +738,7 @@ namespace PBD
 	}
 
 	void PBF::export_boundary() {
-		const std::string filename = this->result_path + "boundary.vtk";
+		const std::string filename = this->result_path + "boundary/boundary.vtk";
 		geometry::write_tri_mesh_to_vtk(filename, boundary_mesh_vertices, boundary_mesh_faces);
 	}
 
