@@ -172,6 +172,11 @@ namespace WCSPH
 		for (int i = 0; i < (int)this->fluid_pressures.size(); i++) {
 			this->fluid_pressures[i] = 0.0;
 		}
+		this->fluid_normals.resize(fluid_particles.size());
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < (int)this->fluid_normals.size(); i++) {
+			this->fluid_normals[i] = { 0.0,0.0,0.0 };
+		}
 	}
 
 	void SPH::load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::vector<std::array<WCSPH::Vector, 4>>& obstacle_squares) {
@@ -392,6 +397,25 @@ namespace WCSPH
 		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
 		for (int i = 0; i < (int)fluid_accelerations.size(); i++) {
 			fluid_accelerations[i] += gravity_acceleration;
+		}
+	}
+
+	void SPH::calculate_fluid_normals(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid) {
+		// Loop over all fluid particles
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < ps_fluid.n_points(); ++i) {
+			// Initialize acceleration
+			WCSPH::Vector normal = { 0.0, 0.0, 0.0 };
+			// Get fluid neighbors of particles
+			for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
+				// Return the point id of the jth neighbor of the ith particle
+				const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
+				// Compute fluid-fluid interaction
+				WCSPH::Vector ffa = kernel.cubic_grad_spline(fluid_particles.at(i), fluid_particles.at(fpid)) / fluid_densities.at(j);
+				normal += ffa;
+			}
+			normal *= (this->particle_mass * parameters.compact_support);
+			fluid_normals[i] = normal;
 		}
 	}
 

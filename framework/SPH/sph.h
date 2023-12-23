@@ -31,6 +31,7 @@ namespace WCSPH
 		std::vector<WCSPH::Vector> fluid_particles;
 		std::vector<WCSPH::Vector> fluid_velocities;
 		std::vector<WCSPH::Vector> fluid_accelerations;
+		std::vector<WCSPH::Vector> fluid_normals;
 		std::vector<WCSPH::Vector> pressure_accelerations;
 		std::vector<WCSPH::Vector> velocity_accelerations;
 		std::vector<CompactNSearch::Real> fluid_densities;
@@ -75,6 +76,7 @@ namespace WCSPH
 		void semi_implicit_euler();
 		void calculate_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
 		void calculate_pressure(bool first_step);
+		void calculate_fluid_normals(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid);
 		void calculate_pressure_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
 		void calculate_viscosity_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
 		void calculate_other_acceleration();
