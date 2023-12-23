@@ -259,7 +259,7 @@ TEST_CASE("Crazy Stuff PBF with Surface Construction", "[Crazy Stuff PBF with Su
 
 	//SECTION("Surface Nets"){ //TODO for me maybe
 	//}
-}*/
+}
 
 TEST_CASE("Crazy Stuff PBF with Surface Construction2", "[Crazy Stuff PBF with Surface Construction2]")
 {
@@ -301,14 +301,14 @@ TEST_CASE("Crazy Stuff PBF with Surface Construction2", "[Crazy Stuff PBF with S
 
 	params.export_type = PBFParameters::export_type::EXPORT_WITH_SURFACE;
 
-	/*SECTION("Regular Marching Cubes") {
+	SECTION("Regular Marching Cubes") {
 		mcparams.ours = false;
 		mcparams.sparse = false;
 		PBD::PBF pbf(false, false, "../res/crazy_stuff_pbf_mc2/crazy_stuff_pbf_mc2_", params, mcparams);
 		pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		pbf.simulate(1.5);
 		pbf.printStats("Crazy stuff in PBF with regular marching cubes");
-	}*/
+	}
 	SECTION("Sparse Marching Cubes") {
 		mcparams.sparse = true;
 		PBD::PBF pbf(false, false, "../res/crazy_stuff_pbf_mc_sparse2/crazy_stuff_pbf_mc_sparse2_", params, mcparams);
@@ -319,4 +319,4 @@ TEST_CASE("Crazy Stuff PBF with Surface Construction2", "[Crazy Stuff PBF with S
 
 	//SECTION("Surface Nets"){ //TODO for me maybe
 	//}
-}
+}*/

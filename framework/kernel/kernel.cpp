@@ -2,6 +2,7 @@
 
 constexpr double PI = 3.14159265358979323846;
 constexpr double alpha = 3.0 / (2.0 * PI);
+constexpr double cohesion_alpha = 32.0 / PI;
 const Eigen::Vector3d zero_grad = Eigen::Vector3d(0.0, 0.0, 0.0);
 
 namespace kernel
@@ -11,6 +12,11 @@ namespace kernel
 		this->inverse_h = 1.0 / smoothing_length;
 		this->inverse_h3 = 1.0 / (smoothing_length * smoothing_length * smoothing_length);
 		this->inverse_h4 = 1.0 / (smoothing_length * smoothing_length * smoothing_length * smoothing_length);
+		this->compact_support = 2.0 * smoothing_length;
+		this->c3 = compact_support * compact_support * compact_support;
+		this->inverse_c9 =	1.0 / (c3 * c3 * c3);
+		this->c6 = c3 * c3;
+		this->inverse_c325 = 1.0 / pow(compact_support, 3.25);
 	}
 
 	double Kernel::cubic_spline(const Eigen::Vector3d x_i, const Eigen::Vector3d x_j)
@@ -55,6 +61,41 @@ namespace kernel
 		else if (q < 2.0) {
 			double a = 2.0 - q;
 			return (alpha * (-0.5 * a * a) * inverse_h4 * gradq / distance) + zero_grad;
+		}
+	}
+
+	double Kernel::cohesion_kernel(const Eigen::Vector3d x_i, const Eigen::Vector3d x_j)
+	{
+		const double r = (x_i - x_j).norm();
+		
+		if (r >= compact_support) {
+			return 0.0;
+		}
+		if (r < 0.5 * compact_support) {
+			double diff = compact_support - r;
+			return cohesion_alpha * inverse_c9 * ((2 * diff * diff * diff * r * r * r) - (c6 / 64));
+		}
+		else if (r < compact_support) {
+			double diff = compact_support - r;
+			return cohesion_alpha * inverse_c9 * (diff * diff * diff * r * r * r);
+		}
+	}
+
+	double Kernel::adhesion_kernel(const Eigen::Vector3d x_i, const Eigen::Vector3d x_j)
+	{
+		const double r = (x_i - x_j).norm();
+
+		if (r >= compact_support || r <= smoothing_length) {
+			return 0.0;
+		}
+		else if (r < compact_support && r > smoothing_length) {
+			double adhesiveness = 6.0 * r - 2.0 * compact_support - (4.0 * r * r / compact_support);
+			if (adhesiveness < 0.0) {
+				return 0.0;
+			}
+			else {
+				return 0.007 * inverse_c325 * sqrt(sqrt(adhesiveness));
+			}
 		}
 	}
 }

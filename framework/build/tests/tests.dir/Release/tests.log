@@ -1,2 +1,52 @@
-﻿  test_marching_cubes_pbf.cpp
+﻿  test_kernel.cpp
+  test_marching_cubes_pbf.cpp
+  test_marching_cubes_sph.cpp
+  test_pbf.cpp
+  test_sph.cpp
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\extern\Eigen\Eigen\src\Core\util\Meta.h(349,2): warning C4996: 'std::equal_to<double>::result_type': warning STL4007: Many result_type typedefs and all argument_type, first_argument_type, and second_argument_type typedefs are deprecated in C++17. You can define _SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING or _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS to suppress this warning.
+  (compiling source file '../../tests/test_kernel.cpp')
+  C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\extern\Eigen\Eigen\src\Core\util\Meta.h(349,2):
+  the template instantiation context (the oldest one first) is
+  	C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\tests\test_kernel.cpp(106,3):
+  	see reference to function template instantiation 'bool Eigen::MatrixBase<Derived>::operator ==<Derived>(const Eigen::MatrixBase<Derived> &) const' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,3,1,0,3,1>
+          ]
+  	C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\extern\Eigen\Eigen\src\Core\MatrixBase.h(289,14):
+  	see reference to class template instantiation 'Eigen::CwiseBinaryOp<std::equal_to<double>,const Derived,const Derived>' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,3,1,0,3,1>
+          ]
+  	C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\extern\Eigen\Eigen\src\Core\CwiseBinaryOp.h(78,10):
+  	see reference to class template instantiation 'Eigen::CwiseBinaryOpImpl<BinaryOp,LhsType,RhsType,Eigen::internal::cwise_promote_storage_type<Eigen::internal::traits<Derived>::StorageKind,Eigen::internal::traits<Derived>::StorageKind,BinaryOp>::ret>' being compiled
+          with
+          [
+              BinaryOp=std::equal_to<double>,
+              LhsType=Eigen::Matrix<double,3,1,0,3,1>,
+              RhsType=Eigen::Matrix<double,3,1,0,3,1>,
+              Derived=Eigen::Matrix<double,3,1,0,3,1>
+          ]
+  	C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\extern\Eigen\Eigen\src\Core\CwiseBinaryOp.h(149,3):
+  	see reference to class template instantiation 'Eigen::internal::traits<Derived>' being compiled
+          with
+          [
+              Derived=Eigen::CwiseBinaryOp<std::equal_to<double>,const Eigen::Matrix<double,3,1,0,3,1>,const Eigen::Matrix<double,3,1,0,3,1>>
+          ]
+  	C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\extern\Eigen\Eigen\src\Core\CwiseBinaryOp.h(38,1):
+  	see reference to class template instantiation 'Eigen::internal::result_of<BinaryOp (const double &,const double &)>' being compiled
+          with
+          [
+              BinaryOp=std::equal_to<double>
+          ]
+  	C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\extern\Eigen\Eigen\src\Core\util\Meta.h(365,72):
+  	see reference to class template instantiation 'Eigen::internal::binary_result_of_select<Func,ArgType0,ArgType1,8>' being compiled
+          with
+          [
+              Func=std::equal_to<double>,
+              ArgType0=const double &,
+              ArgType1=const double &
+          ]
+  
   tests.vcxproj -> C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\build\tests\Release\tests.exe
