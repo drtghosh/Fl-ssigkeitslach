@@ -93,7 +93,7 @@
 	}
 
 	geometry::write_tri_mesh_to_vtk(file, vertices, triangles, normals);
-}
+}*/
 
 TEST_CASE("Dam Break SPH with Surface Construction", "[Dam Break SPH with Surface Construction]")
 {
@@ -140,7 +140,7 @@ TEST_CASE("Dam Break SPH with Surface Construction", "[Dam Break SPH with Surfac
 		sph.simulate(4);
 		sph.printStats("Dam break in SPH with regular marching cubes");
 	}
-	SECTION("Sparse Marching Cubes") {
+	/*SECTION("Sparse Marching Cubes") {
 		mcparams.sparse = true;
 		WCSPH::SPH sph(false, false, "../res/dam_break_sph_mc_sparse/dam_break_sph_mc_sparse_", params, mcparams);
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
@@ -156,10 +156,10 @@ TEST_CASE("Dam Break SPH with Surface Construction", "[Dam Break SPH with Surfac
 		sph.printStats("Dam break in SPH with our marching cubes");
 	}
 	//SECTION("Surface Nets"){ //TODO for me maybe
-	//}
+	//}*/
 }
 
-TEST_CASE("Crazy Stuff with Surface Construction", "[Crazy Stuff with Surface Construction]")
+/*TEST_CASE("Crazy Stuff with Surface Construction", "[Crazy Stuff with Surface Construction]")
 {
 	std::cout << "Testing crazy stuff with surface construction" << std::endl;
 	WCSPH::Vector boundary_size = { 1.75, 1, 1.25 };

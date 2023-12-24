@@ -328,6 +328,10 @@ namespace WCSPH
 		}
 
 		calculate_other_acceleration();
+		calculate_st_acceleration(fluid_id, ps_fluid, boundary_id);
+		if (has_boundary) {
+			calculate_adhesion_acceleration(fluid_id, ps_fluid, boundary_id);
+		}
 	}
 
 	void SPH::calculate_pressure_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id) {
@@ -416,6 +420,50 @@ namespace WCSPH
 			}
 			normal *= (this->particle_mass * parameters.compact_support);
 			fluid_normals[i] = normal;
+		}
+	}
+
+	void SPH::calculate_st_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id) {
+		// Loop over all fluid particles
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < ps_fluid.n_points(); ++i) {
+			// Initialize acceleration
+			WCSPH::Vector acceleration = { 0.0, 0.0, 0.0 };
+			// Get fluid neighbors of particles
+			for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
+				// Return the point id of the jth neighbor of the ith particle
+				const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
+				// Compute fluid-fluid interaction
+				const CompactNSearch::Real normff = (fluid_particles.at(i) - fluid_particles.at(fpid)).norm();
+				// Compute cohesion related acceleration
+				WCSPH::Vector co_acc = this->particle_mass * kernel.cohesion_kernel(fluid_particles.at(i), fluid_particles.at(fpid)) * (fluid_particles.at(i) - fluid_particles.at(fpid)) / normff;
+				// Compute curvature related acceleration
+				WCSPH::Vector curv_acc = this->fluid_normals.at(i) - this->fluid_normals.at(fpid);
+				// Add both contributions to get surface tension acceleration
+				acceleration += ((co_acc + curv_acc) / (fluid_densities.at(i) + fluid_densities.at(fpid)));
+			}
+			acceleration *= (-2.0 * parameters.fluid_rest_density * parameters.cohesion_coefficient);
+			fluid_accelerations[i] += acceleration;
+		}
+	}
+
+	void SPH::calculate_adhesion_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id) {
+		// Loop over all fluid particles
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < ps_fluid.n_points(); ++i) {
+			// Initialize acceleration
+			WCSPH::Vector acceleration = { 0.0, 0.0, 0.0 };
+			// Get boundary neighbors of particles
+			if (ps_fluid.n_neighbors(boundary_id, i) > 0 && has_boundary) {
+				for (int j = 0; j < ps_fluid.n_neighbors(boundary_id, i); ++j) {
+					// Return the point id of the jth neighbor of the ith particle
+					const unsigned int bpid = ps_fluid.neighbor(boundary_id, i, j);
+					// Compute fluid-boundary interaction
+					const CompactNSearch::Real normfb = (fluid_particles.at(i) - boundary_particles.at(bpid)).norm();
+					WCSPH::Vector acceleration = -1.0 * parameters.adhesion_coefficient * boundary_masses.at(bpid) * kernel.adhesion_kernel(fluid_particles.at(i), boundary_particles.at(bpid)) * (fluid_particles.at(i) - boundary_particles.at(bpid)) / normfb;
+				}
+			}
+			fluid_accelerations[i] += acceleration;
 		}
 	}
 

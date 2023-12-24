@@ -24,6 +24,9 @@ public:
 	CompactNSearch::Real smoothing_length_squared = smoothing_length * smoothing_length;
 	CompactNSearch::Real compact_support = 2 * smoothing_length;
 
+	CompactNSearch::Real cohesion_coefficient =	1.0;
+	CompactNSearch::Real adhesion_coefficient =	1.0;
+
 	export_type export_type = export_type::EXPORT;
 	bool sparse = true;
 	bool ours = false;
