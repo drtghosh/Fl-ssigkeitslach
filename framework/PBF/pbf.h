@@ -7,6 +7,7 @@
 #include <CompactNSearch/CompactNSearch.h>
 #include "../mcubes/marching_cubes.h"
 #include <array>
+#include "../geometry/emitter.h"
 
 namespace PBD
 {
@@ -27,6 +28,7 @@ namespace PBD
 		CompactNSearch::NeighborhoodSearch cns{ 1.0 };
 		bool gravity_only{ false };
 		bool with_initial_velocity{ false };
+		std::vector<Emitter::Emitter> emitter;
 
 		// Particle data for fluid
 		std::vector<PBD::Vector> fluid_particles;
@@ -53,6 +55,12 @@ namespace PBD
 		std::vector<CompactNSearch::Real> boundary_volumes;
 		std::vector<PBD::Vector> boundary_mesh_vertices;
 		std::vector<std::array<int, 3>> boundary_mesh_faces;
+
+		//Export tri mesh
+		std::vector<PBD::Vector> boundary_mesh_vertices_export;
+		std::vector<std::array<int, 3>> boundary_mesh_faces_export;
+		std::vector<PBD::Vector> obstacle_mesh_vertices_export;
+		std::vector<std::array<int, 3>> obstacle_mesh_faces_export;
 
 		std::vector<CompactNSearch::Real> boundary_densities;
 		std::vector<CompactNSearch::Real> boundary_pressure;
@@ -87,6 +95,7 @@ namespace PBD
 		void export_data(unsigned int frame);
 		void export_data_with_surface(unsigned int frame);
 		void export_boundary();
+		void export_obstacles();
 
 		void create_grid();
 		void reset_grid_values();
@@ -96,7 +105,7 @@ namespace PBD
 
 	public:
 		// Constructor
-		PBF(bool gravity_only, bool with_initial_velocity, std::string result_path, PBFParameters params, MCParameters mcparams);
+		PBF(bool gravity_only, bool with_initial_velocity, std::string result_path, PBFParameters params, MCParameters mcparams, std::vector<Emitter::Emitter>& emitter = std::vector<Emitter::Emitter>());
 
 		// Destructor
 		virtual ~PBF() = default;

@@ -7,6 +7,7 @@
 #include <CompactNSearch/CompactNSearch.h>
 #include "../mcubes/marching_cubes.h"
 #include <array>
+#include "../geometry/emitter.h"
 
 namespace WCSPH
 {
@@ -26,6 +27,7 @@ namespace WCSPH
 		CompactNSearch::NeighborhoodSearch cns{ 1.0 };
 		bool gravity_only{ false };
 		bool with_initial_velocity{ false };
+		std::vector<Emitter::Emitter> emitter;
 
 		// Particle data for fluid
 		std::vector<WCSPH::Vector> fluid_particles;
@@ -51,6 +53,12 @@ namespace WCSPH
 		std::vector<CompactNSearch::Real> boundary_volumes;
 		std::vector<WCSPH::Vector> boundary_mesh_vertices;
 		std::vector<std::array<int, 3>> boundary_mesh_faces;
+
+		//Export tri mesh
+		std::vector<WCSPH::Vector> boundary_mesh_vertices_export;
+		std::vector<std::array<int, 3>> boundary_mesh_faces_export;
+		std::vector<WCSPH::Vector>  obstacle_mesh_vertices_export;
+		std::vector<std::array<int, 3>> obstacle_mesh_faces_export;
 
 		std::vector<CompactNSearch::Real> boundary_densities;
 		std::vector<CompactNSearch::Real> boundary_pressure;
@@ -83,6 +91,7 @@ namespace WCSPH
 		void export_data(unsigned int frame);
 		void export_data_with_surface(unsigned int frame);
 		void export_boundary();
+		void export_obstacles();
 
 		void create_grid();
 		void reset_grid_values();
@@ -92,7 +101,7 @@ namespace WCSPH
 
 	public:
 		// Constructor
-		SPH(bool gravity_only, bool with_initial_velocity, std::string result_path, SPHParameters params, MCParameters mcparams);
+		SPH(bool gravity_only, bool with_initial_velocity, std::string result_path, SPHParameters params, MCParameters mcparams, std::vector<Emitter::Emitter>& emitter = std::vector<Emitter::Emitter>());
 
 		// Destructor
 		virtual ~SPH() = default;

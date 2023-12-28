@@ -14,6 +14,9 @@ if( NOT EIGEN3_INCLUDE_DIR )
 endif()
 
 set(SOURCE_FILES
+	config.h
+	emitter.h
+	emitter.cpp
 	io.h
 	io.cpp
 	sampling.h

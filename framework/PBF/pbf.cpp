@@ -14,7 +14,7 @@
 namespace PBD
 {
 
-	PBF::PBF(bool gravity_only, bool with_initial_velocity, std::string result_path, PBFParameters params, MCParameters mcparams) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), result_path(result_path), parameters(params), mcparameters(mcparams) {
+	PBF::PBF(bool gravity_only, bool with_initial_velocity, std::string result_path, PBFParameters params, MCParameters mcparams, std::vector<Emitter::Emitter>& emitter) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), result_path(result_path), parameters(params), mcparameters(mcparams), emitter(emitter){
 		auto start = std::chrono::system_clock::now();
 
 		this->kernel = kernel::Kernel(parameters.smoothing_length);
@@ -63,6 +63,7 @@ namespace PBD
 		timesteps = 0;
 
 		export_boundary();
+		export_obstacles();
 
 		while (t_sim < t_end) {
 			if (this->fluid_particles.size() == 0) {
@@ -190,16 +191,26 @@ namespace PBD
 
 			int vertices_before = vertices.size();
 
+			boundary_mesh_faces_export = triangles;
+
 			if (obstacle_squares.size() > 0) {
+				std::vector<PBD::Vector> obstacle_vertices;
+				std::vector<std::array<int, 3>> obstacle_triangles;
+
 				for (int i = 0; i < obstacle_squares.size(); i++) {
 					std::array<PBD::Vector, 4> square = obstacle_squares[i];
 					for (int j = 0; j < square.size(); j++) {
 						vertices.push_back(square[j]);
+						obstacle_vertices.push_back(square[j]);
 					}
 					triangles.push_back({ vertices_before , vertices_before + 1 ,  vertices_before + 2 });
 					triangles.push_back({ vertices_before + 2 , vertices_before + 3 ,  vertices_before });
+					obstacle_triangles.push_back({ vertices_before , vertices_before + 1 ,  vertices_before + 2 });
+					obstacle_triangles.push_back({ vertices_before + 2 , vertices_before + 3 ,  vertices_before });
 					vertices_before += 4;
 				}
+				obstacle_mesh_vertices_export = obstacle_vertices;
+				obstacle_mesh_faces_export = obstacle_triangles;
 			}
 
 			this->boundary_mesh_vertices = vertices;
@@ -739,7 +750,12 @@ namespace PBD
 
 	void PBF::export_boundary() {
 		const std::string filename = this->result_path + "boundary/boundary.vtk";
-		geometry::write_tri_mesh_to_vtk(filename, boundary_mesh_vertices, boundary_mesh_faces);
+		geometry::write_tri_mesh_to_vtk(filename, boundary_mesh_vertices_export, boundary_mesh_faces_export);
+	}
+
+	void PBF::export_obstacles() {
+		const std::string filename = this->result_path + "obstacles/boundary.vtk";
+		geometry::write_tri_mesh_to_vtk(filename, obstacle_mesh_vertices_export, obstacle_mesh_faces_export);
 	}
 
 }

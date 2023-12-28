@@ -1,7 +1,7 @@
 #pragma once
 #include <Eigen/Dense>
 
-namespace WCSPH
+namespace geometry
 {
 #ifdef USE_DOUBLE
 	using Vector = Eigen::Vector3d;
