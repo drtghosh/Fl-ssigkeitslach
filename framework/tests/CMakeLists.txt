@@ -6,7 +6,8 @@ set(SOURCE_FILES
     	test_main.cpp
 	sample_tests.cpp
 	test_kernel.cpp
-	test_marching_cubes.cpp
+	test_marching_cubes_pbf.cpp
+	test_marching_cubes_sph.cpp
 	test_nSearch.cpp
 	test_pbf.cpp
 	test_sph.cpp)

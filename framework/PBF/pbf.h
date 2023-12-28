@@ -14,14 +14,14 @@ namespace PBD
 	{
 	private:
 		// Basic parameters
-		Parameters parameters;
+		PBFParameters parameters;
 		MCParameters mcparameters;
 		std::string result_path;
 		kernel::Kernel kernel{ 1.0 };
 		MC::MarchingCubes marching_cubes{ mcparameters };
 
 		int timesteps;
-		int pbf_iterations = 5; // Need to check what's a good value
+		//int pbf_iterations = 5; // Need to check what's a good value
 		int duration = 0;
 		CompactNSearch::NeighborhoodSearch cns_boundary{ 1.0 };
 		CompactNSearch::NeighborhoodSearch cns{ 1.0 };
@@ -96,14 +96,14 @@ namespace PBD
 
 	public:
 		// Constructor
-		PBF(bool gravity_only, bool with_initial_velocity, std::string result_path, Parameters params, MCParameters mcparams);
+		PBF(bool gravity_only, bool with_initial_velocity, std::string result_path, PBFParameters params, MCParameters mcparams);
 
 		// Destructor
 		virtual ~PBF() = default;
 
 		// Functions
 		void simulate(CompactNSearch::Real t_end);
-		void load_geometry(bool has_boundary, PBD::Vector& boundary_size, PBD::Vector& bottom_left_boundary, std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid, std::vector<std::array<PBD::Vector,4>>& obstacle_squares=std::vector<std::array<PBD::Vector, 4>>());
+		void load_geometry(bool has_boundary, PBD::Vector& boundary_size, PBD::Vector& bottom_left_boundary, std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid, std::vector<std::array<PBD::Vector, 4>>& obstacle_squares = std::vector<std::array<PBD::Vector, 4>>());
 		void turn_off_gravity();
 		void turn_on_gravity();
 		void add_initial_velocity(std::vector<PBD::Vector> velocities);

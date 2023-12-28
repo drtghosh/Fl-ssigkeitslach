@@ -1,12 +1,13 @@
 #pragma once
 #include <CompactNSearch/Config.h>
 
-class Parameters
+class PBFParameters
 {
 public:
 	enum export_type { EXPORT, EXPORT_WITH_SURFACE };
 
 	unsigned int num_threads = 4;
+	unsigned int pbf_iterations = 5;
 	CompactNSearch::Real particle_radius = 0.03;
 	CompactNSearch::Real fluid_rest_density = 1000;
 	CompactNSearch::Real dt = 0.1;

@@ -14,7 +14,7 @@
 namespace PBD
 {
 
-	PBF::PBF(bool gravity_only, bool with_initial_velocity, std::string result_path, Parameters params, MCParameters mcparams) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), result_path(result_path), parameters(params), mcparameters(mcparams) {
+	PBF::PBF(bool gravity_only, bool with_initial_velocity, std::string result_path, PBFParameters params, MCParameters mcparams) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), result_path(result_path), parameters(params), mcparameters(mcparams) {
 		auto start = std::chrono::system_clock::now();
 
 		this->kernel = kernel::Kernel(parameters.smoothing_length);
@@ -96,7 +96,7 @@ namespace PBD
 			pointset_fluid = cns.point_set(fluid_particles_id);
 			cns.find_neighbors();
 
-			for (int iter = 0; iter < this->pbf_iterations; iter++) {
+			for (int iter = 0; iter < parameters.pbf_iterations; iter++) {
 				// do a pbf iteration
 				update_particle_positions(fluid_particles_id, pointset_fluid, boundary_particles_id); //TODO check if this is correct
 			}
@@ -110,7 +110,7 @@ namespace PBD
 
 			//Export VTK
 			if (t_sim >= t_next_frame) {
-				if (parameters.export_type) {
+				if (parameters.export_type == PBFParameters::export_type::EXPORT_WITH_SURFACE) {
 					create_grid();
 					reset_grid_values();
 					this->cns.resize_point_set(fluid_particles_id, fluid_particles.front().data(), fluid_particles.size());
@@ -125,10 +125,10 @@ namespace PBD
 				}
 
 				switch(parameters.export_type) {
-					case Parameters::export_type::EXPORT : 
+					case PBFParameters::export_type::EXPORT : 
 						export_data(frame_idx);
 						break;
-					case Parameters::export_type::EXPORT_WITH_SURFACE:
+					case PBFParameters::export_type::EXPORT_WITH_SURFACE:
 						export_data_with_surface(frame_idx);
 						break;
 					default:
@@ -738,8 +738,8 @@ namespace PBD
 	}
 
 	void PBF::export_boundary() {
-		const std::string filename = this->result_path + "boundary.vtk";
-		geometry::write_tri_mesh_to_vtk(filename,boundary_mesh_vertices , boundary_mesh_faces);
+		const std::string filename = this->result_path + "boundary/boundary.vtk";
+		geometry::write_tri_mesh_to_vtk(filename, boundary_mesh_vertices, boundary_mesh_faces);
 	}
 
 }

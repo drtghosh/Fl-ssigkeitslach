@@ -14,7 +14,7 @@ namespace WCSPH
 	{
 	private:
 		// Basic parameters
-		Parameters parameters;
+		SPHParameters parameters;
 		MCParameters mcparameters;
 		std::string result_path;
 		kernel::Kernel kernel{ 1.0 };
@@ -82,6 +82,7 @@ namespace WCSPH
 		void check_particle_positions();
 		void export_data(unsigned int frame);
 		void export_data_with_surface(unsigned int frame);
+		void export_boundary();
 
 		void create_grid();
 		void reset_grid_values();
@@ -91,14 +92,14 @@ namespace WCSPH
 
 	public:
 		// Constructor
-		SPH(bool gravity_only, bool with_initial_velocity, std::string result_path, Parameters params, MCParameters mcparams);
+		SPH(bool gravity_only, bool with_initial_velocity, std::string result_path, SPHParameters params, MCParameters mcparams);
 
 		// Destructor
 		virtual ~SPH() = default;
 
 		// Functions
 		void simulate(CompactNSearch::Real t_end);
-		void load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid);
+		void load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::vector<std::array<WCSPH::Vector, 4>>& obstacle_squares = std::vector<std::array<WCSPH::Vector, 4>>());
 		void turn_off_gravity();
 		void turn_on_gravity();
 		void add_initial_velocity(std::vector<WCSPH::Vector> velocities);
