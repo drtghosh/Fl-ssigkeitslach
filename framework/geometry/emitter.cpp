@@ -80,7 +80,7 @@ namespace Emitter {
 	void Emitter::emit_particles(std::vector<geometry::Vector>& particle_positions, std::vector<geometry::Vector>& particle_velocities, CompactNSearch::Real t_sim) {
 		//Find points on xy plane that are inside ellipse on xy plane
 		bool is_scheduled = false;
-		for (unsigned int i = 0; i < schedule.size()-1; i++) {
+		for (unsigned int i = 0; i < schedule.size()-1; i+=2) {
 			if (t_sim >= schedule[i] && t_sim < schedule[i + 1]) {
 				is_scheduled = true;
 			}
