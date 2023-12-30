@@ -21,7 +21,8 @@ namespace Emitter
 		geometry::Vector normal;
 
 		const CompactNSearch::Real distance;
-		const CompactNSearch::Real velocity;
+		const geometry::Vector velocity;
+		const CompactNSearch::Real particle_distance;
 
 		std::vector<CompactNSearch::Real> schedule; //times when emitters should be turned on and off, starts at 0.0 with off automatically (first entry is time when turned on)
 		std::vector<std::array<int, 3>> shield_triangles;
@@ -29,11 +30,12 @@ namespace Emitter
 		void calculate_shield();
 
 	public:
-		Emitter(CompactNSearch::Real radius1, geometry::Vector radius1_dir, CompactNSearch::Real radius2, geometry::Vector radius2_dir, geometry::Vector centre, geometry::Vector normal_dir, const CompactNSearch::Real velocity, const CompactNSearch::Real shield_distance);
+		Emitter(CompactNSearch::Real radius1, geometry::Vector radius1_dir, CompactNSearch::Real radius2, geometry::Vector radius2_dir, geometry::Vector centre, geometry::Vector normal_dir, const geometry::Vector velocity, const CompactNSearch::Real particle_dist, const CompactNSearch::Real shield_distance);
 
 		void set_schedule(std::vector<CompactNSearch::Real> schedule_times);
 		std::vector<std::array<int, 3 >> get_shield_triangles();
 		std::vector<geometry::Vector> get_shield_vertices();
-		void emit_particles(std::vector<geometry::Vector>& particle_positions, std::vector<geometry::Vector>& particle_velocities);
+		void emit_particles(std::vector<geometry::Vector>& particle_positions, std::vector<geometry::Vector>& particle_velocities, CompactNSearch::Real t_sim);
+		std::vector<geometry::Vector> get_emition_positions();
 	};
 }

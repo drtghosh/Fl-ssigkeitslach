@@ -39,6 +39,7 @@ namespace WCSPH
 		std::vector<CompactNSearch::Real> fluid_pressures;
 		std::vector<CompactNSearch::Real> fluid_particle_counts;
 		WCSPH::Vector relative_velocity = { 2.0, 0.0, 0.0 };
+		std::vector<bool> is_fluid_particle_active;
 
 		CompactNSearch::Real particle_mass;
 		WCSPH::Vector boundary_box_bottom = WCSPH::Vector(0.0, 0.0, 0.0);
@@ -92,6 +93,8 @@ namespace WCSPH
 		void export_data_with_surface(unsigned int frame);
 		void export_boundary();
 		void export_obstacles();
+		void emit_particles(CompactNSearch::Real t_sim);
+		void update_active_status();
 
 		void create_grid();
 		void reset_grid_values();

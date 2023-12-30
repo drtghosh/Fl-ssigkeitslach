@@ -40,7 +40,7 @@ namespace WCSPH
 
 		// Compute boundary mass and add boundary particles to cns
 		unsigned int boundary_particles_id = 0;
-		if (!gravity_only && has_boundary) {
+		if (has_boundary) {
 			boundary_particles_id = this->cns_boundary.add_point_set(boundary_particles.front().data(), boundary_particles.size());
 			this->cns_boundary.find_neighbors();
 
@@ -51,9 +51,12 @@ namespace WCSPH
 		}
 
 		//Add fluid particles to cns
-		unsigned int fluid_particles_id = this->cns.add_point_set(fluid_particles.front().data(), fluid_particles.size());
-		CompactNSearch::PointSet& pointset_fluid = this->cns.point_set(fluid_particles_id);
-		this->cns.find_neighbors();
+		unsigned int fluid_particles_id = -1;
+		if (fluid_particles.size() > 0) {
+			fluid_particles_id = this->cns.add_point_set(fluid_particles.front().data(), fluid_particles.size());
+			CompactNSearch::PointSet& pointset_fluid = this->cns.point_set(fluid_particles_id);
+			this->cns.find_neighbors();
+		}
 
 		// Needed later for particle density calculation
 		//unsigned int boundary_particles_id_fluid = this->cns.add_point_set(boundary_particles.front().data(), boundary_particles.size());
@@ -69,8 +72,12 @@ namespace WCSPH
 		export_obstacles();
 
 		while (t_sim < t_end) {
+			if (fluid_particles.size() <= parameters.max_num_emitted_particles) {
+				emit_particles(t_sim);
+			}
+
 			if (this->fluid_particles.size() == 0) {
-				break;
+				continue;
 			}
 			// Update dt
 			update_time_step_size();
@@ -82,7 +89,12 @@ namespace WCSPH
 				//boundary_particles_id = this->cns.add_point_set(boundary_particles.front().data(), boundary_particles.size());
 			//}
 			//unsigned int fluid_particles_id = this->cns.add_point_set(fluid_particles.front().data(), fluid_particles.size());
-			this->cns.resize_point_set(fluid_particles_id, fluid_particles.front().data(), fluid_particles.size());
+			if (fluid_particles_id == -1) {
+				fluid_particles_id = this->cns.add_point_set(fluid_particles.front().data(), fluid_particles.size());
+			}
+			else {
+				this->cns.resize_point_set(fluid_particles_id, fluid_particles.front().data(), fluid_particles.size());
+			}
 			CompactNSearch::PointSet& pointset_fluid = this->cns.point_set(fluid_particles_id);
 			this->cns.find_neighbors();
 
@@ -98,6 +110,8 @@ namespace WCSPH
 
 			// Time integration
 			semi_implicit_euler();
+
+			update_active_status();
 
 			// Check particle positions
 			if (has_boundary) {
@@ -158,6 +172,11 @@ namespace WCSPH
 		for (int i = 0; i < (int)this->fluid_accelerations.size(); i++) {
 			this->fluid_accelerations[i] = { 0.0,0.0,0.0 };
 		}
+		this->is_fluid_particle_active.resize(fluid_particles.size());
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < (int)this->is_fluid_particle_active.size(); i++) {
+			this->is_fluid_particle_active[i] = true;
+		}
 		this->fluid_velocities.resize(fluid_particles.size());
 		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
 		for (int i = 0; i < (int)this->fluid_velocities.size(); i++) {
@@ -194,6 +213,26 @@ namespace WCSPH
 			boundary_mesh_faces_export = triangles;
 			boundary_mesh_vertices_export = vertices;
 
+			if (emitter.size() > 0) {
+				for (unsigned int i = 0; i < emitter.size();i++) {
+					std::vector<WCSPH::Vector> shield_vertices = emitter[i].get_shield_vertices();
+					std::vector<std::array<int, 3>> shield_triangles = emitter[i].get_shield_triangles();
+					for (unsigned int j = 0; j < shield_vertices.size(); j++) {
+						vertices.push_back(shield_vertices[j]);
+					}
+					for (unsigned int j = 0; j < shield_triangles.size(); j++) {
+						std::array<int, 3> triangle = shield_triangles[j];
+						triangle[0] += vertices_before;
+						triangle[1] += vertices_before;
+						triangle[2] += vertices_before;
+						triangles.push_back(triangle);
+					}
+				}
+				
+			}
+
+			vertices_before = vertices.size();
+
 			if (obstacle_squares.size() > 0) {
 				std::vector<WCSPH::Vector> obstacle_vertices;
 				std::vector<std::array<int, 3>> obstacle_triangles;
@@ -222,7 +261,6 @@ namespace WCSPH
 			this->boundary_particle_mass = this->boundary_particle_volume * parameters.fluid_rest_density;
 		}
 
-		//this->particle_mass = 0.0;
 		CompactNSearch::Real total_fluid_volume = 0.0;
 		for (int i = 0; i < fluid_sizes.size(); ++i) {
 			WCSPH::Vector top_right_fluid = bottom_lefts_fluid[i] + fluid_sizes[i];
@@ -235,12 +273,78 @@ namespace WCSPH
 			total_fluid_volume += fluid_sizes[i][0] * fluid_sizes[i][1] * fluid_sizes[i][2];
 			this->fluid_particle_counts.emplace_back(this->fluid_particles.size());
 		}
-		this->particle_mass = (parameters.fluid_rest_density * total_fluid_volume) / this->fluid_particles.size();
+		CompactNSearch::Real root = std::pow(parameters.max_num_emitted_particles, 1 / 3.) * parameters.particle_diameter;
+		total_fluid_volume += root * root * root;
+		this->particle_mass = (parameters.fluid_rest_density * total_fluid_volume) / (this->fluid_particles.size() + parameters.max_num_emitted_particles);
 
 		auto end = std::chrono::system_clock::now();
 		auto elapsed =
 			std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 		duration += elapsed.count();
+	}
+
+	void SPH::emit_particles(CompactNSearch::Real t_sim) {
+		//Emit particles
+		for (unsigned int i = 0; i < emitter.size(); i++) {
+			std::vector<WCSPH::Vector> emitted_particle_positions;
+			std::vector<WCSPH::Vector> emitted_particle_velocities;
+
+			emitter[i].emit_particles(emitted_particle_positions, emitted_particle_velocities, t_sim);
+			if (emitted_particle_positions.size() == 0) {
+				continue;
+			}
+			bool emit = true;
+			#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+			for (int j = 0; j < fluid_particles.size(); j++) {
+				if (!is_fluid_particle_active[j]) {
+					if ((fluid_particles[j] - emitted_particle_positions[0]).norm() <= parameters.emit_frequency * parameters.particle_diameter) {
+						emit = false;
+						break;
+					}
+				}
+			}
+			if (emit) {
+				for (unsigned int j = 0; j < emitted_particle_positions.size(); j++) {
+					fluid_particles.push_back(emitted_particle_positions[j]);
+					fluid_velocities.push_back(emitted_particle_velocities[j]);
+					fluid_accelerations.push_back({ 0.0,0.0,0.0 });
+					is_fluid_particle_active.push_back(false);
+				}
+			}
+		}
+		this->fluid_densities.resize(fluid_particles.size());
+		this->fluid_pressures.resize(fluid_particles.size());
+	}
+
+	void SPH::update_active_status() {
+		//update active status
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < fluid_particles.size(); i++) {
+			if (!is_fluid_particle_active[i]) {
+				WCSPH::Vector emission_position;
+				WCSPH::Vector dir = fluid_velocities[i].normalized();
+				//Find origin position
+				for (unsigned int j = 0; j < emitter.size(); j++) {
+					std::vector<WCSPH::Vector> emission_positions = emitter[j].get_emition_positions();
+					bool found = false;
+					for (unsigned int k = 0; k < emission_positions.size(); k++) {
+						WCSPH::Vector dist = (fluid_particles[i] - emission_positions[k]).normalized();
+						found = (dist - dir).norm() < 0.0001;
+						if (found) {
+							emission_position = emission_positions[k];
+							break;
+						}
+					}
+					if (found) {
+						break;
+					}
+				}
+				bool is_active = (fluid_particles[i] - emission_position).norm() >= 3 * parameters.particle_diameter;
+				if (is_active) {
+					is_fluid_particle_active[i] = true;
+				}
+			}
+		}
 	}
 
 	void SPH::compute_boundary_mass(unsigned int boundary_id, CompactNSearch::PointSet const& ps_boundary) {
@@ -303,11 +407,11 @@ namespace WCSPH
 	void SPH::semi_implicit_euler() {
 		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
 		for (int i = 0; i < (int)fluid_particles.size(); i++) {
-			WCSPH::Vector new_v = fluid_velocities[i] + parameters.dt * fluid_accelerations[i];
-			WCSPH::Vector new_x = fluid_particles[i] + parameters.dt * new_v;
+				WCSPH::Vector new_v = fluid_velocities[i] + parameters.dt * fluid_accelerations[i];
+				WCSPH::Vector new_x = fluid_particles[i] + parameters.dt * new_v;
 
-			fluid_velocities[i] = new_v;
-			fluid_particles[i] = new_x;
+				fluid_velocities[i] = new_v;
+				fluid_particles[i] = new_x;
 		}
 	}
 
@@ -341,28 +445,30 @@ namespace WCSPH
 		// Loop over all fluid particles
 		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
 		for (int i = 0; i < ps_fluid.n_points(); ++i) {
-			// Initialize acceleration
-			WCSPH::Vector acceleration = { 0.0, 0.0, 0.0 };
-			// Get fluid neighbors of particles
-			for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
-				// Return the point id of the jth neighbor of the ith particle
-				const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
-				// Compute fluid-fluid interaction
-				WCSPH::Vector ffa = -1.0 * ((fluid_pressures.at(i) / (fluid_densities.at(i) * fluid_densities.at(i))) + (fluid_pressures.at(fpid) / (fluid_densities.at(fpid) * fluid_densities.at(fpid)))) * kernel.cubic_grad_spline(fluid_particles.at(i), fluid_particles.at(fpid));
-				acceleration += ffa;
-			}
-			acceleration *= this->particle_mass;
-			// Get boundary neighbors of particles
-			if (ps_fluid.n_neighbors(boundary_id, i) > 0 && has_boundary) {
-				for (int j = 0; j < ps_fluid.n_neighbors(boundary_id, i); ++j) {
+			if (is_fluid_particle_active[i]) {
+				// Initialize acceleration
+				WCSPH::Vector acceleration = { 0.0, 0.0, 0.0 };
+				// Get fluid neighbors of particles
+				for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
 					// Return the point id of the jth neighbor of the ith particle
-					const unsigned int bpid = ps_fluid.neighbor(boundary_id, i, j);
-					// Compute fluid-boundary interaction
-					WCSPH::Vector fba = -1.0 * parameters.fluid_rest_density * boundary_volumes.at(bpid) * (fluid_pressures.at(i) / (fluid_densities.at(i) * fluid_densities.at(i))) * kernel.cubic_grad_spline(fluid_particles.at(i), boundary_particles.at(bpid));
-					acceleration += fba;
+					const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
+					// Compute fluid-fluid interaction
+					WCSPH::Vector ffa = -1.0 * ((fluid_pressures.at(i) / (fluid_densities.at(i) * fluid_densities.at(i))) + (fluid_pressures.at(fpid) / (fluid_densities.at(fpid) * fluid_densities.at(fpid)))) * kernel.cubic_grad_spline(fluid_particles.at(i), fluid_particles.at(fpid));
+					acceleration += ffa;
 				}
+				acceleration *= this->particle_mass;
+				// Get boundary neighbors of particles
+				if (ps_fluid.n_neighbors(boundary_id, i) > 0 && has_boundary) {
+					for (int j = 0; j < ps_fluid.n_neighbors(boundary_id, i); ++j) {
+						// Return the point id of the jth neighbor of the ith particle
+						const unsigned int bpid = ps_fluid.neighbor(boundary_id, i, j);
+						// Compute fluid-boundary interaction
+						WCSPH::Vector fba = -1.0 * parameters.fluid_rest_density * boundary_volumes.at(bpid) * (fluid_pressures.at(i) / (fluid_densities.at(i) * fluid_densities.at(i))) * kernel.cubic_grad_spline(fluid_particles.at(i), boundary_particles.at(bpid));
+						acceleration += fba;
+					}
+				}
+				fluid_accelerations[i] += acceleration;
 			}
-			fluid_accelerations[i] += acceleration;
 		}
 	}
 
@@ -370,40 +476,45 @@ namespace WCSPH
 		// Loop over all fluid particles
 		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
 		for (int i = 0; i < ps_fluid.n_points(); ++i) {
-			// Initialize acceleration
-			WCSPH::Vector acceleration = { 0.0, 0.0, 0.0 };
-			// Get fluid neighbors of particles
-			for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
-				// Return the point id of the jth neighbor of the ith particle
-				const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
-				// Compute fluid-fluid interaction
-				const CompactNSearch::Real normff = (fluid_particles.at(i) - fluid_particles.at(fpid)).norm();
-				WCSPH::Vector ffa = kernel.cubic_grad_spline(fluid_particles.at(i), fluid_particles.at(fpid)).dot(fluid_particles.at(i) - fluid_particles.at(fpid)) * (fluid_velocities.at(i) - fluid_velocities.at(fpid)) / (fluid_densities.at(fpid) * ((normff * normff) + (0.01 * parameters.smoothing_length_squared)));
-				acceleration += ffa;
-			}
-			acceleration *= (2 * parameters.fluid_viscosity * this->particle_mass);
-			// Get boundary neighbors of particles
-			if (ps_fluid.n_neighbors(boundary_id, i) > 0 && has_boundary) {
-				for (int j = 0; j < ps_fluid.n_neighbors(boundary_id, i); ++j) {
+			if (is_fluid_particle_active[i]) {
+				// Initialize acceleration
+				WCSPH::Vector acceleration = { 0.0, 0.0, 0.0 };
+				// Get fluid neighbors of particles
+				for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
 					// Return the point id of the jth neighbor of the ith particle
-					const unsigned int bpid = ps_fluid.neighbor(boundary_id, i, j);
-					// Compute fluid-boundary interaction
-					const CompactNSearch::Real normfb = (fluid_particles.at(i) - boundary_particles.at(bpid)).norm();
-					WCSPH::Vector fba = 2 * parameters.boundary_viscosity * boundary_volumes.at(bpid) * kernel.cubic_grad_spline(fluid_particles.at(i), boundary_particles.at(bpid)).dot(fluid_particles.at(i) - boundary_particles.at(bpid)) * fluid_velocities.at(i) / ((normfb * normfb) + (0.01 * parameters.smoothing_length_squared));
-					acceleration += fba;
+					const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
+					// Compute fluid-fluid interaction
+					const CompactNSearch::Real normff = (fluid_particles.at(i) - fluid_particles.at(fpid)).norm();
+					WCSPH::Vector ffa = kernel.cubic_grad_spline(fluid_particles.at(i), fluid_particles.at(fpid)).dot(fluid_particles.at(i) - fluid_particles.at(fpid)) * (fluid_velocities.at(i) - fluid_velocities.at(fpid)) / (fluid_densities.at(fpid) * ((normff * normff) + (0.01 * parameters.smoothing_length_squared)));
+					acceleration += ffa;
 				}
+				acceleration *= (2 * parameters.fluid_viscosity * this->particle_mass);
+				// Get boundary neighbors of particles
+				if (ps_fluid.n_neighbors(boundary_id, i) > 0 && has_boundary) {
+					for (int j = 0; j < ps_fluid.n_neighbors(boundary_id, i); ++j) {
+						// Return the point id of the jth neighbor of the ith particle
+						const unsigned int bpid = ps_fluid.neighbor(boundary_id, i, j);
+						// Compute fluid-boundary interaction
+						const CompactNSearch::Real normfb = (fluid_particles.at(i) - boundary_particles.at(bpid)).norm();
+						WCSPH::Vector fba = 2 * parameters.boundary_viscosity * boundary_volumes.at(bpid) * kernel.cubic_grad_spline(fluid_particles.at(i), boundary_particles.at(bpid)).dot(fluid_particles.at(i) - boundary_particles.at(bpid)) * fluid_velocities.at(i) / ((normfb * normfb) + (0.01 * parameters.smoothing_length_squared));
+						acceleration += fba;
+					}
+				}
+				fluid_accelerations[i] += acceleration;
 			}
-			fluid_accelerations[i] += acceleration;
 		}
 	}
 
 	void SPH::calculate_other_acceleration() {
 		if (!gravity_only) {
 			//TODO if we have other accelerations
+			//if (is_fluid_particle_active[i]) {}
 		}
 		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
 		for (int i = 0; i < (int)fluid_accelerations.size(); i++) {
-			fluid_accelerations[i] += gravity_acceleration;
+			if (is_fluid_particle_active[i]) {
+				fluid_accelerations[i] += gravity_acceleration;
+			}
 		}
 	}
 
@@ -428,11 +539,13 @@ namespace WCSPH
 		int old_size = (int)fluid_particles.size();
 		//learnSPH::Vector bottom_left= boundary_bounds.corner(boundary_bounds.BottomLeftFloor);
 		//learnSPH::Vector top_right = boundary_bounds.corner(boundary_bounds.TopRightCeil); //TODO check
+		std::vector<bool> new_is_fluid_particle_active;
 		std::vector<WCSPH::Vector> new_positions;
 		std::vector<WCSPH::Vector> new_velocities;
 		std::vector<WCSPH::Vector> new_accelerations;
 		std::vector<CompactNSearch::Real> new_densities;
 		std::vector<CompactNSearch::Real> new_pressures;
+		new_is_fluid_particle_active.reserve(old_size);
 		new_positions.reserve(old_size);
 		new_velocities.reserve(old_size);
 		new_accelerations.reserve(old_size);
@@ -448,14 +561,14 @@ namespace WCSPH
 			if (!is_inside) {
 				continue;
 			}
-
+			new_is_fluid_particle_active.emplace_back(is_fluid_particle_active[i]);
 			new_positions.emplace_back(pos);
 			new_velocities.emplace_back(fluid_velocities[i]);
 			new_accelerations.emplace_back(fluid_accelerations[i]);
 			new_densities.emplace_back(fluid_densities[i]);
 			new_pressures.emplace_back(fluid_pressures[i]);
 		}
-
+		this->is_fluid_particle_active = new_is_fluid_particle_active;
 		this->fluid_particles = new_positions;
 		this->fluid_velocities = new_velocities;
 		this->fluid_accelerations = new_accelerations;
@@ -666,13 +779,17 @@ namespace WCSPH
 	}
 
 	void SPH::export_boundary() {
-		const std::string filename = this->result_path + "boundary/boundary.vtk";
-		geometry::write_tri_mesh_to_vtk(filename, boundary_mesh_vertices_export, boundary_mesh_faces_export);
+		if (has_boundary) {
+			const std::string filename = this->result_path + "boundary/boundary.vtk";
+			geometry::write_tri_mesh_to_vtk(filename, boundary_mesh_vertices_export, boundary_mesh_faces_export);
+		}
 	}
 
 	void SPH::export_obstacles() {
-		const std::string filename = this->result_path + "obstacles/boundary.vtk";
-		geometry::write_tri_mesh_to_vtk(filename, obstacle_mesh_vertices_export, obstacle_mesh_faces_export);
+		if (obstacle_mesh_vertices_export.size() > 0 && obstacle_mesh_faces_export.size() > 0) {
+			const std::string filename = this->result_path + "obstacles/boundary.vtk";
+			geometry::write_tri_mesh_to_vtk(filename, obstacle_mesh_vertices_export, obstacle_mesh_faces_export);
+		}
 	}
 
 }
