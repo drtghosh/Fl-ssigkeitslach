@@ -77,6 +77,24 @@ namespace WCSPH
 			}
 
 			if (this->fluid_particles.size() == 0) {
+				if (t_sim >= t_next_frame) {
+					switch (parameters.export_type) {
+					case SPHParameters::export_type::EXPORT:
+						export_data(frame_idx);
+						break;
+					case SPHParameters::export_type::EXPORT_WITH_SURFACE:
+						export_data_with_surface(frame_idx);
+						break;
+					default:
+						export_data(frame_idx);
+						break;
+					}
+					t_next_frame += parameters.dt_next_frame;
+					frame_idx++;
+				}
+				// Timestep update
+				t_sim += parameters.dt;
+				timesteps += 1;
 				continue;
 			}
 			// Update dt
@@ -117,7 +135,6 @@ namespace WCSPH
 			if (has_boundary) {
 				check_particle_positions();
 			}
-
 			//Export VTK
 			if (t_sim >= t_next_frame) {
 				if (parameters.export_type == SPHParameters::export_type::EXPORT_WITH_SURFACE) {

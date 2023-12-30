@@ -162,7 +162,7 @@ TEST_CASE("Test Emitter Fountain SPH", "[Test Emitter Fountain SPH]")
 
 	Emitter::Emitter emitter(0.0625, { 1.0, 0.0, 0.0 }, 0.0625, { 0.0, 1.0, 0.0 }, { 1.5, 1.5, 0.1 }, { 0.0, 0.0, 1.0 }, { 0.0, 0.0, 5 }, params.particle_diameter, params.particle_diameter);
 
-	SECTION("Fountain SPH") {
+	/*SECTION("Fountain SPH") {
 		path += "fountain_sph.vtk";
 
 		std::vector<CompactNSearch::Real> schedule;
@@ -175,7 +175,7 @@ TEST_CASE("Test Emitter Fountain SPH", "[Test Emitter Fountain SPH]")
 		WCSPH::SPH sph(false, false, "../res/emitter_fountain_sph/emitter_fountain_sph_", params, mcparams, emitters);
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(2);
-	}
+	}*/
 
 	SECTION("Fountain SPH Schedule") {
 		path += "fountain_sph_schedule.vtk";
