@@ -22,7 +22,6 @@ namespace PBD
 		MC::MarchingCubes marching_cubes{ mcparameters };
 
 		int timesteps;
-		//int pbf_iterations = 5; // Need to check what's a good value
 		int duration = 0;
 		CompactNSearch::NeighborhoodSearch cns_boundary{ 1.0 };
 		CompactNSearch::NeighborhoodSearch cns{ 1.0 };
@@ -41,6 +40,7 @@ namespace PBD
 		std::vector<CompactNSearch::Real> fluid_pressures;
 		std::vector<CompactNSearch::Real> fluid_particle_counts;
 		PBD::Vector relative_velocity = { 2.0, 0.0, 0.0 };
+		std::vector<bool> is_fluid_particle_active;
 
 		CompactNSearch::Real particle_mass;
 		PBD::Vector boundary_box_bottom = PBD::Vector(0.0, 0.0, 0.0);
@@ -96,6 +96,8 @@ namespace PBD
 		void export_data_with_surface(unsigned int frame);
 		void export_boundary();
 		void export_obstacles();
+		void emit_particles(CompactNSearch::Real t_sim);
+		void update_active_status();
 
 		void create_grid();
 		void reset_grid_values();

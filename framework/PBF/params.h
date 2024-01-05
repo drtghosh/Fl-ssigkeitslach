@@ -31,4 +31,6 @@ public:
 
 	CompactNSearch::Real grid_cell_size = 1.2 * particle_radius;
 	CompactNSearch::Real initial_grid_value = 0.55;
+	CompactNSearch::Real emit_frequency = 1.0;
+	int max_num_particles = 0; //0 when no emitters present
 };

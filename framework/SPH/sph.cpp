@@ -72,7 +72,7 @@ namespace WCSPH
 		export_obstacles();
 
 		while (t_sim < t_end) {
-			if (fluid_particles.size() <= parameters.max_num_emitted_particles) {
+			if (fluid_particles.size() <= parameters.max_num_particles) {
 				emit_particles(t_sim);
 			}
 
@@ -290,9 +290,9 @@ namespace WCSPH
 			total_fluid_volume += fluid_sizes[i][0] * fluid_sizes[i][1] * fluid_sizes[i][2];
 			this->fluid_particle_counts.emplace_back(this->fluid_particles.size());
 		}
-		CompactNSearch::Real root = std::pow(parameters.max_num_emitted_particles, 1 / 3.) * parameters.particle_diameter;
+		CompactNSearch::Real root = std::pow(parameters.max_num_particles, 1 / 3.) * parameters.particle_diameter;
 		total_fluid_volume += root * root * root;
-		this->particle_mass = (parameters.fluid_rest_density * total_fluid_volume) / (this->fluid_particles.size() + parameters.max_num_emitted_particles);
+		this->particle_mass = (parameters.fluid_rest_density * total_fluid_volume) / (this->fluid_particles.size() + parameters.max_num_particles);
 
 		auto end = std::chrono::system_clock::now();
 		auto elapsed =
@@ -745,34 +745,36 @@ namespace WCSPH
 	}
 
 	void SPH::calculate_mc_normals() {
-		this->surface_normals.resize(surface_vertices.size());
-		CompactNSearch::NeighborhoodSearch cns_mc{ parameters.compact_support };
-		unsigned int fluid_id_mc = cns_mc.add_point_set(fluid_particles.front().data(), fluid_particles.size());
-		unsigned int vertices_id_mc = cns_mc.add_point_set(surface_vertices.front().data(), surface_vertices.size());
-		CompactNSearch::PointSet const& ps_fluid_mc = cns_mc.point_set(fluid_id_mc);
-		CompactNSearch::PointSet const& ps_vertices_mc = cns_mc.point_set(vertices_id_mc);
-		cns_mc.find_neighbors();
-		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
-		for (int i = 0; i < ps_fluid_mc.n_points(); ++i) {
-			// Inititalize density
-			CompactNSearch::Real normalized_density = 0.0;
-			// Get neighbors among fluid particles
-			for (int j = 0; j < ps_fluid_mc.n_neighbors(fluid_id_mc, i); ++j) {
-				// Return the point id of the jth neighbor of the ith particle
-				const unsigned int fpid = ps_fluid_mc.neighbor(fluid_id_mc, i, j);
-				normalized_density += kernel.cubic_spline(fluid_particles.at(i), fluid_particles.at(fpid));
+		if (surface_vertices.size() > 0) {
+			this->surface_normals.resize(surface_vertices.size());
+			CompactNSearch::NeighborhoodSearch cns_mc{ parameters.compact_support };
+			unsigned int fluid_id_mc = cns_mc.add_point_set(fluid_particles.front().data(), fluid_particles.size());
+			unsigned int vertices_id_mc = cns_mc.add_point_set(surface_vertices.front().data(), surface_vertices.size());
+			CompactNSearch::PointSet const& ps_fluid_mc = cns_mc.point_set(fluid_id_mc);
+			CompactNSearch::PointSet const& ps_vertices_mc = cns_mc.point_set(vertices_id_mc);
+			cns_mc.find_neighbors();
+			#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+			for (int i = 0; i < ps_fluid_mc.n_points(); ++i) {
+				// Inititalize density
+				CompactNSearch::Real normalized_density = 0.0;
+				// Get neighbors among fluid particles
+				for (int j = 0; j < ps_fluid_mc.n_neighbors(fluid_id_mc, i); ++j) {
+					// Return the point id of the jth neighbor of the ith particle
+					const unsigned int fpid = ps_fluid_mc.neighbor(fluid_id_mc, i, j);
+					normalized_density += kernel.cubic_spline(fluid_particles.at(i), fluid_particles.at(fpid));
+				}
+				// Add contribution of fluid particle itself
+				normalized_density += kernel.cubic_spline(fluid_particles.at(i), fluid_particles.at(i));
+				// Get neighbors among mc vertices
+				for (int j = 0; j < ps_fluid_mc.n_neighbors(vertices_id_mc, i); ++j) {
+					// Return the point id of the jth neighbor of the ith particle
+					const unsigned int vpid = ps_fluid_mc.neighbor(vertices_id_mc, i, j);
+					this->surface_normals[vpid] += (kernel.cubic_grad_spline(fluid_particles.at(i), surface_vertices.at(vpid)) / normalized_density);
+				}
 			}
-			// Add contribution of fluid particle itself
-			normalized_density += kernel.cubic_spline(fluid_particles.at(i), fluid_particles.at(i));
-			// Get neighbors among mc vertices
-			for (int j = 0; j < ps_fluid_mc.n_neighbors(vertices_id_mc, i); ++j) {
-				// Return the point id of the jth neighbor of the ith particle
-				const unsigned int vpid = ps_fluid_mc.neighbor(vertices_id_mc, i, j);
-				this->surface_normals[vpid] += (kernel.cubic_grad_spline(fluid_particles.at(i), surface_vertices.at(vpid)) / normalized_density);
+			for (int i = 0; i < surface_normals.size(); i++) {
+				surface_normals[i].normalize();
 			}
-		}
-		for (int i = 0; i < surface_normals.size(); i++) {
-			surface_normals[i].normalize();
 		}
 	}
 
