@@ -71,6 +71,9 @@ namespace kernel
 		if (r >= compact_support) {
 			return 0.0;
 		}
+		//if (r < std::numeric_limits<double>::epsilon()) {
+		//	return 0.0;
+		//}
 		if (r < 0.5 * compact_support) {
 			double diff = compact_support - r;
 			return cohesion_alpha * inverse_c9 * ((2 * diff * diff * diff * r * r * r) - (c6 / 64));

@@ -93,7 +93,7 @@
 	}
 
 	geometry::write_tri_mesh_to_vtk(file, vertices, triangles, normals);
-}*/
+}
 
 TEST_CASE("Dam Break SPH with Surface Construction", "[Dam Break SPH with Surface Construction]")
 {
@@ -135,14 +135,14 @@ TEST_CASE("Dam Break SPH with Surface Construction", "[Dam Break SPH with Surfac
 	SECTION("Regular Marching Cubes") {
 		mcparams.ours = false;
 		mcparams.sparse = false;
-		WCSPH::SPH sph(false, false, "../res/dam_break_sph_mc/dam_break_sph_mc_", params, mcparams);
+		WCSPH::SPH sph(false, false, false, "../res/dam_break_sph_mc/dam_break_sph_mc_", params, mcparams);
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(4);
 		sph.printStats("Dam break in SPH with regular marching cubes");
 	}
-	/*SECTION("Sparse Marching Cubes") {
+	SECTION("Sparse Marching Cubes") {
 		mcparams.sparse = true;
-		WCSPH::SPH sph(false, false, "../res/dam_break_sph_mc_sparse/dam_break_sph_mc_sparse_", params, mcparams);
+		WCSPH::SPH sph(false, false, false, "../res/dam_break_sph_mc_sparse/dam_break_sph_mc_sparse_", params, mcparams);
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(0.5);
 		sph.printStats("Dam break in SPH with sparse marching cubes");
@@ -150,16 +150,16 @@ TEST_CASE("Dam Break SPH with Surface Construction", "[Dam Break SPH with Surfac
 	SECTION("Our Marching Cubes") {
 		mcparams.sparse = false;
 		mcparams.ours = true;
-		WCSPH::SPH sph(false, false, "../res/dam_break_sph_mc_ours/dam_break_sph_mc_ours_", params, mcparams);
+		WCSPH::SPH sph(false, false, false, "../res/dam_break_sph_mc_ours/dam_break_sph_mc_ours_", params, mcparams);
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(0.5);
 		sph.printStats("Dam break in SPH with our marching cubes");
 	}
 	//SECTION("Surface Nets"){ //TODO for me maybe
-	//}*/
+	//}
 }
 
-/*TEST_CASE("Crazy Stuff with Surface Construction", "[Crazy Stuff with Surface Construction]")
+TEST_CASE("Crazy Stuff with Surface Construction", "[Crazy Stuff with Surface Construction]")
 {
 	std::cout << "Testing crazy stuff with surface construction" << std::endl;
 	WCSPH::Vector boundary_size = { 1.75, 1, 1.25 };
@@ -202,14 +202,14 @@ TEST_CASE("Dam Break SPH with Surface Construction", "[Dam Break SPH with Surfac
 	SECTION("Regular Marching Cubes") {
 		mcparams.ours = false;
 		mcparams.sparse = false;
-		WCSPH::SPH sph(false, false, "../res/crazy_stuff_sph_mc/crazy_stuff_sph_mc_", params, mcparams);
+		WCSPH::SPH sph(false, false, false, "../res/crazy_stuff_sph_mc/crazy_stuff_sph_mc_", params, mcparams);
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(0.1);
 		sph.printStats("Crazy stuff with marching cubes");
 	}
 	SECTION("Sparse Marching Cubes") {
 		mcparams.sparse = true;
-		WCSPH::SPH sph(false, false, "../res/crazy_stuff_sph_mc_sparse/crazy_stuff_sph_mc_sparse_", params, mcparams);
+		WCSPH::SPH sph(false, false, false, "../res/crazy_stuff_sph_mc_sparse/crazy_stuff_sph_mc_sparse_", params, mcparams);
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(0.1);
 		sph.printStats("Crazy stuff with sparse marching cubes");

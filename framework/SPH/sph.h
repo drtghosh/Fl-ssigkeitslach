@@ -26,6 +26,7 @@ namespace WCSPH
 		CompactNSearch::NeighborhoodSearch cns{ 1.0 };
 		bool gravity_only{ false };
 		bool with_initial_velocity{ false };
+		bool with_surface_tension{ false };
 
 		// Particle data for fluid
 		std::vector<WCSPH::Vector> fluid_particles;
@@ -96,7 +97,7 @@ namespace WCSPH
 
 	public:
 		// Constructor
-		SPH(bool gravity_only, bool with_initial_velocity, std::string result_path, SPHParameters params, MCParameters mcparams);
+		SPH(bool gravity_only, bool with_initial_velocity, bool with_surface_tension, std::string result_path, SPHParameters params, MCParameters mcparams);
 
 		// Destructor
 		virtual ~SPH() = default;

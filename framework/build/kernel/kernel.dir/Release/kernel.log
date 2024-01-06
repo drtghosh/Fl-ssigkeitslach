@@ -1,6 +1,6 @@
 ﻿  kernel.cpp
 C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\kernel\kernel.cpp(41): warning C4715: 'kernel::Kernel::cubic_spline': not all control paths return a value
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\kernel\kernel.cpp(100): warning C4715: 'kernel::Kernel::adhesion_kernel': not all control paths return a value
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\kernel\kernel.cpp(82): warning C4715: 'kernel::Kernel::cohesion_kernel': not all control paths return a value
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\kernel\kernel.cpp(103): warning C4715: 'kernel::Kernel::adhesion_kernel': not all control paths return a value
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\kernel\kernel.cpp(85): warning C4715: 'kernel::Kernel::cohesion_kernel': not all control paths return a value
 C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\kernel\kernel.cpp(65): warning C4715: 'kernel::Kernel::cubic_grad_spline': not all control paths return a value
   kernel.vcxproj -> C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\build\kernel\Release\kernel.lib

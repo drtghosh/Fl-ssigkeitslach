@@ -31,7 +31,7 @@
 	params.fluid_rest_density = 1000;
 	params.max_dt = 0.1;
 
-	WCSPH::SPH sph(true, false, "../res/gravity/gravity_", params, mcparams);
+	WCSPH::SPH sph(true, false, false, "../res/gravity/gravity_", params, mcparams);
 	sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	sph.simulate(5);
 	sph.printStats("Gravity only");
@@ -66,7 +66,7 @@ TEST_CASE("Incremental SPH", "[Incremental SPH]")
 	params.max_dt = 0.001;
 
 	SECTION("No Boundary") {
-		WCSPH::SPH sph(false, false, "../res/no_bounds/no_bounds_", params, mcparams);
+		WCSPH::SPH sph(false, false, false, "../res/no_bounds/no_bounds_", params, mcparams);
 		sph.turn_off_gravity();
 		sph.load_geometry(false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(1);
@@ -75,7 +75,7 @@ TEST_CASE("Incremental SPH", "[Incremental SPH]")
 
 	params.fluid_pressure_stiffness = 1000.0;
 	SECTION("Added stiffness") {
-		WCSPH::SPH sph(false, false, "../res/no_bounds_fluid_stiffness/no_bounds_fluid_stiffness_", params, mcparams);
+		WCSPH::SPH sph(false, false, false, "../res/no_bounds_fluid_stiffness/no_bounds_fluid_stiffness_", params, mcparams);
 		sph.turn_off_gravity();
 		sph.load_geometry(false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(1);
@@ -84,7 +84,7 @@ TEST_CASE("Incremental SPH", "[Incremental SPH]")
 
 	params.fluid_viscosity = 0.1;
 	SECTION("Added fluid viscosity") {
-		WCSPH::SPH sph(false, false, "../res/no_bounds_fluid_visco/no_bounds_fluid_visco_", params, mcparams);
+		WCSPH::SPH sph(false, false, false, "../res/no_bounds_fluid_visco/no_bounds_fluid_visco_", params, mcparams);
 		sph.turn_off_gravity();
 		sph.load_geometry(false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(1);
@@ -97,7 +97,7 @@ TEST_CASE("Incremental SPH", "[Incremental SPH]")
 		fluid_sizes.push_back(second_fluid_size);
 		fluid_lefts.push_back(second_fluid_left);
 
-		WCSPH::SPH sph(false, true, "../res/no_bounds_two_fluids/no_bounds_two_fluids_", params, mcparams);
+		WCSPH::SPH sph(false, true, false, "../res/no_bounds_two_fluids/no_bounds_two_fluids_", params, mcparams);
 		sph.turn_off_gravity();
 		sph.load_geometry(false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(1);
@@ -105,7 +105,7 @@ TEST_CASE("Incremental SPH", "[Incremental SPH]")
 	}
 
 	SECTION("Turned on gravity") {
-		WCSPH::SPH sph(false, false, "../res/no_bounds_gravity/no_bounds_gravity_", params, mcparams);
+		WCSPH::SPH sph(false, false, false, "../res/no_bounds_gravity/no_bounds_gravity_", params, mcparams);
 		sph.turn_on_gravity();
 		sph.load_geometry(false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(1);
@@ -116,7 +116,7 @@ TEST_CASE("Incremental SPH", "[Incremental SPH]")
 		WCSPH::Vector boundary_size = { 21.0, 21.0, 11.0 };
 		WCSPH::Vector boundary_left = { -10.0, -10.0, -1.0 };
 
-		WCSPH::SPH sph(false, false, "../res/bounds_floor/bounds_floor_", params, mcparams);
+		WCSPH::SPH sph(false, false, false, "../res/bounds_floor/bounds_floor_", params, mcparams);
 		sph.turn_on_gravity();
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(1);
@@ -128,7 +128,7 @@ TEST_CASE("Incremental SPH", "[Incremental SPH]")
 		WCSPH::Vector boundary_size = { 21.0, 21.0, 11.0 };
 		WCSPH::Vector boundary_left = { -10.0, -10.0, -1.0 };
 
-		WCSPH::SPH sph(false, false, "../res/bounds_floor_boundary_visco/bounds_floor_boundary_visco_", params, mcparams);
+		WCSPH::SPH sph(false, false, false, "../res/bounds_floor_boundary_visco/bounds_floor_boundary_visco_", params, mcparams);
 		sph.turn_on_gravity();
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(1);
@@ -168,7 +168,7 @@ TEST_CASE("Dam break SPH", "[Dam break SPH]")
 	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
 	params.compact_support = 2 * params.smoothing_length;
 
-	WCSPH::SPH sph(false, false, "../res/dam_break_sph/dam_break_sph_", params, mcparams);
+	WCSPH::SPH sph(false, false, false, "../res/dam_break_sph/dam_break_sph_", params, mcparams);
 	sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	sph.simulate(4);
 	sph.printStats("Dam break SPH");
@@ -210,7 +210,7 @@ TEST_CASE("Crazy stuff", "[Crazy stuff]")
 	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
 	params.compact_support = 2 * params.smoothing_length;
 
-	WCSPH::SPH sph(false, false, "../res/crazy_stuff_sph/crazy_stuff_sph_", params, mcparams);
+	WCSPH::SPH sph(false, false, false, "../res/crazy_stuff_sph/crazy_stuff_sph_", params, mcparams);
 	sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	sph.simulate(0.1);
 	sph.printStats("Crazy stuff");
@@ -252,7 +252,7 @@ TEST_CASE("Crazy stuff2", "[Crazy stuff2]")
 	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
 	params.compact_support = 2 * params.smoothing_length;
 
-	WCSPH::SPH sph(false, false, "../res/crazy_stuff2_sph/crazy_stuff2_sph_", params, mcparams);
+	WCSPH::SPH sph(false, false, false, "../res/crazy_stuff2_sph/crazy_stuff2_sph_", params, mcparams);
 	sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	sph.simulate(0.1);
 	sph.printStats("Crazy stuff 2");

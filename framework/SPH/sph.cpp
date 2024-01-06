@@ -14,7 +14,7 @@
 namespace WCSPH
 {
 
-	SPH::SPH(bool gravity_only, bool with_initial_velocity, std::string result_path, SPHParameters params, MCParameters mcparams) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), result_path(result_path), parameters(params), mcparameters(mcparams) {
+	SPH::SPH(bool gravity_only, bool with_initial_velocity, bool with_surface_tension, std::string result_path, SPHParameters params, MCParameters mcparams) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), with_surface_tension(with_surface_tension), result_path(result_path), parameters(params), mcparameters(mcparams) {
 		auto start = std::chrono::system_clock::now();
 
 		this->kernel = kernel::Kernel(parameters.smoothing_length);
@@ -65,7 +65,9 @@ namespace WCSPH
 		CompactNSearch::Real cx = 0.0;
 		timesteps = 0;
 
-		export_boundary();
+		if (has_boundary) {
+			export_boundary();
+		}
 
 		while (t_sim < t_end) {
 			if (this->fluid_particles.size() == 0) {
@@ -92,6 +94,12 @@ namespace WCSPH
 				// Compute pressure
 				calculate_pressure(t_sim == 0.0);
 			}
+
+			// For surface tension compute fluid normals
+			if (with_surface_tension) {
+				calculate_fluid_normals(fluid_particles_id, pointset_fluid);
+			}
+
 			// Compute accelerations
 			calculate_acceleration(fluid_particles_id, pointset_fluid, boundary_particles_id);
 
@@ -328,9 +336,11 @@ namespace WCSPH
 		}
 
 		calculate_other_acceleration();
-		calculate_st_acceleration(fluid_id, ps_fluid, boundary_id);
-		if (has_boundary) {
-			calculate_adhesion_acceleration(fluid_id, ps_fluid, boundary_id);
+		if (with_surface_tension) {
+			calculate_st_acceleration(fluid_id, ps_fluid, boundary_id);
+			if (has_boundary) {
+				calculate_adhesion_acceleration(fluid_id, ps_fluid, boundary_id);
+			}
 		}
 	}
 
@@ -491,11 +501,13 @@ namespace WCSPH
 		std::vector<WCSPH::Vector> new_positions;
 		std::vector<WCSPH::Vector> new_velocities;
 		std::vector<WCSPH::Vector> new_accelerations;
+		std::vector<WCSPH::Vector> new_normals;
 		std::vector<CompactNSearch::Real> new_densities;
 		std::vector<CompactNSearch::Real> new_pressures;
 		new_positions.reserve(old_size);
 		new_velocities.reserve(old_size);
 		new_accelerations.reserve(old_size);
+		new_normals.reserve(old_size);
 		new_densities.reserve(old_size);
 		new_pressures.reserve(old_size);
 
@@ -512,6 +524,7 @@ namespace WCSPH
 			new_positions.emplace_back(pos);
 			new_velocities.emplace_back(fluid_velocities[i]);
 			new_accelerations.emplace_back(fluid_accelerations[i]);
+			new_normals.emplace_back(fluid_normals[i]);
 			new_densities.emplace_back(fluid_densities[i]);
 			new_pressures.emplace_back(fluid_pressures[i]);
 		}
@@ -519,6 +532,7 @@ namespace WCSPH
 		this->fluid_particles = new_positions;
 		this->fluid_velocities = new_velocities;
 		this->fluid_accelerations = new_accelerations;
+		this->fluid_normals = new_normals;
 		this->fluid_densities = new_densities;
 		this->fluid_pressures = new_pressures;
 
