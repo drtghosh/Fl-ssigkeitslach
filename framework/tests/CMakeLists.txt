@@ -11,7 +11,8 @@ set(SOURCE_FILES
 	test_nSearch.cpp
 	test_pbf.cpp
 	test_sph.cpp
-	test_surface_tension_sph.cpp)
+	test_surface_tension_sph.cpp
+	test_surface_tension_sph_out_bound.cpp)
     
 add_executable(tests ${SOURCE_FILES})
 add_dependencies(tests SPH)

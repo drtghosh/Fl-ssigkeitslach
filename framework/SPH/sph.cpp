@@ -187,7 +187,7 @@ namespace WCSPH
 		}
 	}
 
-	void SPH::load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::vector<std::array<WCSPH::Vector, 4>>& obstacle_squares) {
+	void SPH::load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::vector<std::array<WCSPH::Vector, 4>>& obstacle_squares, std::pair <CompactNSearch::Real, WCSPH::Vector>& obstacle_sphere) {
 		auto start = std::chrono::system_clock::now();
 		
 		this->has_boundary = has_boundary;
@@ -213,6 +213,11 @@ namespace WCSPH
 					triangles.push_back({ vertices_before + 2 , vertices_before + 3 ,  vertices_before });
 					vertices_before += 4;
 				}
+			}
+
+			if (obstacle_sphere.first > 0.0) {
+				WCSPH::Vector center = obstacle_sphere.second;
+				CompactNSearch::Real radius = obstacle_sphere.first;
 			}
 
 			this->boundary_mesh_vertices = vertices;
@@ -470,9 +475,10 @@ namespace WCSPH
 					const unsigned int bpid = ps_fluid.neighbor(boundary_id, i, j);
 					// Compute fluid-boundary interaction
 					const CompactNSearch::Real normfb = (fluid_particles.at(i) - boundary_particles.at(bpid)).norm();
-					WCSPH::Vector acceleration = -1.0 * parameters.adhesion_coefficient * boundary_masses.at(bpid) * kernel.adhesion_kernel(fluid_particles.at(i), boundary_particles.at(bpid)) * (fluid_particles.at(i) - boundary_particles.at(bpid)) / normfb;
+					acceleration += boundary_masses.at(bpid) * kernel.adhesion_kernel(fluid_particles.at(i), boundary_particles.at(bpid)) * (fluid_particles.at(i) - boundary_particles.at(bpid)) / normfb;
 				}
 			}
+			acceleration *= -1.0 * parameters.adhesion_coefficient;
 			fluid_accelerations[i] += acceleration;
 		}
 	}

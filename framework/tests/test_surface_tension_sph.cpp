@@ -10,13 +10,15 @@
 #include "../mcubes/mcparams.h"
 
 // Check out https://github.com/catchorg/Catch2 for more information about how to use Catch2
-/*TEST_CASE("Surface Tension without Gravity for SPH with surface construction", "[Surface Tension without Gravity for SPH with surface construction]")
+TEST_CASE("Surface Tension without Gravity for SPH with surface construction", "[Surface Tension without Gravity for SPH with surface construction]")
 {
 	std::cout << "Testing surface tension without gravity for SPH with surface construction: " << std::endl;
-	WCSPH::Vector boundary_size;
-	WCSPH::Vector boundary_left;
-	WCSPH::Vector fluid_size = { 0.2, 0.2, 0.2 };
-	WCSPH::Vector fluid_left = { 0.0, 0.0, 0.0 };
+	WCSPH::Vector boundary_size = { 0.5, 0.5, 0.5};
+	WCSPH::Vector boundary_left = { -0.25, -0.25, -0.25 };
+	//WCSPH::Vector fluid_size = { 0.2, 0.2, 0.2 }; // Use this for the first two sections
+	//WCSPH::Vector fluid_left = { -0.1, -0.1, -0.24 };
+	WCSPH::Vector fluid_size = { 0.1, 0.1, 0.1 }; 
+	WCSPH::Vector fluid_left = { -0.05, -0.05, -0.24 };
 
 	std::vector<WCSPH::Vector> fluid_sizes;
 	fluid_sizes.push_back(fluid_size);
@@ -47,7 +49,7 @@
 
 	params.export_type = SPHParameters::export_type::EXPORT_WITH_SURFACE;
 
-	SECTION("No Boundary, No Surface Tension") {
+	/*SECTION("No Boundary, No Surface Tension") {
 		mcparams.ours = false;
 		mcparams.sparse = false;
 		WCSPH::SPH sph(false, false, false, "../res/no_bounds_no_surface_tension_sph/no_bounds_no_surface_tension_sph_", params, mcparams);
@@ -65,10 +67,140 @@
 		sph.load_geometry(false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(4);
 		sph.printStats("No boundary with surface tension without gravity in SPH with regular marching cubes");
+	}*/
+
+	SECTION("Boundary, With Surface Tension, Beta 1.0, Gamma 1.0") {
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		WCSPH::SPH sph(false, false, true, "../res/bounds_surface_tension_sph_beta1_gamma1/bounds_surface_tension_sph_beta1_gamma1_", params, mcparams);
+		sph.turn_off_gravity();
+		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		sph.simulate(2);
+		sph.printStats("Surface tension without gravity in bounded fluid SPH with regular marching cubes");
+	}
+
+	params.adhesion_coefficient = 1.0;
+	params.cohesion_coefficient = 0.0;
+	SECTION("Boundary, With Surface Tension, Beta 1.0, Gamma 0.0") {
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		WCSPH::SPH sph(false, false, true, "../res/bounds_surface_tension_sph_beta1_gamma0/bounds_surface_tension_sph_beta1_gamma0_", params, mcparams);
+		sph.turn_off_gravity();
+		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		sph.simulate(2);
+		sph.printStats("Surface tension without gravity in bounded fluid SPH with regular marching cubes");
+	}
+
+	params.adhesion_coefficient = 1.0;
+	params.cohesion_coefficient = 0.1;
+	SECTION("Boundary, With Surface Tension, Beta 1.0, Gamma 0.1") {
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		WCSPH::SPH sph(false, false, true, "../res/bounds_surface_tension_sph_beta1_gamma01/bounds_surface_tension_sph_beta1_gamma01_", params, mcparams);
+		sph.turn_off_gravity();
+		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		sph.simulate(2);
+		sph.printStats("Surface tension without gravity in bounded fluid SPH with regular marching cubes");
+	}
+
+	params.adhesion_coefficient = 1.0;
+	params.cohesion_coefficient = 0.5;
+	SECTION("Boundary, With Surface Tension, Beta 1.0, Gamma 0.5") {
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		WCSPH::SPH sph(false, false, true, "../res/bounds_surface_tension_sph_beta1_gamma05/bounds_surface_tension_sph_beta1_gamma05_", params, mcparams);
+		sph.turn_off_gravity();
+		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		sph.simulate(2);
+		sph.printStats("Surface tension without gravity in bounded fluid SPH with regular marching cubes");
+	}
+
+	params.adhesion_coefficient = 2.0;
+	params.cohesion_coefficient = 0.0;
+	SECTION("Boundary, With Surface Tension, Beta 2.0, Gamma 0.0") {
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		WCSPH::SPH sph(false, false, true, "../res/bounds_surface_tension_sph_beta2_gamma0/bounds_surface_tension_sph_beta2_gamma0_", params, mcparams);
+		sph.turn_off_gravity();
+		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		sph.simulate(2);
+		sph.printStats("Surface tension without gravity in bounded fluid SPH with regular marching cubes");
+	}
+	
+	params.adhesion_coefficient = 2.0;
+	params.cohesion_coefficient = 0.1;
+	SECTION("Boundary, With Surface Tension, Beta 2.0, Gamma 0.1") {
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		WCSPH::SPH sph(false, false, true, "../res/bounds_surface_tension_sph_beta2_gamma01/bounds_surface_tension_sph_beta2_gamma01_", params, mcparams);
+		sph.turn_off_gravity();
+		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		sph.simulate(2);
+		sph.printStats("Surface tension without gravity in bounded fluid SPH with regular marching cubes");
+	}
+
+	params.adhesion_coefficient = 2.0;
+	params.cohesion_coefficient = 0.5;
+	SECTION("Boundary, With Surface Tension, Beta 2.0, Gamma 0.5") {
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		WCSPH::SPH sph(false, false, true, "../res/bounds_surface_tension_sph_beta2_gamma05/bounds_surface_tension_sph_beta2_gamma05_", params, mcparams);
+		sph.turn_off_gravity();
+		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		sph.simulate(2);
+		sph.printStats("Surface tension without gravity in bounded fluid SPH with regular marching cubes");
+	}
+
+	params.adhesion_coefficient = 2.0;
+	params.cohesion_coefficient = 1.0;
+	SECTION("Boundary, With Surface Tension, Beta 2.0, Gamma 1.0") {
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		WCSPH::SPH sph(false, false, true, "../res/bounds_surface_tension_sph_beta2_gamma1/bounds_surface_tension_sph_beta2_gamma1_", params, mcparams);
+		sph.turn_off_gravity();
+		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		sph.simulate(2);
+		sph.printStats("Surface tension without gravity in bounded fluid SPH with regular marching cubes");
+	}
+
+	params.adhesion_coefficient = 0.001;
+	params.cohesion_coefficient = 0.1;
+	SECTION("Boundary, With Surface Tension, Beta 0.001, Gamma 0.1") {
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		WCSPH::SPH sph(false, false, true, "../res/bounds_surface_tension_sph_beta0_gamma01/bounds_surface_tension_sph_beta0_gamma01_", params, mcparams);
+		sph.turn_off_gravity();
+		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		sph.simulate(2);
+		sph.printStats("Surface tension without gravity in bounded fluid SPH with regular marching cubes");
+	}
+
+	params.adhesion_coefficient = 0.001;
+	params.cohesion_coefficient = 0.5;
+	SECTION("Boundary, With Surface Tension, Beta 0.001, Gamma 0.5") {
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		WCSPH::SPH sph(false, false, true, "../res/bounds_surface_tension_sph_beta0_gamma05/bounds_surface_tension_sph_beta0_gamma05_", params, mcparams);
+		sph.turn_off_gravity();
+		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		sph.simulate(2);
+		sph.printStats("Surface tension without gravity in bounded fluid SPH with regular marching cubes");
+	}
+
+	params.adhesion_coefficient = 0.001;
+	params.cohesion_coefficient = 1.0;
+	SECTION("Boundary, With Surface Tension, Beta 0.001, Gamma 1.0") {
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		WCSPH::SPH sph(false, false, true, "../res/bounds_surface_tension_sph_beta0_gamma1/bounds_surface_tension_sph_beta0_gamma1_", params, mcparams);
+		sph.turn_off_gravity();
+		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		sph.simulate(2);
+		sph.printStats("Surface tension without gravity in bounded fluid SPH with regular marching cubes");
 	}
 }
 
-TEST_CASE("Surface Tension with Gravity for bounded fluid SPH with surface construction", "[Surface Tension with Gravity for bounded fluid SPH with surface construction]")
+/*TEST_CASE("Surface Tension with Gravity for bounded fluid SPH with surface construction", "[Surface Tension with Gravity for bounded fluid SPH with surface construction]")
 {
 	std::cout << "Testing surface tension with gravity for bounded fluid SPH with surface construction: " << std::endl;
 	WCSPH::Vector boundary_size = { 0.5, 0.5, 1.0};
@@ -105,7 +237,7 @@ TEST_CASE("Surface Tension with Gravity for bounded fluid SPH with surface const
 
 	params.export_type = SPHParameters::export_type::EXPORT_WITH_SURFACE;
 
-	SECTION("Boundary, No Surface Tension") {
+	SECTION("Boundary, No Surface Tension and No Adhesion") {
 		mcparams.ours = false;
 		mcparams.sparse = false;
 		WCSPH::SPH sph(false, false, false, "../res/bounds_no_surface_tension_sph/bounds_no_surface_tension_sph_", params, mcparams);
@@ -114,7 +246,7 @@ TEST_CASE("Surface Tension with Gravity for bounded fluid SPH with surface const
 		sph.printStats("No surface tension with gravity in bounded fluid SPH with regular marching cubes");
 	}
 
-	SECTION("Boundary, With Surface Tension") {
+	SECTION("Boundary, With Surface Tension and Adhesion") {
 		mcparams.ours = false;
 		mcparams.sparse = false;
 		WCSPH::SPH sph(false, false, true, "../res/bounds_surface_tension_sph/bounds_surface_tension_sph_", params, mcparams);
@@ -124,14 +256,13 @@ TEST_CASE("Surface Tension with Gravity for bounded fluid SPH with surface const
 	}
 }*/
 
-
-TEST_CASE("Surface Tension with Gravity for unbounded fluid SPH with surface construction", "[Surface Tension with Gravity for unbounded fluid SPH with surface construction]")
+/*TEST_CASE("Surface Tension with Gravity for bounded second fluid SPH with surface construction", "[Surface Tension with Gravity for bounded second fluid SPH with surface construction]")
 {
-	std::cout << "Testing surface tension with gravity for unbounded fluid SPH with surface construction: " << std::endl;
-	WCSPH::Vector boundary_size = { 0.5, 0.5, 0.1 };
-	WCSPH::Vector boundary_left = { -0.25, -0.25, -0.5 };
-	WCSPH::Vector fluid_size = { 0.2, 0.2, 0.2 };
-	WCSPH::Vector fluid_left = { -0.1, -0.1, 0.1 };
+	std::cout << "Testing surface tension with gravity for bounded second fluid SPH with surface construction: " << std::endl;
+	WCSPH::Vector boundary_size = { 0.153, 0.153, 0.5 };
+	WCSPH::Vector boundary_left = { -0.0765, -0.0765, -0.0765 };
+	WCSPH::Vector fluid_size = { 0.02, 0.02, 0.016 };
+	WCSPH::Vector fluid_left = { -0.01, -0.01, 0.044 };
 
 	std::vector<WCSPH::Vector> fluid_sizes;
 	fluid_sizes.push_back(fluid_size);
@@ -139,14 +270,19 @@ TEST_CASE("Surface Tension with Gravity for unbounded fluid SPH with surface con
 	std::vector<WCSPH::Vector> fluid_lefts;
 	fluid_lefts.push_back(fluid_left);
 
+	WCSPH::Vector second_fluid_size = { 0.15, 0.15, 0.04 };
+	WCSPH::Vector second_fluid_left = { -0.075, -0.075, -0.075 };
+	fluid_sizes.push_back(second_fluid_size);
+	fluid_lefts.push_back(second_fluid_left);
+
 
 	SPHParameters params;
 	MCParameters mcparams;
-	params.dt = 0.00025;
+	params.dt = 0.0001;
 	params.dt_next_frame = 0.01;
-	params.particle_radius = 0.005;
+	params.particle_radius = 0.0005;
 	params.fluid_rest_density = 1000;
-	params.max_dt = 0.0005;
+	params.max_dt = 0.0001;
 	params.fluid_pressure_stiffness = 1000.0;
 	params.fluid_viscosity = 0.0025;
 	params.boundary_viscosity = 0.0;
@@ -162,24 +298,24 @@ TEST_CASE("Surface Tension with Gravity for unbounded fluid SPH with surface con
 
 	params.export_type = SPHParameters::export_type::EXPORT_WITH_SURFACE;
 
-	SECTION("Outer Boundary, No Surface Tension") {
+	SECTION("Boundary, No Surface Tension") {
 		mcparams.ours = false;
-		mcparams.sparse = false;
-		WCSPH::SPH sph(false, false, false, "../res/out_bounds_no_surface_tension_sph/out_bounds_no_surface_tension_sph_", params, mcparams);
+		mcparams.sparse = true;
+		WCSPH::SPH sph(false, false, false, "../res/drop_fluid_bounds_no_surface_tension_sph/drop_fluid_bounds_no_surface_tension_sph_", params, mcparams);
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
-		sph.simulate(4);
-		sph.printStats("No surface tension with gravity in unbounded fluid SPH with regular marching cubes");
+		sph.simulate(0.1);
+		sph.printStats("No surface tension with gravity in bounded second fluid SPH with regular marching cubes");
 	}
 
-	SECTION("Outer Boundary, With Surface Tension") {
+	SECTION("Boundary, With Surface Tension") {
 		mcparams.ours = false;
-		mcparams.sparse = false;
-		WCSPH::SPH sph(false, false, true, "../res/out_bounds_surface_tension_sph/out_bounds_surface_tension_sph_", params, mcparams);
+		mcparams.sparse = true;
+		WCSPH::SPH sph(false, false, true, "../res/drop_fluid_bounds_surface_tension_sph/drop_fluid_bounds_surface_tension_sph_", params, mcparams);
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
-		sph.simulate(4);
-		sph.printStats("Surface tension with gravity in unbounded fluid SPH with regular marching cubes");
+		sph.simulate(0.01);
+		sph.printStats("Surface tension with gravity in bounded second fluid SPH with regular marching cubes");
 	}
-}
+}*/
 
 
 /*TEST_CASE("Dam Break SPH with Surface Construction", "[Dam Break SPH with Surface Construction]")

@@ -104,7 +104,7 @@ namespace WCSPH
 
 		// Functions
 		void simulate(CompactNSearch::Real t_end);
-		void load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::vector<std::array<WCSPH::Vector, 4>>& obstacle_squares = std::vector<std::array<WCSPH::Vector, 4>>());
+		void load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::vector<std::array<WCSPH::Vector, 4>>& obstacle_squares = std::vector<std::array<WCSPH::Vector, 4>>(), std::pair <CompactNSearch::Real, WCSPH::Vector>& obstacle_sphere = std::pair <CompactNSearch::Real, WCSPH::Vector>());
 		void turn_off_gravity();
 		void turn_on_gravity();
 		void add_initial_velocity(std::vector<WCSPH::Vector> velocities);
