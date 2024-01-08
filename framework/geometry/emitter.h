@@ -12,7 +12,7 @@ namespace Emitter
 	class Emitter
 	{
 	private:
-		//Emitter shap params
+		//Emitter shape params
 		CompactNSearch::Real r1;
 		geometry::Vector r1_dir;
 		CompactNSearch::Real r2;

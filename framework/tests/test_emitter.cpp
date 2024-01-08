@@ -155,6 +155,7 @@ TEST_CASE("Test Emitter Fountain SPH", "[Test Emitter Fountain SPH]")
 	params.smoothing_length = 1.2 * params.particle_diameter;
 	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
 	params.compact_support = 2 * params.smoothing_length;
+	params.grid_cell_size = 1.2 * params.particle_radius;
 	params.emit_frequency = 1.2;
 	params.max_num_particles = 100000;
 
@@ -168,7 +169,7 @@ TEST_CASE("Test Emitter Fountain SPH", "[Test Emitter Fountain SPH]")
 		std::vector<Emitter::Emitter> emitters;
 		emitters.push_back(emitter);
 
-		WCSPH::SPH sph(false, false, "../res/emitter_fountain_sph/emitter_fountain_sph_", params, mcparams, emitters);
+		WCSPH::SPH sph(false, false, true, "../res/emitter_fountain_sph/emitter_fountain_sph_", params, mcparams, emitters);
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(2);
 	}*/
@@ -205,9 +206,10 @@ TEST_CASE("Test Emitter Fountain SPH", "[Test Emitter Fountain SPH]")
 		sph.simulate(0.5);
 	}*/
 
-	/*SECTION("Fountain SPH Surface") { //TOOOOOOOOODDDDDDDOOOOOOOOOOO ERROR 
+	SECTION("Fountain SPH Surface") {
 		params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
-
+		mcparams.ours = false;
+		mcparams.sparse = false;
 		std::vector<CompactNSearch::Real> schedule;
 		schedule.push_back(0.0);
 		schedule.push_back(2.1);
@@ -215,10 +217,10 @@ TEST_CASE("Test Emitter Fountain SPH", "[Test Emitter Fountain SPH]")
 		std::vector<Emitter::Emitter> emitters;
 		emitters.push_back(emitter);
 
-		WCSPH::SPH sph(false, false, "../res/emitter_fountain_sph_surface/emitter_fountain_sph_surface_", params, mcparams, emitters);
+		WCSPH::SPH sph(false, false, false, "../res/emitter_fountain_sph_surface/emitter_fountain_sph_surface_", params, mcparams, emitters);
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
-		sph.simulate(0.5);
-	}*/
+		sph.simulate(2);
+	}
 }
 
 /*TEST_CASE("Emitter Vertical", "[Emitter Vertical]") {
