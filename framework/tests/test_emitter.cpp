@@ -306,7 +306,7 @@ TEST_CASE("Test Emitter Fountain SPH", "[Test Emitter Fountain SPH]")
 	WCSPH::SPH sph(false, false, "../res/emitter_sph_multiple/emitter_sph_multiple_", params, mcparams, emitters);
 	sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	sph.simulate(1);
-}*/
+}
 
 TEST_CASE("Test Emitter PBF", "[Test Emitter PBF]") //TOOODDDOOOOOOOOOOO
 {
@@ -352,4 +352,4 @@ TEST_CASE("Test Emitter PBF", "[Test Emitter PBF]") //TOOODDDOOOOOOOOOOO
 	PBD::PBF pbf(false, false, "../res/emitter_pbf/emitter_pbf_", params, mcparams, emitters);
 	pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	pbf.simulate(2);
-}
+}*/

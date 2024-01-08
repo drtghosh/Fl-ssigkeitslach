@@ -27,12 +27,14 @@ namespace WCSPH
 		CompactNSearch::NeighborhoodSearch cns{ 1.0 };
 		bool gravity_only{ false };
 		bool with_initial_velocity{ false };
+		bool with_surface_tension{ false };
 		std::vector<Emitter::Emitter> emitter;
 
 		// Particle data for fluid
 		std::vector<WCSPH::Vector> fluid_particles;
 		std::vector<WCSPH::Vector> fluid_velocities;
 		std::vector<WCSPH::Vector> fluid_accelerations;
+		std::vector<WCSPH::Vector> fluid_normals;
 		std::vector<WCSPH::Vector> pressure_accelerations;
 		std::vector<WCSPH::Vector> velocity_accelerations;
 		std::vector<CompactNSearch::Real> fluid_densities;
@@ -84,9 +86,12 @@ namespace WCSPH
 		void semi_implicit_euler();
 		void calculate_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
 		void calculate_pressure(bool first_step);
+		void calculate_fluid_normals(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid);
 		void calculate_pressure_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
 		void calculate_viscosity_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
 		void calculate_other_acceleration();
+		void calculate_st_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
+		void calculate_adhesion_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
 		void update_time_step_size();
 		void check_particle_positions();
 		void export_data(unsigned int frame);
@@ -104,7 +109,7 @@ namespace WCSPH
 
 	public:
 		// Constructor
-		SPH(bool gravity_only, bool with_initial_velocity, std::string result_path, SPHParameters params, MCParameters mcparams, std::vector<Emitter::Emitter>& emitter = std::vector<Emitter::Emitter>());
+		SPH(bool gravity_only, bool with_initial_velocity, bool with_surface_tension, std::string result_path, SPHParameters params, MCParameters mcparams, std::vector<Emitter::Emitter>& emitter = std::vector<Emitter::Emitter>());
 
 		// Destructor
 		virtual ~SPH() = default;

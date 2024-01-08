@@ -14,7 +14,7 @@
 namespace WCSPH
 {
 
-	SPH::SPH(bool gravity_only, bool with_initial_velocity, std::string result_path, SPHParameters params, MCParameters mcparams, std::vector<Emitter::Emitter>& emitter) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), result_path(result_path), parameters(params), mcparameters(mcparams), emitter(emitter) {
+	SPH::SPH(bool gravity_only, bool with_initial_velocity, bool with_surface_tension, std::string result_path, SPHParameters params, MCParameters mcparams, std::vector<Emitter::Emitter>& emitter) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), with_surface_tension(with_surface_tension), result_path(result_path), parameters(params), mcparameters(mcparams), emitter(emitter) {
 		auto start = std::chrono::system_clock::now();
 
 		this->kernel = kernel::Kernel(parameters.smoothing_length);
@@ -123,6 +123,12 @@ namespace WCSPH
 				// Compute pressure
 				calculate_pressure(t_sim == 0.0);
 			}
+
+			// For surface tension compute fluid normals
+			if (with_surface_tension) {
+				calculate_fluid_normals(fluid_particles_id, pointset_fluid);
+			}
+
 			// Compute accelerations
 			calculate_acceleration(fluid_particles_id, pointset_fluid, boundary_particles_id);
 
@@ -208,6 +214,11 @@ namespace WCSPH
 		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
 		for (int i = 0; i < (int)this->fluid_pressures.size(); i++) {
 			this->fluid_pressures[i] = 0.0;
+		}
+		this->fluid_normals.resize(fluid_particles.size());
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < (int)this->fluid_normals.size(); i++) {
+			this->fluid_normals[i] = { 0.0,0.0,0.0 };
 		}
 	}
 
@@ -456,6 +467,12 @@ namespace WCSPH
 		}
 
 		calculate_other_acceleration();
+		if (with_surface_tension) {
+			calculate_st_acceleration(fluid_id, ps_fluid, boundary_id);
+			if (has_boundary) {
+				calculate_adhesion_acceleration(fluid_id, ps_fluid, boundary_id);
+			}
+		}
 	}
 
 	void SPH::calculate_pressure_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id) {
@@ -535,6 +552,70 @@ namespace WCSPH
 		}
 	}
 
+	void SPH::calculate_fluid_normals(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid) {
+		// Loop over all fluid particles
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < ps_fluid.n_points(); ++i) {
+			// Initialize acceleration
+			WCSPH::Vector normal = { 0.0, 0.0, 0.0 };
+			// Get fluid neighbors of particles
+			for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
+				// Return the point id of the jth neighbor of the ith particle
+				const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
+				// Compute fluid-fluid interaction
+				WCSPH::Vector ffa = kernel.cubic_grad_spline(fluid_particles.at(i), fluid_particles.at(fpid)) / fluid_densities.at(j);
+				normal += ffa;
+			}
+			normal *= (this->particle_mass * parameters.compact_support);
+			fluid_normals[i] = normal;
+		}
+	}
+
+	void SPH::calculate_st_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id) {
+		// Loop over all fluid particles
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < ps_fluid.n_points(); ++i) {
+			// Initialize acceleration
+			WCSPH::Vector acceleration = { 0.0, 0.0, 0.0 };
+			// Get fluid neighbors of particles
+			for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
+				// Return the point id of the jth neighbor of the ith particle
+				const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
+				// Compute fluid-fluid interaction
+				const CompactNSearch::Real normff = (fluid_particles.at(i) - fluid_particles.at(fpid)).norm();
+				// Compute cohesion related acceleration
+				WCSPH::Vector co_acc = this->particle_mass * kernel.cohesion_kernel(fluid_particles.at(i), fluid_particles.at(fpid)) * (fluid_particles.at(i) - fluid_particles.at(fpid)) / normff;
+				// Compute curvature related acceleration
+				WCSPH::Vector curv_acc = this->fluid_normals.at(i) - this->fluid_normals.at(fpid);
+				// Add both contributions to get surface tension acceleration
+				acceleration += ((co_acc + curv_acc) / (fluid_densities.at(i) + fluid_densities.at(fpid)));
+			}
+			acceleration *= (-2.0 * parameters.fluid_rest_density * parameters.cohesion_coefficient);
+			fluid_accelerations[i] += acceleration;
+		}
+	}
+
+	void SPH::calculate_adhesion_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id) {
+		// Loop over all fluid particles
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < ps_fluid.n_points(); ++i) {
+			// Initialize acceleration
+			WCSPH::Vector acceleration = { 0.0, 0.0, 0.0 };
+			// Get boundary neighbors of particles
+			if (ps_fluid.n_neighbors(boundary_id, i) > 0 && has_boundary) {
+				for (int j = 0; j < ps_fluid.n_neighbors(boundary_id, i); ++j) {
+					// Return the point id of the jth neighbor of the ith particle
+					const unsigned int bpid = ps_fluid.neighbor(boundary_id, i, j);
+					// Compute fluid-boundary interaction
+					const CompactNSearch::Real normfb = (fluid_particles.at(i) - boundary_particles.at(bpid)).norm();
+					acceleration += boundary_masses.at(bpid) * kernel.adhesion_kernel(fluid_particles.at(i), boundary_particles.at(bpid)) * (fluid_particles.at(i) - boundary_particles.at(bpid)) / normfb;
+				}
+			}
+			acceleration *= -1.0 * parameters.adhesion_coefficient;
+			fluid_accelerations[i] += acceleration;
+		}
+	}
+
 	void SPH::update_time_step_size() {
 		CompactNSearch::Real max_norm = 0.0;
 		for (size_t i = 0; i < fluid_velocities.size(); i++) {
@@ -560,12 +641,14 @@ namespace WCSPH
 		std::vector<WCSPH::Vector> new_positions;
 		std::vector<WCSPH::Vector> new_velocities;
 		std::vector<WCSPH::Vector> new_accelerations;
+		std::vector<WCSPH::Vector> new_normals;
 		std::vector<CompactNSearch::Real> new_densities;
 		std::vector<CompactNSearch::Real> new_pressures;
 		new_is_fluid_particle_active.reserve(old_size);
 		new_positions.reserve(old_size);
 		new_velocities.reserve(old_size);
 		new_accelerations.reserve(old_size);
+		new_normals.reserve(old_size);
 		new_densities.reserve(old_size);
 		new_pressures.reserve(old_size);
 
@@ -582,6 +665,7 @@ namespace WCSPH
 			new_positions.emplace_back(pos);
 			new_velocities.emplace_back(fluid_velocities[i]);
 			new_accelerations.emplace_back(fluid_accelerations[i]);
+			new_normals.emplace_back(fluid_normals[i]);
 			new_densities.emplace_back(fluid_densities[i]);
 			new_pressures.emplace_back(fluid_pressures[i]);
 		}
@@ -589,6 +673,7 @@ namespace WCSPH
 		this->fluid_particles = new_positions;
 		this->fluid_velocities = new_velocities;
 		this->fluid_accelerations = new_accelerations;
+		this->fluid_normals = new_normals;
 		this->fluid_densities = new_densities;
 		this->fluid_pressures = new_pressures;
 

@@ -1,4 +1,7 @@
-﻿  Building Custom Rule C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Flüssigkeitslach/framework/geometry/CMakeLists.txt
-  io.cpp
-  sampling.cpp
+﻿  emitter.cpp
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\geometry\emitter.h(8,1): warning C4005: 'USE_DOUBLE': macro redefinition
+  (compiling source file '../../geometry/emitter.cpp')
+  C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\geometry\emitter.h(8,1):
+  'USE_DOUBLE' previously declared on the command line
+  
   geometry.vcxproj -> C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\build\geometry\Release\geometry.lib
