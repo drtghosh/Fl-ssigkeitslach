@@ -198,6 +198,18 @@ TEST_CASE("Surface Tension without Gravity for SPH with surface construction", "
 		sph.simulate(2);
 		sph.printStats("Surface tension without gravity in bounded fluid SPH with regular marching cubes");
 	}
+
+	params.adhesion_coefficient = 0.001;
+	params.cohesion_coefficient = 0.0;
+	SECTION("Boundary, With Surface Tension, Beta 0.001, Gamma 1.0") {
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		WCSPH::SPH sph(false, false, true, "../res/bounds_surface_tension_sph_beta0_gamma0/bounds_surface_tension_sph_beta0_gamma0_", params, mcparams);
+		sph.turn_off_gravity();
+		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		sph.simulate(2);
+		sph.printStats("Surface tension without gravity in bounded fluid SPH with regular marching cubes");
+	}
 }
 
 /*TEST_CASE("Surface Tension with Gravity for bounded fluid SPH with surface construction", "[Surface Tension with Gravity for bounded fluid SPH with surface construction]")
