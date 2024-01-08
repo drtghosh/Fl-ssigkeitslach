@@ -430,7 +430,7 @@ namespace WCSPH
 				// Return the point id of the jth neighbor of the ith particle
 				const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
 				// Compute fluid-fluid interaction
-				WCSPH::Vector ffa = kernel.cubic_grad_spline(fluid_particles.at(i), fluid_particles.at(fpid)) / fluid_densities.at(j);
+				WCSPH::Vector ffa = kernel.cubic_grad_spline(fluid_particles.at(i), fluid_particles.at(fpid)) / fluid_densities.at(fpid);
 				normal += ffa;
 			}
 			normal *= (this->particle_mass * parameters.compact_support);
