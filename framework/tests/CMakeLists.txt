@@ -4,7 +4,8 @@ set(CMAKE_CXX_STANDARD 17)
 # Local
 set(SOURCE_FILES
     	test_main.cpp
-	test_emitter
+	test_emitter.cpp
+	test_emitter_ob.cpp
 	sample_tests.cpp
 	test_kernel.cpp
 	test_marching_cubes

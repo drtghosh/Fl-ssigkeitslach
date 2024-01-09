@@ -204,7 +204,7 @@ TEST_CASE("Test Emitter Fountain SPH", "[Test Emitter Fountain SPH]")
 		WCSPH::SPH sph(false, false, "../res/emitter_fountain_sph_max/emitter_fountain_sph_max_", params, mcparams, emitters);
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(0.5);
-	}*/
+	}
 
 	SECTION("Fountain SPH Surface") {
 		params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
@@ -220,7 +220,7 @@ TEST_CASE("Test Emitter Fountain SPH", "[Test Emitter Fountain SPH]")
 		WCSPH::SPH sph(false, false, false, "../res/emitter_fountain_sph_surface/emitter_fountain_sph_surface_", params, mcparams, emitters);
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(2);
-	}
+	}*/
 }
 
 /*TEST_CASE("Emitter Vertical", "[Emitter Vertical]") {
