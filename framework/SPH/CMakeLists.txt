@@ -16,6 +16,7 @@ endif()
 set(SOURCE_FILES
 	sph.h
 	sph.cpp
+	sph_ob.cpp
 	params.h
 	config.h
 	bruteForceNSearch.h

@@ -1,6 +1,6 @@
-﻿  test_emitter.cpp
+﻿  test_emitter_ob.cpp
 C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\geometry\emitter.h(8,1): warning C4005: 'USE_DOUBLE': macro redefinition
-  (compiling source file '../../tests/test_emitter.cpp')
+  (compiling source file '../../tests/test_emitter_ob.cpp')
   C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\geometry\emitter.h(8,1):
   'USE_DOUBLE' previously declared on the command line
   
