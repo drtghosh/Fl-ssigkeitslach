@@ -224,7 +224,7 @@ namespace WCSPH
 		}
 	}
 
-	void SPH::load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::vector<std::array<WCSPH::Vector, 4>>& obstacle_squares) {
+	void SPH::load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::pair <WCSPH::Vector, WCSPH::Vector>& obstacle_box) {
 		auto start = std::chrono::system_clock::now();
 		
 		this->has_boundary = has_boundary;
@@ -263,22 +263,33 @@ namespace WCSPH
 
 			vertices_before = vertices.size();
 
-			if (obstacle_squares.size() > 0) {
+			if (obstacle_box.second[0] > 0.001) {
+				std::cout<< "Obstacle box found:" << obstacle_box.second[0] << std::endl;
+				this->obstacle_data = obstacle_box;
+				this->has_obstacle = true;
 				std::vector<WCSPH::Vector> obstacle_vertices;
 				std::vector<std::array<int, 3>> obstacle_triangles;
+				WCSPH::Vector obstacle_box_bottom = obstacle_box.first;
+				WCSPH::Vector obstacle_size = obstacle_box.second;
+				obstacle_vertices = { obstacle_box_bottom, obstacle_box_bottom + WCSPH::Vector(0.0, 0.0, obstacle_size[2]), obstacle_box_bottom + WCSPH::Vector(0.0, obstacle_size[1], 0.0),
+					obstacle_box_bottom + WCSPH::Vector(0.0, obstacle_size[1], obstacle_size[2]), obstacle_box_bottom + WCSPH::Vector(obstacle_size[0], 0.0, 0.0), obstacle_box_bottom + WCSPH::Vector(obstacle_size[0], 0.0, obstacle_size[2]),
+					obstacle_box_bottom + WCSPH::Vector(obstacle_size[0], obstacle_size[1], 0.0), obstacle_box_bottom + obstacle_size };
 
-				for (int i = 0; i < obstacle_squares.size(); i++) {
-					std::array<WCSPH::Vector, 4> square = obstacle_squares[i];
-					for (int j = 0; j < square.size(); j++) {
-						vertices.push_back(square[j]);
-						obstacle_vertices.push_back(square[j]);
-					}
-					triangles.push_back({ vertices_before , vertices_before + 1 ,  vertices_before + 2 });
-					triangles.push_back({ vertices_before + 2 , vertices_before + 3 ,  vertices_before });
-					obstacle_triangles.push_back({ vertices_before , vertices_before + 1 ,  vertices_before + 2 });
-					obstacle_triangles.push_back({ vertices_before + 2 , vertices_before + 3 ,  vertices_before });
-					vertices_before += 4;
+				obstacle_triangles = { {1, 2, 0}, {3, 6, 2}, {7, 4, 6}, {5, 0, 4}, {6, 0, 2}, {3, 5, 7},
+									 {1, 3, 2}, {3, 7, 6}, {7, 5, 4}, {5, 1, 0}, {6, 4, 0}, {3, 1, 5} };
+
+				for (int i = 0; i < obstacle_vertices.size(); i++) {
+					vertices.push_back(obstacle_vertices[i]);
 				}
+
+				for (int j = 0; j < obstacle_triangles.size(); j++) {
+					std::array<int, 3> triangle = obstacle_triangles[j];
+					triangle[0] += vertices_before;
+					triangle[1] += vertices_before;
+					triangle[2] += vertices_before;
+					triangles.push_back(triangle);
+				}
+
 				obstacle_mesh_vertices_export = obstacle_vertices;
 				obstacle_mesh_faces_export = obstacle_triangles;
 			}
@@ -666,6 +677,14 @@ namespace WCSPH
 			bool is_inside = is_bigger_BL && is_smaller_TR;
 			bool is_out_top = pos[0] <= this->boundary_box_top[0] && pos[1] <= this->boundary_box_top[1] && pos[2] > this->boundary_box_top[2] && pos[2] <= 5 * this->boundary_box_top[2];
 			bool keep = is_out_top || is_inside;
+			if (has_obstacle) {
+				WCSPH::Vector obstacle_bottom = this->obstacle_data.first;
+				WCSPH::Vector obstacle_top = this->obstacle_data.first + this->obstacle_data.second;
+				bool is_bigger_BL_obstacle = pos[0] >= obstacle_bottom[0] && pos[1] >= obstacle_bottom[1] && pos[2] >= obstacle_bottom[2];
+				bool is_smaller_TR_obstacle = pos[0] <= obstacle_top[0] && pos[1] <= obstacle_top[1] && pos[2] <= obstacle_top[2];
+				bool is_inside_obstacle = is_bigger_BL_obstacle && is_smaller_TR_obstacle;
+				keep = keep && !is_inside_obstacle;
+			}
 
 			if (!keep) {
 				continue;

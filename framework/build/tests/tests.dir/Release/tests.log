@@ -1,1 +1,7 @@
-﻿  tests.vcxproj -> C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\build\tests\Release\tests.exe
+﻿  test_emitter_ob.cpp
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\geometry\emitter.h(8,1): warning C4005: 'USE_DOUBLE': macro redefinition
+  (compiling source file '../../tests/test_emitter_ob.cpp')
+  C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\geometry\emitter.h(8,1):
+  'USE_DOUBLE' previously declared on the command line
+  
+  tests.vcxproj -> C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\build\tests\Release\tests.exe
