@@ -237,7 +237,7 @@ TEST_CASE("Test Emitter Fountain SPH Open Box", "[Test Emitter Fountain SPH Open
 		WCSPH::SPH sph(false, false, true, "../res/emitter_fountain_sph_surface_ob_st/emitter_fountain_sph_surface_ob_st_", params, mcparams, emitters);
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(2);
-	}*/
+	}
 
 	Emitter::Emitter emitter1(0.0625, { -0.5, -1.0, -1.0 }, 0.0625, { -1.0, -0.5, 1.0 }, { 1.65, 1.35, 2.0 }, { -1.5, 1.5, -0.75 }, { -1.5, 1.5, -0.75 }, params.particle_diameter, params.particle_diameter);
 	Emitter::Emitter emitter2(0.0625, { 0.5, 1.0, -1.0 }, 0.0625, { 1.0, 0.5, 1.0 }, { 1.35, 1.65, 2.0 }, { 1.5, -1.5, -0.75 }, { 1.5, -1.5, -0.75 }, params.particle_diameter, params.particle_diameter);
@@ -262,6 +262,135 @@ TEST_CASE("Test Emitter Fountain SPH Open Box", "[Test Emitter Fountain SPH Open
 		WCSPH::SPH sph(false, false, true, "../res/emitter_2hose_1obstacle_sph_surface_ob_st/emitter_2hose_1obstacle_sph_surface_ob_st_", params, mcparams, emitters);
 		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts, obstacle_box1);
 		sph.simulate(1.8);
+	}
+	
+	WCSPH::Vector boundary_size_v = { 3.0, 3.0, 0.75 };
+	WCSPH::Vector boundary_left_v = { 0.0, 0.0, 0.0 };
+	Emitter::Emitter emitter3(0.075, { 1.0, 0.0, 0.0 }, 0.075, { 0.0, 1.0, 0.0 }, { 1.5, 1.5, 1.85 }, { 0.0, 0.0, 1.0 }, { 0.0, 0.0, 3.0 }, params.particle_diameter, params.particle_diameter);
+	Emitter::Emitter emitter4(0.075, { 0.0, 1.0, 0.0 }, 0.075, { 1.0, 0.0, 0.0 }, { 1.5, 1.5, 2.15 }, { 0.0, 0.0, -1.0 }, { 0.0, 0.0, -3.0 }, params.particle_diameter, params.particle_diameter);
+	SECTION("Two vertical hoses with surface tension in SPH") {
+		params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		std::vector<CompactNSearch::Real> schedule;
+		schedule.push_back(0.0);
+		schedule.push_back(2.1);
+		emitter3.set_schedule(schedule);
+		emitter4.set_schedule(schedule);
+		std::vector<Emitter::Emitter> emitters;
+		emitters.push_back(emitter3);
+		emitters.push_back(emitter4);
+
+		WCSPH::SPH sph(false, false, true, "../res/emitter_2vertical_hoses_sph_surface_ob_st/emitter_2vertical_hoses_sph_surface_ob_st_", params, mcparams, emitters);
+		sph.load_geometry(true, boundary_size_v, boundary_left_v, fluid_sizes, fluid_lefts);
+		sph.simulate(1.2);
+	}
+
+	Emitter::Emitter emitter5(0.075, { 0.0, 1.0, 0.0 }, 0.075, { 0.0, 0.0, 1.0 }, { 1.35, 1.5, 2.0 }, { 1.0, 0.0, 0.0 }, { 3.0, 0.0, 0.0 }, params.particle_diameter, params.particle_diameter);
+	Emitter::Emitter emitter6(0.075, { 0.0, 0.0, 1.0 }, 0.075, { 0.0, 1.0, 0.0 }, { 1.65, 1.5, 2.0 }, { -1.0, 0.0, 0.0 }, { -3.0, 0.0, 0.0 }, params.particle_diameter, params.particle_diameter);
+	SECTION("Four orthogonal hoses with surface tension in SPH") {
+		params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		std::vector<CompactNSearch::Real> schedule;
+		schedule.push_back(0.0);
+		schedule.push_back(1.5);
+		emitter3.set_schedule(schedule);
+		emitter4.set_schedule(schedule);
+		emitter5.set_schedule(schedule);
+		emitter6.set_schedule(schedule);
+		std::vector<Emitter::Emitter> emitters;
+		emitters.push_back(emitter3);
+		emitters.push_back(emitter4);
+		emitters.push_back(emitter5);
+		emitters.push_back(emitter6);
+
+		WCSPH::SPH sph(false, false, true, "../res/emitter_4orthogonal_hoses_sph_surface_ob_st/emitter_4orthogonal_hoses_sph_surface_ob_st_", params, mcparams, emitters);
+		sph.load_geometry(true, boundary_size_v, boundary_left_v, fluid_sizes, fluid_lefts);
+		sph.simulate(1.2);
+	}*/
+
+	WCSPH::Vector boundary_size_s = { 4.0, 4.0, 0.75 };
+	WCSPH::Vector boundary_left_s = { -2.0, -2.0, -1.0 };
+	Emitter::Emitter emitter_sp(0.0625, { 0.0, 1.0, 0.0 }, 0.0625, { 1.0, 0.0, 0.0 }, { 0.0, 0.0, 0.2 }, { 0.0, 0.0, -1.0 }, { 0.0, 0.0, -0.5 }, params.particle_diameter, params.particle_diameter);
+	/*SECTION("Sphere obstacle with surface tension in SPH") {
+		params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
+		params.fluid_viscosity = 0.02;
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		std::vector<CompactNSearch::Real> schedule;
+		schedule.push_back(0.0);
+		schedule.push_back(0.2);
+		schedule.push_back(0.4);
+		schedule.push_back(1.5);
+		emitter_sp.set_schedule(schedule);
+		std::vector<Emitter::Emitter> emitters;
+		emitters.push_back(emitter_sp);
+
+		WCSPH::SPH sph(false, false, true, "../res/emitter_sphere_obstacle_sph_surface_ob_st/emitter_sphere_obstacle_sph_surface_ob_st_", params, mcparams, emitters);
+		sph.load_geometry(true, boundary_size_s, boundary_left_s, fluid_sizes, fluid_lefts, std::pair <WCSPH::Vector, WCSPH::Vector>(), 0.18);
+		sph.simulate(2.0);
+	}
+
+	SECTION("Adhesive sphere obstacle with surface tension in SPH") {
+		params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
+		params.fluid_viscosity = 0.02;
+		params.cohesion_coefficient = 0.5;
+		params.adhesion_coefficient = 3.0;
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		std::vector<CompactNSearch::Real> schedule;
+		schedule.push_back(0.0);
+		schedule.push_back(1.5);
+		schedule.push_back(1.6);
+		schedule.push_back(2.0);
+		emitter_sp.set_schedule(schedule);
+		std::vector<Emitter::Emitter> emitters;
+		emitters.push_back(emitter_sp);
+
+		WCSPH::SPH sph(false, false, true, "../res/emitter_adhesive_sphere_obstacle_sph_surface_ob_st/emitter_adhesive_sphere_obstacle_sph_surface_ob_st_", params, mcparams, emitters);
+		sph.load_geometry(true, boundary_size_s, boundary_left_s, fluid_sizes, fluid_lefts, std::pair <WCSPH::Vector, WCSPH::Vector>(), 0.18);
+		sph.simulate(2.0);
+	}
+
+	SECTION("Adhesive sphere obstacle with surface tension in SPH") {
+		params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
+		params.fluid_viscosity = 0.005;
+		params.cohesion_coefficient = 0.5;
+		params.adhesion_coefficient = 3.0;
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		std::vector<CompactNSearch::Real> schedule;
+		schedule.push_back(0.0);
+		schedule.push_back(1.5);
+		schedule.push_back(1.6);
+		schedule.push_back(2.0);
+		emitter_sp.set_schedule(schedule);
+		std::vector<Emitter::Emitter> emitters;
+		emitters.push_back(emitter_sp);
+
+		WCSPH::SPH sph(false, false, true, "../res/emitter_adhesive_sphere_obstacle_less_viscous_sph_surface_ob_st/emitter_adhesive_sphere_obstacle_less_viscous_sph_surface_ob_st_", params, mcparams, emitters);
+		sph.load_geometry(true, boundary_size_s, boundary_left_s, fluid_sizes, fluid_lefts, std::pair <WCSPH::Vector, WCSPH::Vector>(), 0.18);
+		sph.simulate(2.0);
+	}*/
+
+	SECTION("Adhesive sphere obstacle with surface tension in SPH") {
+		params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
+		params.fluid_viscosity = 0.005;
+		mcparams.ours = false;
+		mcparams.sparse = false;
+		std::vector<CompactNSearch::Real> schedule;
+		schedule.push_back(0.0);
+		schedule.push_back(1.5);
+		schedule.push_back(1.6);
+		schedule.push_back(2.0);
+		emitter_sp.set_schedule(schedule);
+		std::vector<Emitter::Emitter> emitters;
+		emitters.push_back(emitter_sp);
+
+		WCSPH::SPH sph(false, false, true, "../res/emitter_sphere_obstacle_less_viscous_sph_surface_ob_st/emitter_sphere_obstacle_less_viscous_sph_surface_ob_st_", params, mcparams, emitters);
+		sph.load_geometry(true, boundary_size_s, boundary_left_s, fluid_sizes, fluid_lefts, std::pair <WCSPH::Vector, WCSPH::Vector>(), 0.18);
+		sph.simulate(2.0);
 	}
 }
 

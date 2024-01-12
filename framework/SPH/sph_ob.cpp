@@ -72,6 +72,7 @@ namespace WCSPH
 		export_obstacles();
 
 		while (t_sim < t_end) {
+			// Emit particles
 			if (fluid_particles.size() <= parameters.max_num_particles) {
 				emit_particles(t_sim);
 			}
@@ -224,7 +225,7 @@ namespace WCSPH
 		}
 	}
 
-	void SPH::load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::pair <WCSPH::Vector, WCSPH::Vector>& obstacle_box) {
+	void SPH::load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::pair <WCSPH::Vector, WCSPH::Vector>& obstacle_box, CompactNSearch::Real obstacle_sphere_radius) {
 		auto start = std::chrono::system_clock::now();
 		
 		this->has_boundary = has_boundary;
@@ -292,6 +293,35 @@ namespace WCSPH
 
 				obstacle_mesh_vertices_export = obstacle_vertices;
 				obstacle_mesh_faces_export = obstacle_triangles;
+			}
+
+			vertices_before = vertices.size();
+
+			if (obstacle_sphere_radius > 0.0) {
+				std::cout << "Obstacle sphere found!" << std::endl;
+				this->has_obstacle_sphere = true;
+				this->obstacle_sphere_radius = obstacle_sphere_radius;
+				const std::vector<geometry::TriMesh> meshes = geometry::read_tri_meshes_from_obj("../res/sphere.obj");
+				const geometry::TriMesh& sphere = meshes[0];
+				std::vector<geometry::Vector> sphere_vertices = sphere.vertices;
+				const std::vector<std::array<int, 3>> sphere_triangles = sphere.triangles;
+				
+				CompactNSearch::Real scale = 2.0 / obstacle_sphere_radius;
+				for (int i = 0; i < sphere_vertices.size(); i++) {
+					sphere_vertices[i] = sphere_vertices[i] / scale;
+					vertices.push_back(sphere_vertices[i]);
+				}
+
+				for (int j = 0; j < sphere_triangles.size(); j++) {
+					std::array<int, 3> triangle = sphere_triangles[j];
+					triangle[0] += vertices_before;
+					triangle[1] += vertices_before;
+					triangle[2] += vertices_before;
+					triangles.push_back(triangle);
+				}
+
+				obstacle_sphere_mesh_vertices_export = sphere_vertices;
+				obstacle_sphere_mesh_faces_export = sphere_triangles;
 			}
 
 			this->boundary_mesh_vertices = vertices;
@@ -675,7 +705,10 @@ namespace WCSPH
 			bool is_bigger_BL = pos[0] >= this->boundary_box_bottom[0] && pos[1] >= this->boundary_box_bottom[1] && pos[2] >= this->boundary_box_bottom[2];
 			bool is_smaller_TR = pos[0] <= this->boundary_box_top[0] && pos[1] <= this->boundary_box_top[1] && pos[2] <= this->boundary_box_top[2];
 			bool is_inside = is_bigger_BL && is_smaller_TR;
-			bool is_out_top = pos[0] <= this->boundary_box_top[0] && pos[1] <= this->boundary_box_top[1] && pos[2] > this->boundary_box_top[2] && pos[2] <= 5 * this->boundary_box_top[2];
+			bool is_out_top = pos[0] <= this->boundary_box_top[0] && pos[1] <= this->boundary_box_top[1] && pos[2] > this->boundary_box_top[2] && pos[2] <= (this->boundary_box_top[2] + 4 *(this->boundary_box_top[2] - this->boundary_box_bottom[2]));
+			if (has_obstacle_sphere) {
+				is_out_top = pos[0] <= this->boundary_box_top[0] && pos[1] <= this->boundary_box_top[1] && pos[2] > this->boundary_box_top[2] && pos[2] <= (this->boundary_box_top[2] + 4 * (this->boundary_box_top[2] - this->boundary_box_bottom[2]));
+			}
 			bool keep = is_out_top || is_inside;
 			if (has_obstacle) {
 				WCSPH::Vector obstacle_bottom = this->obstacle_data.first;
@@ -921,6 +954,10 @@ namespace WCSPH
 		if (obstacle_mesh_vertices_export.size() > 0 && obstacle_mesh_faces_export.size() > 0) {
 			const std::string filename = this->result_path + "obstacles/boundary.vtk";
 			geometry::write_tri_mesh_to_vtk(filename, obstacle_mesh_vertices_export, obstacle_mesh_faces_export);
+		}
+		if (obstacle_sphere_mesh_vertices_export.size() > 0 && obstacle_sphere_mesh_faces_export.size() > 0) {
+			const std::string filename = this->result_path + "obstacles/sphere.vtk";
+			geometry::write_tri_mesh_to_vtk(filename, obstacle_sphere_mesh_vertices_export, obstacle_sphere_mesh_faces_export);
 		}
 	}
 
