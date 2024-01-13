@@ -231,6 +231,7 @@ namespace PBD
 			int vertices_before = vertices.size();
 
 			boundary_mesh_faces_export = triangles;
+			boundary_mesh_vertices_export = vertices;
 
 			if (obstacle_squares.size() > 0) {
 				std::vector<PBD::Vector> obstacle_vertices;

@@ -1,8 +1,8 @@
 #include "catch.hpp"
 #include "../geometry/emitter.h"
 #include "../geometry/io.h"
-//#include "../SPH/sph.h"
-//#include "../SPH/params.h"
+#include "../SPH/sph.h"
+#include "../SPH/params.h"
 #include "../PBF/pbf.h"
 #include "../PBF/params.h"
 #include <cmath>
@@ -491,11 +491,11 @@ TEST_CASE("Test Emitter Fountain PBF", "[Test Emitter Fountain PBF]")
 
 	PBFParameters params;
 	MCParameters mcparams;
-	params.dt = 0.0005;
+	params.dt = 0.00025;
 	params.dt_next_frame = 0.01;
 	params.particle_radius = 0.005;
 	params.fluid_rest_density = 1000;
-	params.max_dt = 0.001;
+	params.max_dt = 0.0005;
 	params.max_velocity_cap = 5;
 	params.fluid_pressure_stiffness = 1000.0;
 	params.fluid_viscosity = 0.005;
