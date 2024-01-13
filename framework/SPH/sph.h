@@ -53,6 +53,8 @@ namespace WCSPH
 		// Obstacle data
 		std::pair <WCSPH::Vector, WCSPH::Vector>& obstacle_data = std::pair <WCSPH::Vector, WCSPH::Vector>();
 		bool has_obstacle{ false };
+		CompactNSearch::Real obstacle_sphere_radius = 0.0;
+		bool has_obstacle_sphere{ false };
 
 		// Particle data for boundary
 		CompactNSearch::Real boundary_particle_volume;
@@ -68,6 +70,8 @@ namespace WCSPH
 		std::vector<std::array<int, 3>> boundary_mesh_faces_export;
 		std::vector<WCSPH::Vector>  obstacle_mesh_vertices_export;
 		std::vector<std::array<int, 3>> obstacle_mesh_faces_export;
+		std::vector<WCSPH::Vector>  obstacle_sphere_mesh_vertices_export;
+		std::vector<std::array<int, 3>> obstacle_sphere_mesh_faces_export;
 
 		std::vector<CompactNSearch::Real> boundary_densities;
 		std::vector<CompactNSearch::Real> boundary_pressure;
@@ -122,7 +126,7 @@ namespace WCSPH
 
 		// Functions
 		void simulate(CompactNSearch::Real t_end);
-		void load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::pair <WCSPH::Vector, WCSPH::Vector>& obstacle_box = std::pair <WCSPH::Vector, WCSPH::Vector>());
+		void load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::pair <WCSPH::Vector, WCSPH::Vector>& obstacle_box = std::pair <WCSPH::Vector, WCSPH::Vector>(), CompactNSearch::Real obstacle_sphere_radius = 0.0);
 		void turn_off_gravity();
 		void turn_on_gravity();
 		void add_initial_velocity(std::vector<WCSPH::Vector> velocities);

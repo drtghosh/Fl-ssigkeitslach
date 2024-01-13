@@ -224,7 +224,7 @@ namespace WCSPH
 		}
 	}
 
-	void SPH::load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::pair <WCSPH::Vector, WCSPH::Vector>& obstacle_box) {
+	void SPH::load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::pair <WCSPH::Vector, WCSPH::Vector>& obstacle_box, CompactNSearch::Real obstacle_sphere_radius) {
 		auto start = std::chrono::system_clock::now();
 		
 		this->has_boundary = has_boundary;

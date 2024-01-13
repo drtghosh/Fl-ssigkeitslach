@@ -14,7 +14,7 @@
 namespace PBD
 {
 
-	PBF::PBF(bool gravity_only, bool with_initial_velocity, std::string result_path, PBFParameters params, MCParameters mcparams, std::vector<Emitter::Emitter>& emitter) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), result_path(result_path), parameters(params), mcparameters(mcparams), emitter(emitter){
+	PBF::PBF(bool gravity_only, bool with_initial_velocity, std::string result_path, PBFParameters params, MCParameters mcparams, std::vector<Emitter::Emitter>& emitter) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), result_path(result_path), parameters(params), mcparameters(mcparams), emitter(emitter) {
 		auto start = std::chrono::system_clock::now();
 
 		this->kernel = kernel::Kernel(parameters.smoothing_length);
@@ -231,6 +231,7 @@ namespace PBD
 			int vertices_before = vertices.size();
 
 			boundary_mesh_faces_export = triangles;
+			boundary_mesh_vertices_export = vertices;
 
 			if (obstacle_squares.size() > 0) {
 				std::vector<PBD::Vector> obstacle_vertices;
