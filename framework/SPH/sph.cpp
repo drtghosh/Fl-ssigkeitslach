@@ -224,10 +224,11 @@ namespace WCSPH
 		}
 	}
 
-	void SPH::load_geometry(bool has_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::pair <WCSPH::Vector, WCSPH::Vector>& obstacle_box, CompactNSearch::Real obstacle_sphere_radius) {
+	void SPH::load_geometry(bool has_boundary, bool open_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::pair <WCSPH::Vector, WCSPH::Vector>& obstacle_box, CompactNSearch::Real obstacle_sphere_radius) {
 		auto start = std::chrono::system_clock::now();
 		
 		this->has_boundary = has_boundary;
+		this->open_boundary = open_boundary;
 		if (has_boundary) {
 			this->boundary_box_bottom = bottom_left_boundary;
 			this->boundary_box_top = bottom_left_boundary + boundary_size;
@@ -237,6 +238,10 @@ namespace WCSPH
 
 			std::vector<std::array<int, 3>> triangles = { {1, 2, 0}, {3, 6, 2}, {7, 4, 6}, {5, 0, 4}, {6, 0, 2}, {3, 5, 7},
 														{1, 3, 2}, {3, 7, 6}, {7, 5, 4}, {5, 1, 0}, {6, 4, 0}, {3, 1, 5} };
+			if (open_boundary) {
+				triangles = { {1, 2, 0}, {3, 6, 2}, {7, 4, 6}, {5, 0, 4}, {6, 0, 2},
+							{1, 3, 2}, {3, 7, 6}, {7, 5, 4}, {5, 1, 0}, {6, 4, 0} };
+			}
 
 			int vertices_before = vertices.size();
 
@@ -264,6 +269,7 @@ namespace WCSPH
 			vertices_before = vertices.size();
 
 			if (obstacle_box.second[0] > 0.001) {
+				std::cout << "Obstacle box found:" << obstacle_box.second[0] << std::endl;
 				this->obstacle_data = obstacle_box;
 				this->has_obstacle = true;
 				std::vector<WCSPH::Vector> obstacle_vertices;
@@ -274,8 +280,8 @@ namespace WCSPH
 					obstacle_box_bottom + WCSPH::Vector(0.0, obstacle_size[1], obstacle_size[2]), obstacle_box_bottom + WCSPH::Vector(obstacle_size[0], 0.0, 0.0), obstacle_box_bottom + WCSPH::Vector(obstacle_size[0], 0.0, obstacle_size[2]),
 					obstacle_box_bottom + WCSPH::Vector(obstacle_size[0], obstacle_size[1], 0.0), obstacle_box_bottom + obstacle_size };
 
-				obstacle_triangles = { {1, 2, 0}, {3, 6, 2}, {7, 4, 6}, {5, 0, 4}, {6, 0, 2},
-									 {1, 3, 2}, {3, 7, 6}, {7, 5, 4}, {5, 1, 0}, {6, 4, 0} };
+				obstacle_triangles = { {1, 2, 0}, {3, 6, 2}, {7, 4, 6}, {5, 0, 4}, {6, 0, 2}, {3, 5, 7},
+									 {1, 3, 2}, {3, 7, 6}, {7, 5, 4}, {5, 1, 0}, {6, 4, 0}, {3, 1, 5} };
 
 				for (int i = 0; i < obstacle_vertices.size(); i++) {
 					vertices.push_back(obstacle_vertices[i]);
@@ -291,6 +297,35 @@ namespace WCSPH
 
 				obstacle_mesh_vertices_export = obstacle_vertices;
 				obstacle_mesh_faces_export = obstacle_triangles;
+			}
+
+			vertices_before = vertices.size();
+
+			if (obstacle_sphere_radius > 0.0) {
+				std::cout << "Obstacle sphere found!" << std::endl;
+				this->has_obstacle_sphere = true;
+				this->obstacle_sphere_radius = obstacle_sphere_radius;
+				const std::vector<geometry::TriMesh> meshes = geometry::read_tri_meshes_from_obj("../res/sphere.obj");
+				const geometry::TriMesh& sphere = meshes[0];
+				std::vector<geometry::Vector> sphere_vertices = sphere.vertices;
+				const std::vector<std::array<int, 3>> sphere_triangles = sphere.triangles;
+
+				CompactNSearch::Real scale = 2.0 / obstacle_sphere_radius;
+				for (int i = 0; i < sphere_vertices.size(); i++) {
+					sphere_vertices[i] = sphere_vertices[i] / scale;
+					vertices.push_back(sphere_vertices[i]);
+				}
+
+				for (int j = 0; j < sphere_triangles.size(); j++) {
+					std::array<int, 3> triangle = sphere_triangles[j];
+					triangle[0] += vertices_before;
+					triangle[1] += vertices_before;
+					triangle[2] += vertices_before;
+					triangles.push_back(triangle);
+				}
+
+				obstacle_sphere_mesh_vertices_export = sphere_vertices;
+				obstacle_sphere_mesh_faces_export = sphere_triangles;
 			}
 
 			this->boundary_mesh_vertices = vertices;
@@ -674,6 +709,12 @@ namespace WCSPH
 			bool is_bigger_BL = pos[0] >= this->boundary_box_bottom[0] && pos[1] >= this->boundary_box_bottom[1] && pos[2] >= this->boundary_box_bottom[2];
 			bool is_smaller_TR = pos[0] <= this->boundary_box_top[0] && pos[1] <= this->boundary_box_top[1] && pos[2] <= this->boundary_box_top[2];
 			bool keep = is_bigger_BL && is_smaller_TR;
+
+			if (open_boundary) {
+				bool is_out_top = pos[0] <= this->boundary_box_top[0] && pos[1] <= this->boundary_box_top[1] && pos[2] > this->boundary_box_top[2] && pos[2] <= (this->boundary_box_top[2] + 4 * (this->boundary_box_top[2] - this->boundary_box_bottom[2]));
+				keep = keep || is_out_top;
+			}
+
 			if (has_obstacle) {
 				WCSPH::Vector obstacle_bottom = this->obstacle_data.first;
 				WCSPH::Vector obstacle_top = this->obstacle_data.first + this->obstacle_data.second;
@@ -681,6 +722,13 @@ namespace WCSPH
 				bool is_smaller_TR_obstacle = pos[0] <= obstacle_top[0] && pos[1] <= obstacle_top[1] && pos[2] <= obstacle_top[2];
 				bool is_inside_obstacle = is_bigger_BL_obstacle && is_smaller_TR_obstacle;
 				keep = keep && !is_inside_obstacle;
+			}
+
+			if (has_obstacle_sphere) {
+				WCSPH::Vector obstacle_center = WCSPH::Vector(0.0, 0.0, 0.0);
+				CompactNSearch::Real obstacle_radius = this->obstacle_sphere_radius;
+				bool is_inside_obstacle_sphere = (pos - obstacle_center).norm() <= obstacle_radius;
+				keep = keep && !is_inside_obstacle_sphere;
 			}
 
 			if (!keep) {
