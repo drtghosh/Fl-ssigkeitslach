@@ -171,7 +171,7 @@ TEST_CASE("Emitter Emit", "[Emitter Emit]") {
 		emitters.push_back(emitter);
 
 		WCSPH::SPH sph(false, false, true, "../res/emitter_fountain_sph/emitter_fountain_sph_", params, mcparams, emitters);
-		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		sph.load_geometry(true, true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(2);
 	}
 
@@ -187,12 +187,12 @@ TEST_CASE("Emitter Emit", "[Emitter Emit]") {
 		std::vector<Emitter::Emitter> emitters;
 		emitters.push_back(emitter);
 
-		WCSPH::SPH sph(false, false, "../res/emitter_fountain_sph_schedule/emitter_fountain_sph_schedule_", params, mcparams, emitters);
-		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		WCSPH::SPH sph(false, false, false, "../res/emitter_fountain_sph_schedule/emitter_fountain_sph_schedule_", params, mcparams, emitters);
+		sph.load_geometry(true, true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(2);
 	}
 
-	/*SECTION("Fountain SPH Surface Max Particle") {
+	SECTION("Fountain SPH Surface Max Particle") {
 		params.max_num_particles = 5000;
 
 		std::vector<CompactNSearch::Real> schedule;
@@ -202,8 +202,8 @@ TEST_CASE("Emitter Emit", "[Emitter Emit]") {
 		std::vector<Emitter::Emitter> emitters;
 		emitters.push_back(emitter);
 
-		WCSPH::SPH sph(false, false, "../res/emitter_fountain_sph_max/emitter_fountain_sph_max_", params, mcparams, emitters);
-		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		WCSPH::SPH sph(false, false, false, "../res/emitter_fountain_sph_max/emitter_fountain_sph_max_", params, mcparams, emitters);
+		sph.load_geometry(true, true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(0.5);
 	}
 
@@ -219,7 +219,7 @@ TEST_CASE("Emitter Emit", "[Emitter Emit]") {
 		emitters.push_back(emitter);
 
 		WCSPH::SPH sph(false, false, false, "../res/emitter_fountain_sph_surface_ob/emitter_fountain_sph_surface_ob_", params, mcparams, emitters);
-		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		sph.load_geometry(true, true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(2);
 	}
 
@@ -235,7 +235,7 @@ TEST_CASE("Emitter Emit", "[Emitter Emit]") {
 		emitters.push_back(emitter);
 
 		WCSPH::SPH sph(false, false, true, "../res/emitter_fountain_sph_surface_ob_st/emitter_fountain_sph_surface_ob_st_", params, mcparams, emitters);
-		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		sph.load_geometry(true, true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(2);
 	}
 
@@ -260,7 +260,7 @@ TEST_CASE("Emitter Emit", "[Emitter Emit]") {
 		emitters.push_back(emitter2);
 
 		WCSPH::SPH sph(false, false, true, "../res/emitter_2hose_1obstacle_sph_surface_ob_st/emitter_2hose_1obstacle_sph_surface_ob_st_", params, mcparams, emitters);
-		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts, obstacle_box1);
+		sph.load_geometry(true, true, boundary_size, boundary_left, fluid_sizes, fluid_lefts, obstacle_box1);
 		sph.simulate(1.8);
 	}
 	
@@ -282,7 +282,7 @@ TEST_CASE("Emitter Emit", "[Emitter Emit]") {
 		emitters.push_back(emitter4);
 
 		WCSPH::SPH sph(false, false, true, "../res/emitter_2vertical_hoses_sph_surface_ob_st/emitter_2vertical_hoses_sph_surface_ob_st_", params, mcparams, emitters);
-		sph.load_geometry(true, boundary_size_v, boundary_left_v, fluid_sizes, fluid_lefts);
+		sph.load_geometry(true, true, boundary_size_v, boundary_left_v, fluid_sizes, fluid_lefts);
 		sph.simulate(1.2);
 	}
 
@@ -306,13 +306,13 @@ TEST_CASE("Emitter Emit", "[Emitter Emit]") {
 		emitters.push_back(emitter6);
 
 		WCSPH::SPH sph(false, false, true, "../res/emitter_4orthogonal_hoses_sph_surface_ob_st/emitter_4orthogonal_hoses_sph_surface_ob_st_", params, mcparams, emitters);
-		sph.load_geometry(true, boundary_size_v, boundary_left_v, fluid_sizes, fluid_lefts);
+		sph.load_geometry(true, true, boundary_size_v, boundary_left_v, fluid_sizes, fluid_lefts);
 		sph.simulate(1.2);
 	}
 
-	//WCSPH::Vector boundary_size_s = { 4.0, 4.0, 0.75 };
-	//WCSPH::Vector boundary_left_s = { -2.0, -2.0, -1.0 };
-	//Emitter::Emitter emitter_sp(0.0625, { 0.0, 1.0, 0.0 }, 0.0625, { 1.0, 0.0, 0.0 }, { 0.0, 0.0, 0.2 }, { 0.0, 0.0, -1.0 }, { 0.0, 0.0, -0.5 }, params.particle_diameter, params.particle_diameter);
+	WCSPH::Vector boundary_size_s = { 4.0, 4.0, 0.75 };
+	WCSPH::Vector boundary_left_s = { -2.0, -2.0, -1.0 };
+	Emitter::Emitter emitter_sp(0.0625, { 0.0, 1.0, 0.0 }, 0.0625, { 1.0, 0.0, 0.0 }, { 0.0, 0.0, 0.2 }, { 0.0, 0.0, -1.0 }, { 0.0, 0.0, -0.5 }, params.particle_diameter, params.particle_diameter);
 	SECTION("Sphere obstacle with surface tension in SPH") {
 		params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
 		params.fluid_viscosity = 0.02;
@@ -328,7 +328,7 @@ TEST_CASE("Emitter Emit", "[Emitter Emit]") {
 		emitters.push_back(emitter_sp);
 
 		WCSPH::SPH sph(false, false, true, "../res/emitter_sphere_obstacle_sph_surface_ob_st/emitter_sphere_obstacle_sph_surface_ob_st_", params, mcparams, emitters);
-		sph.load_geometry(true, boundary_size_s, boundary_left_s, fluid_sizes, fluid_lefts, std::pair <WCSPH::Vector, WCSPH::Vector>(), 0.18);
+		sph.load_geometry(true, true, boundary_size_s, boundary_left_s, fluid_sizes, fluid_lefts, std::pair <WCSPH::Vector, WCSPH::Vector>(), 0.18);
 		sph.simulate(2.0);
 	}
 
@@ -349,7 +349,7 @@ TEST_CASE("Emitter Emit", "[Emitter Emit]") {
 		emitters.push_back(emitter_sp);
 
 		WCSPH::SPH sph(false, false, true, "../res/emitter_adhesive_sphere_obstacle_sph_surface_ob_st/emitter_adhesive_sphere_obstacle_sph_surface_ob_st_", params, mcparams, emitters);
-		sph.load_geometry(true, boundary_size_s, boundary_left_s, fluid_sizes, fluid_lefts, std::pair <WCSPH::Vector, WCSPH::Vector>(), 0.18);
+		sph.load_geometry(true, true, boundary_size_s, boundary_left_s, fluid_sizes, fluid_lefts, std::pair <WCSPH::Vector, WCSPH::Vector>(), 0.18);
 		sph.simulate(2.0);
 	}
 
@@ -370,7 +370,7 @@ TEST_CASE("Emitter Emit", "[Emitter Emit]") {
 		emitters.push_back(emitter_sp);
 
 		WCSPH::SPH sph(false, false, true, "../res/emitter_adhesive_sphere_obstacle_less_viscous_sph_surface_ob_st/emitter_adhesive_sphere_obstacle_less_viscous_sph_surface_ob_st_", params, mcparams, emitters);
-		sph.load_geometry(true, boundary_size_s, boundary_left_s, fluid_sizes, fluid_lefts, std::pair <WCSPH::Vector, WCSPH::Vector>(), 0.18);
+		sph.load_geometry(true, true, boundary_size_s, boundary_left_s, fluid_sizes, fluid_lefts, std::pair <WCSPH::Vector, WCSPH::Vector>(), 0.18);
 		sph.simulate(2.0);
 	}
 
@@ -389,12 +389,12 @@ TEST_CASE("Emitter Emit", "[Emitter Emit]") {
 		emitters.push_back(emitter_sp);
 
 		WCSPH::SPH sph(false, false, true, "../res/emitter_sphere_obstacle_less_viscous_sph_surface_ob_st/emitter_sphere_obstacle_less_viscous_sph_surface_ob_st_", params, mcparams, emitters);
-		sph.load_geometry(true, boundary_size_s, boundary_left_s, fluid_sizes, fluid_lefts, std::pair <WCSPH::Vector, WCSPH::Vector>(), 0.18);
+		sph.load_geometry(true, true, boundary_size_s, boundary_left_s, fluid_sizes, fluid_lefts, std::pair <WCSPH::Vector, WCSPH::Vector>(), 0.18);
 		sph.simulate(2.0);
 	}
-}*/
+}
 
-/*TEST_CASE("Emitter Vertical", "[Emitter Vertical]") {
+TEST_CASE("Emitter Vertical", "[Emitter Vertical]") {
 	WCSPH::Vector boundary_size = { 3.0, 3.0, 3.0 };
 	WCSPH::Vector boundary_left = { -0.015, -0.015, -0.015 };
 	std::vector<WCSPH::Vector> fluid_sizes;
@@ -431,12 +431,12 @@ TEST_CASE("Emitter Emit", "[Emitter Emit]") {
 	std::vector<Emitter::Emitter> emitters;
 	emitters.push_back(emitter);
 
-	WCSPH::SPH sph(false, false, "../res/emitter_sph_vertical/emitter_sph_vertical_", params, mcparams, emitters);
-	sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+	WCSPH::SPH sph(false, false, false, "../res/emitter_sph_vertical/emitter_sph_vertical_", params, mcparams, emitters);
+	sph.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	sph.simulate(1);
-}*/
+}
 
-/*TEST_CASE("Multiple Emitters", "[Multiple Emitters]") {
+TEST_CASE("Multiple Emitters", "[Multiple Emitters]") {
 	WCSPH::Vector boundary_size = { 3.0, 3.0, 3.0 };
 	WCSPH::Vector boundary_left = { -0.015, -0.015, -0.015 };
 	std::vector<WCSPH::Vector> fluid_sizes;
@@ -476,10 +476,10 @@ TEST_CASE("Emitter Emit", "[Emitter Emit]") {
 	emitters.push_back(emitter1);
 	emitters.push_back(emitter2);
 
-	WCSPH::SPH sph(false, false, "../res/emitter_sph_multiple/emitter_sph_multiple_", params, mcparams, emitters);
-	sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+	WCSPH::SPH sph(false, false, false, "../res/emitter_sph_multiple/emitter_sph_multiple_", params, mcparams, emitters);
+	sph.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	sph.simulate(1);
-}*/
+}
 
 TEST_CASE("Test Emitter Fountain PBF", "[Test Emitter Fountain PBF]")
 {
@@ -491,11 +491,11 @@ TEST_CASE("Test Emitter Fountain PBF", "[Test Emitter Fountain PBF]")
 
 	PBFParameters params;
 	MCParameters mcparams;
-	params.dt = 0.00025;
+	params.dt = 0.0005;
 	params.dt_next_frame = 0.01;
 	params.particle_radius = 0.005;
 	params.fluid_rest_density = 1000;
-	params.max_dt = 0.0005;
+	params.max_dt = 0.001;
 	params.max_velocity_cap = 5;
 	params.fluid_pressure_stiffness = 1000.0;
 	params.fluid_viscosity = 0.005;
@@ -526,7 +526,57 @@ TEST_CASE("Test Emitter Fountain PBF", "[Test Emitter Fountain PBF]")
 	std::vector<Emitter::Emitter> emitters;
 	emitters.push_back(emitter);
 
-	PBD::PBF pbf(false, false, "../res/emitter_fountain_pbf/emitter_fountain_pbf_", params, mcparams, emitters);
-	pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+	PBD::PBF pbf(false, false, true, "../res/emitter_fountain_pbf/emitter_fountain_pbf_", params, mcparams, emitters);
+	pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	pbf.simulate(2);
 }
+
+TEST_CASE("Test Emitter Sphere Obstacle PBF", "[Test Emitter Sphere Obstacle PBF]")
+{
+	PBD::Vector boundary_size = { 3.0, 3.0, 3.0 };
+	PBD::Vector boundary_left = { -0.015, -0.015, -0.015 };
+	std::vector<PBD::Vector> fluid_sizes;
+
+	std::vector<PBD::Vector> fluid_lefts;
+
+	PBFParameters params;
+	MCParameters mcparams;
+	params.dt = 0.0005;
+	params.dt_next_frame = 0.01;
+	params.particle_radius = 0.005;
+	params.fluid_rest_density = 1000;
+	params.max_dt = 0.001;
+	params.max_velocity_cap = 5;
+	params.fluid_pressure_stiffness = 1000.0;
+	params.fluid_viscosity = 0.005;
+	params.boundary_viscosity = 0.0;
+
+	params.particle_diameter = 2 * params.particle_radius;
+	params.fluid_sampling_distance = params.particle_diameter;
+	params.boundary_sampling_distance = 0.8 * params.particle_diameter;
+	params.smoothing_length = 1.2 * params.particle_diameter;
+	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
+	params.compact_support = 2 * params.smoothing_length;
+	params.grid_cell_size = 1.2 * params.particle_radius;
+	params.emit_frequency = 1.2;
+	params.max_num_particles = 100000;
+
+	params.export_type = PBFParameters::EXPORT_WITH_SURFACE;
+	mcparams.ours = false;
+	mcparams.sparse = false;
+
+	WCSPH::Vector boundary_size_s = { 4.0, 4.0, 0.75 };
+	WCSPH::Vector boundary_left_s = { -2.0, -2.0, -1.0 };
+	Emitter::Emitter emitter_sp(0.0625, { 0.0, 1.0, 0.0 }, 0.0625, { 1.0, 0.0, 0.0 }, { 0.0, 0.0, 0.2 }, { 0.0, 0.0, -1.0 }, { 0.0, 0.0, -0.5 }, params.particle_diameter, params.particle_diameter);
+
+	std::vector<CompactNSearch::Real> schedule;
+	schedule.push_back(0.0);
+	schedule.push_back(1.5);
+	emitter_sp.set_schedule(schedule);
+	std::vector<Emitter::Emitter> emitters;
+	emitters.push_back(emitter_sp);
+
+	PBD::PBF pbf(false, false, false, "../res/emitter_sphere_obstacle_pbf_surface_ob_st/emitter_sphere_obstacle_pbf_surface_ob_st_", params, mcparams, emitters);
+	pbf.load_geometry(true, true, boundary_size_s, boundary_left_s, fluid_sizes, fluid_lefts, std::pair <PBD::Vector, PBD::Vector>(), 0.18);
+	pbf.simulate(2.0);
+}*/

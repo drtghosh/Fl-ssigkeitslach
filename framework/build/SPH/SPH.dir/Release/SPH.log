@@ -1,6 +1,12 @@
-﻿  sph_ob.cpp
+﻿  sph.cpp
+  sph_ob.cpp
 C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\geometry\emitter.h(8,1): warning C4005: 'USE_DOUBLE': macro redefinition
   (compiling source file '../../SPH/sph_ob.cpp')
+  C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\geometry\emitter.h(8,1):
+  'USE_DOUBLE' previously declared on the command line
+  
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\geometry\emitter.h(8,1): warning C4005: 'USE_DOUBLE': macro redefinition
+  (compiling source file '../../SPH/sph.cpp')
   C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\geometry\emitter.h(8,1):
   'USE_DOUBLE' previously declared on the command line
   
@@ -14,29 +20,62 @@ C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SP
 C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(191,28): warning C4244:         [
 C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(191,28): warning C4244:             _Rep=__int64
 C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(191,28): warning C4244:         ]
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(242,24): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(265,35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(298,35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(354,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(354,28): warning C4244:         with
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(354,28): warning C4244:         [
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(354,28): warning C4244:             _Rep=__int64
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(354,28): warning C4244:         ]
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(769,33): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(775,44): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(775,44): warning C4244:         with
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(775,44): warning C4244:         [
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(775,44): warning C4244:             _Ty=CompactNSearch::Real
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(775,44): warning C4244:         ]
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(785,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(788,40): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(788,40): warning C4244:         with
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(788,40): warning C4244:         [
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(788,40): warning C4244:             _Ty=CompactNSearch::Real
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(788,40): warning C4244:         ]
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(867,15): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(868,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(869,17): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(28,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(28,28): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(28,28): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(28,28): warning C4244:             _Rep=__int64
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(28,28): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(177,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(177,28): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(177,28): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(177,28): warning C4244:             _Rep=__int64
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(177,28): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(243,24): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(266,35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(299,35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(233,24): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(255,35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(288,35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(355,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(355,28): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(355,28): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(355,28): warning C4244:             _Rep=__int64
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(355,28): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(344,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(344,28): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(344,28): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(344,28): warning C4244:             _Rep=__int64
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(344,28): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(770,33): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(776,44): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(776,44): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(776,44): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(776,44): warning C4244:             _Ty=CompactNSearch::Real
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(776,44): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(786,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(789,40): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(789,40): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(789,40): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(789,40): warning C4244:             _Ty=CompactNSearch::Real
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(789,40): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(868,15): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(869,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph_ob.cpp(870,17): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(766,33): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(772,44): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(772,44): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(772,44): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(772,44): warning C4244:             _Ty=CompactNSearch::Real
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(772,44): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(782,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(785,40): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(785,40): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(785,40): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(785,40): warning C4244:             _Ty=CompactNSearch::Real
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(785,40): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(864,15): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(865,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(866,17): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
 sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::initialize(void)" (?initialize@SPH@WCSPH@@AEAAXXZ) already defined in sph_ob.obj; second definition ignored
 sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::compute_boundary_mass(unsigned int,class CompactNSearch::PointSet const &)" (?compute_boundary_mass@SPH@WCSPH@@AEAAXIAEBVPointSet@CompactNSearch@@@Z) already defined in sph_ob.obj; second definition ignored
 sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::calculate_particle_density(unsigned int,class CompactNSearch::PointSet &,unsigned int)" (?calculate_particle_density@SPH@WCSPH@@AEAAXIAEAVPointSet@CompactNSearch@@I@Z) already defined in sph_ob.obj; second definition ignored
@@ -63,7 +102,7 @@ sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::update_grid_values
 sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::calculate_mc_normals(void)" (?calculate_mc_normals@SPH@WCSPH@@AEAAXXZ) already defined in sph_ob.obj; second definition ignored
 sph.obj : warning LNK4006: "public: __cdecl WCSPH::SPH::SPH(bool,bool,bool,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class SPHParameters,class MCParameters,class std::vector<class Emitter::Emitter,class std::allocator<class Emitter::Emitter> > &)" (??0SPH@WCSPH@@QEAA@_N00V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@VSPHParameters@@VMCParameters@@AEAV?$vector@VEmitter@1@V?$allocator@VEmitter@1@@std@@@3@@Z) already defined in sph_ob.obj; second definition ignored
 sph.obj : warning LNK4006: "public: void __cdecl WCSPH::SPH::simulate(double)" (?simulate@SPH@WCSPH@@QEAAXN@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "public: void __cdecl WCSPH::SPH::load_geometry(bool,class Eigen::Matrix<double,3,1,0,3,1> &,class Eigen::Matrix<double,3,1,0,3,1> &,class std::vector<class Eigen::Matrix<double,3,1,0,3,1>,class std::allocator<class Eigen::Matrix<double,3,1,0,3,1> > > &,class std::vector<class Eigen::Matrix<double,3,1,0,3,1>,class std::allocator<class Eigen::Matrix<double,3,1,0,3,1> > > &,struct std::pair<class Eigen::Matrix<double,3,1,0,3,1>,class Eigen::Matrix<double,3,1,0,3,1> > &,double)" (?load_geometry@SPH@WCSPH@@QEAAX_NAEAV?$Matrix@N$02$00$0A@$02$00@Eigen@@1AEAV?$vector@V?$Matrix@N$02$00$0A@$02$00@Eigen@@V?$allocator@V?$Matrix@N$02$00$0A@$02$00@Eigen@@@std@@@std@@2AEAU?$pair@V?$Matrix@N$02$00$0A@$02$00@Eigen@@V12@@6@N@Z) already defined in sph_ob.obj; second definition ignored
+sph.obj : warning LNK4006: "public: void __cdecl WCSPH::SPH::load_geometry(bool,bool,class Eigen::Matrix<double,3,1,0,3,1> &,class Eigen::Matrix<double,3,1,0,3,1> &,class std::vector<class Eigen::Matrix<double,3,1,0,3,1>,class std::allocator<class Eigen::Matrix<double,3,1,0,3,1> > > &,class std::vector<class Eigen::Matrix<double,3,1,0,3,1>,class std::allocator<class Eigen::Matrix<double,3,1,0,3,1> > > &,struct std::pair<class Eigen::Matrix<double,3,1,0,3,1>,class Eigen::Matrix<double,3,1,0,3,1> > &,double)" (?load_geometry@SPH@WCSPH@@QEAAX_N0AEAV?$Matrix@N$02$00$0A@$02$00@Eigen@@1AEAV?$vector@V?$Matrix@N$02$00$0A@$02$00@Eigen@@V?$allocator@V?$Matrix@N$02$00$0A@$02$00@Eigen@@@std@@@std@@2AEAU?$pair@V?$Matrix@N$02$00$0A@$02$00@Eigen@@V12@@6@N@Z) already defined in sph_ob.obj; second definition ignored
 sph.obj : warning LNK4006: "public: void __cdecl WCSPH::SPH::turn_off_gravity(void)" (?turn_off_gravity@SPH@WCSPH@@QEAAXXZ) already defined in sph_ob.obj; second definition ignored
 sph.obj : warning LNK4006: "public: void __cdecl WCSPH::SPH::turn_on_gravity(void)" (?turn_on_gravity@SPH@WCSPH@@QEAAXXZ) already defined in sph_ob.obj; second definition ignored
 sph.obj : warning LNK4006: "public: void __cdecl WCSPH::SPH::add_initial_velocity(class std::vector<class Eigen::Matrix<double,3,1,0,3,1>,class std::allocator<class Eigen::Matrix<double,3,1,0,3,1> > >)" (?add_initial_velocity@SPH@WCSPH@@QEAAXV?$vector@V?$Matrix@N$02$00$0A@$02$00@Eigen@@V?$allocator@V?$Matrix@N$02$00$0A@$02$00@Eigen@@@std@@@std@@@Z) already defined in sph_ob.obj; second definition ignored

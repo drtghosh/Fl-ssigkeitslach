@@ -58,9 +58,6 @@ namespace WCSPH
 			this->cns.find_neighbors();
 		}
 
-		// Needed later for particle density calculation
-		//unsigned int boundary_particles_id_fluid = this->cns.add_point_set(boundary_particles.front().data(), boundary_particles.size());
-
 		// Simulation loop
 		CompactNSearch::Real t_sim = 0.0;
 		CompactNSearch::Real t_next_frame = 0.0;
@@ -101,17 +98,11 @@ namespace WCSPH
 			// Update dt
 			update_time_step_size();
 
-			// Neighborhood Search
-			//CompactNSearch::NeighborhoodSearch cns{ parameters.compact_support };
-			//unsigned int boundary_particles_id = 0;
-			//if (has_boundary) {
-				//boundary_particles_id = this->cns.add_point_set(boundary_particles.front().data(), boundary_particles.size());
-			//}
-			//unsigned int fluid_particles_id = this->cns.add_point_set(fluid_particles.front().data(), fluid_particles.size());
 			if (fluid_particles_id == -1) {
 				fluid_particles_id = this->cns.add_point_set(fluid_particles.front().data(), fluid_particles.size());
 			}
 			else {
+				// Neighborhood Search
 				this->cns.resize_point_set(fluid_particles_id, fluid_particles.front().data(), fluid_particles.size());
 			}
 			CompactNSearch::PointSet& pointset_fluid = this->cns.point_set(fluid_particles_id);
@@ -136,6 +127,7 @@ namespace WCSPH
 			// Time integration
 			semi_implicit_euler();
 
+			// Update particle status according to emitter positions
 			update_active_status();
 
 			// Check particle positions
@@ -156,11 +148,6 @@ namespace WCSPH
 					surface_triangles.clear();
 					surface_normals.clear();
 					marching_cubes.calculate(grid_points, grid_values, grid_values_map_sparse, grid_resolution, surface_vertices, surface_triangles);
-					/*unsigned int vertices_id_mc = this->cns.add_point_set(surface_vertices.front().data(), surface_vertices.size());
-					CompactNSearch::PointSet& pointset_vertices = this->cns.point_set(vertices_id_mc);
-					this->cns.resize_point_set(fluid_particles_id, fluid_particles.front().data(), fluid_particles.size());
-					pointset_fluid = this->cns.point_set(fluid_particles_id);
-					this->cns.find_neighbors();*/
 					calculate_mc_normals();
 				}
 
@@ -263,7 +250,6 @@ namespace WCSPH
 						triangles.push_back(triangle);
 					}
 				}
-				
 			}
 
 			vertices_before = vertices.size();
@@ -687,8 +673,6 @@ namespace WCSPH
 
 	void SPH::check_particle_positions() {
 		int old_size = (int)fluid_particles.size();
-		//learnSPH::Vector bottom_left= boundary_bounds.corner(boundary_bounds.BottomLeftFloor);
-		//learnSPH::Vector top_right = boundary_bounds.corner(boundary_bounds.TopRightCeil); //TODO check
 		std::vector<bool> new_is_fluid_particle_active;
 		std::vector<WCSPH::Vector> new_positions;
 		std::vector<WCSPH::Vector> new_velocities;
@@ -734,6 +718,7 @@ namespace WCSPH
 			if (!keep) {
 				continue;
 			}
+			
 			new_is_fluid_particle_active.emplace_back(is_fluid_particle_active[i]);
 			new_positions.emplace_back(pos);
 			new_velocities.emplace_back(fluid_velocities[i]);

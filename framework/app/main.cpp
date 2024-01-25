@@ -14,6 +14,23 @@ int main()
 	std::cout << "Welcome to the learnSPH framework!!" << std::endl;
 	std::cout << "Generating a sample scene...";
 
+	const std::vector<geometry::TriMesh> meshes1 = geometry::read_tri_meshes_from_obj("../res/ItalianFountain.obj");
+	for (int i = 0; i < (int)meshes1.size(); i++) {
+		std::cout << "mesh " << i << std::endl;
+		std::cout << "vertices: " << meshes1[i].vertices.size() << std::endl;
+		std::cout << "triangles: " << meshes1[i].triangles.size() << std::endl;
+	}
+	const geometry::TriMesh& obj = meshes1[12];
+	std::vector<Eigen::Vector3d> vertices = obj.vertices;
+	const std::vector<std::array<int, 3>> triangles = obj.triangles;
+	for (int i = 0; i < (int)vertices.size(); i++) {
+		std::cout << vertices[i][2] << std::endl;
+	}
+	for (int i = 0; i < (int)triangles.size(); i++) {
+		std::cout << triangles[i][0] << ' ' << triangles[i][1] << ' ' << triangles[i][2] << std::endl;
+	}
+
+
 	// Load a obj surface mesh
 	const std::vector<geometry::TriMesh> meshes = geometry::read_tri_meshes_from_obj("../res/box.obj");
 	const geometry::TriMesh& box = meshes[0];

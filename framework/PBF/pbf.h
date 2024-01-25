@@ -27,6 +27,7 @@ namespace PBD
 		CompactNSearch::NeighborhoodSearch cns{ 1.0 };
 		bool gravity_only{ false };
 		bool with_initial_velocity{ false };
+		bool with_surface_tension{ false };
 		std::vector<Emitter::Emitter> emitter;
 
 		// Particle data for fluid
@@ -34,6 +35,7 @@ namespace PBD
 		std::vector<PBD::Vector> old_fluid_particles;
 		std::vector<PBD::Vector> fluid_velocities;
 		std::vector<PBD::Vector> fluid_accelerations;
+		std::vector<PBD::Vector> fluid_normals;
 		std::vector<PBD::Vector> pressure_accelerations;
 		std::vector<PBD::Vector> velocity_accelerations;
 		std::vector<CompactNSearch::Real> fluid_densities;
@@ -43,9 +45,18 @@ namespace PBD
 		std::vector<bool> is_fluid_particle_active;
 
 		CompactNSearch::Real particle_mass;
+
+		// Boundary data
 		PBD::Vector boundary_box_bottom = PBD::Vector(0.0, 0.0, 0.0);
 		PBD::Vector boundary_box_top = PBD::Vector(1.0, 1.0, 1.0);
 		bool has_boundary{ true };
+		bool open_boundary{ false };
+
+		// Obstacle data
+		std::pair <PBD::Vector, PBD::Vector>& obstacle_data = std::pair <PBD::Vector, PBD::Vector>();
+		bool has_obstacle{ false };
+		CompactNSearch::Real obstacle_sphere_radius = 0.0;
+		bool has_obstacle_sphere{ false };
 
 		// Particle data for boundary
 		CompactNSearch::Real boundary_particle_volume;
@@ -61,6 +72,8 @@ namespace PBD
 		std::vector<std::array<int, 3>> boundary_mesh_faces_export;
 		std::vector<PBD::Vector> obstacle_mesh_vertices_export;
 		std::vector<std::array<int, 3>> obstacle_mesh_faces_export;
+		std::vector<PBD::Vector>  obstacle_sphere_mesh_vertices_export;
+		std::vector<std::array<int, 3>> obstacle_sphere_mesh_faces_export;
 
 		std::vector<CompactNSearch::Real> boundary_densities;
 		std::vector<CompactNSearch::Real> boundary_pressure;
@@ -83,11 +96,14 @@ namespace PBD
 		void compute_boundary_mass(unsigned int boundary_id, CompactNSearch::PointSet const& ps_boundary);
 		void calculate_particle_density(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id);
 		void semi_implicit_euler();
-		void calculate_acceleration(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id);
+		void calculate_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
 		//void calculate_pressure(bool first_step);
+		void calculate_fluid_normals(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid);
 		//void calculate_pressure_acceleration(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id);
 		void calculate_viscosity_acceleration(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id);
 		void calculate_other_acceleration();
+		void calculate_st_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
+		void calculate_adhesion_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
 		void update_time_step_size();
 		void check_particle_positions();
 		void update_particle_positions(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id);
@@ -107,14 +123,14 @@ namespace PBD
 
 	public:
 		// Constructor
-		PBF(bool gravity_only, bool with_initial_velocity, std::string result_path, PBFParameters params, MCParameters mcparams, std::vector<Emitter::Emitter>& emitter = std::vector<Emitter::Emitter>());
+		PBF(bool gravity_only, bool with_initial_velocity, bool with_surface_tension, std::string result_path, PBFParameters params, MCParameters mcparams, std::vector<Emitter::Emitter>& emitter = std::vector<Emitter::Emitter>());
 
 		// Destructor
 		virtual ~PBF() = default;
 
 		// Functions
 		void simulate(CompactNSearch::Real t_end);
-		void load_geometry(bool has_boundary, PBD::Vector& boundary_size, PBD::Vector& bottom_left_boundary, std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid, std::vector<std::array<PBD::Vector, 4>>& obstacle_squares = std::vector<std::array<PBD::Vector, 4>>());
+		void load_geometry(bool has_boundary, bool open_boundary, PBD::Vector& boundary_size, PBD::Vector& bottom_left_boundary, std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid, std::pair <PBD::Vector, PBD::Vector>& obstacle_box = std::pair <PBD::Vector, PBD::Vector>(), CompactNSearch::Real obstacle_sphere_radius = 0.0);
 		void turn_off_gravity();
 		void turn_on_gravity();
 		void add_initial_velocity(std::vector<PBD::Vector> velocities);

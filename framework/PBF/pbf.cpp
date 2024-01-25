@@ -14,7 +14,7 @@
 namespace PBD
 {
 
-	PBF::PBF(bool gravity_only, bool with_initial_velocity, std::string result_path, PBFParameters params, MCParameters mcparams, std::vector<Emitter::Emitter>& emitter) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), result_path(result_path), parameters(params), mcparameters(mcparams), emitter(emitter) {
+	PBF::PBF(bool gravity_only, bool with_initial_velocity, bool with_surface_tension, std::string result_path, PBFParameters params, MCParameters mcparams, std::vector<Emitter::Emitter>& emitter) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), result_path(result_path), parameters(params), mcparameters(mcparams), emitter(emitter) {
 		auto start = std::chrono::system_clock::now();
 
 		this->kernel = kernel::Kernel(parameters.smoothing_length);
@@ -94,9 +94,9 @@ namespace PBD
 				timesteps += 1;
 				continue;
 			}
+
 			// Update dt
 			update_time_step_size();
-
 
 			// Retain old particle positions
 			this->old_fluid_particles = fluid_particles;
@@ -105,7 +105,6 @@ namespace PBD
 				fluid_particles_id = this->cns.add_point_set(fluid_particles.front().data(), fluid_particles.size());
 			}
 			else {
-
 				// Neighborhood Search
 				this->cns.resize_point_set(fluid_particles_id, fluid_particles.front().data(), fluid_particles.size());
 			}
@@ -119,19 +118,26 @@ namespace PBD
 				// Compute pressure
 				//calculate_pressure(t_sim == 0.0);
 			}
+
+			// For surface tension compute fluid normals
+			if (with_surface_tension) {
+				calculate_fluid_normals(fluid_particles_id, pointset_fluid);
+			}
+
 			// Compute accelerations
 			calculate_acceleration(fluid_particles_id, pointset_fluid, boundary_particles_id);
 
 			// Time integration
 			semi_implicit_euler();
 
+			// Set up for PBF iterations
 			cns.resize_point_set(fluid_particles_id, fluid_particles.front().data(), fluid_particles.size());
 			pointset_fluid = cns.point_set(fluid_particles_id);
 			cns.find_neighbors();
 
 			for (int iter = 0; iter < parameters.pbf_iterations; iter++) {
 				// do a pbf iteration
-				update_particle_positions(fluid_particles_id, pointset_fluid, boundary_particles_id); //TODO check if this is correct
+				update_particle_positions(fluid_particles_id, pointset_fluid, boundary_particles_id);
 			}
 
 			update_particle_velocities();
@@ -212,12 +218,18 @@ namespace PBD
 		for (int i = 0; i < (int)this->fluid_pressures.size(); i++) {
 			this->fluid_pressures[i] = 0.0;
 		}
+		this->fluid_normals.resize(fluid_particles.size());
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < (int)this->fluid_normals.size(); i++) {
+			this->fluid_normals[i] = { 0.0,0.0,0.0 };
+		}
 	}
 
-	void PBF::load_geometry(bool has_boundary, PBD::Vector& boundary_size, PBD::Vector& bottom_left_boundary, std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid, std::vector<std::array<PBD::Vector, 4>>& obstacle_squares) {
+	void PBF::load_geometry(bool has_boundary, bool open_boundary, PBD::Vector& boundary_size, PBD::Vector& bottom_left_boundary, std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid, std::pair <PBD::Vector, PBD::Vector>& obstacle_box, CompactNSearch::Real obstacle_sphere_radius) {
 		auto start = std::chrono::system_clock::now();
 		
 		this->has_boundary = has_boundary;
+		this->open_boundary = open_boundary;
 		if (has_boundary) {
 			this->boundary_box_bottom = bottom_left_boundary;
 			this->boundary_box_top = bottom_left_boundary + boundary_size;
@@ -227,30 +239,93 @@ namespace PBD
 
 			std::vector<std::array<int, 3>> triangles = { {1, 2, 0}, {3, 6, 2}, {7, 4, 6}, {5, 0, 4}, {6, 0, 2}, {3, 5, 7},
 														{1, 3, 2}, {3, 7, 6}, {7, 5, 4}, {5, 1, 0}, {6, 4, 0}, {3, 1, 5} };
+			if (open_boundary) {
+				triangles = { {1, 2, 0}, {3, 6, 2}, {7, 4, 6}, {5, 0, 4}, {6, 0, 2},
+							{1, 3, 2}, {3, 7, 6}, {7, 5, 4}, {5, 1, 0}, {6, 4, 0} };
+			}
 
 			int vertices_before = vertices.size();
 
 			boundary_mesh_faces_export = triangles;
 			boundary_mesh_vertices_export = vertices;
 
-			if (obstacle_squares.size() > 0) {
+			if (emitter.size() > 0) {
+				for (unsigned int i = 0; i < emitter.size(); i++) {
+					std::vector<PBD::Vector> shield_vertices = emitter[i].get_shield_vertices();
+					std::vector<std::array<int, 3>> shield_triangles = emitter[i].get_shield_triangles();
+					for (unsigned int j = 0; j < shield_vertices.size(); j++) {
+						vertices.push_back(shield_vertices[j]);
+					}
+					for (unsigned int j = 0; j < shield_triangles.size(); j++) {
+						std::array<int, 3> triangle = shield_triangles[j];
+						triangle[0] += vertices_before;
+						triangle[1] += vertices_before;
+						triangle[2] += vertices_before;
+						triangles.push_back(triangle);
+					}
+				}
+			}
+
+			vertices_before = vertices.size();
+
+			if (obstacle_box.second[0] > 0.001) {
+				std::cout << "Obstacle box found:" << obstacle_box.second[0] << std::endl;
+				this->obstacle_data = obstacle_box;
+				this->has_obstacle = true;
 				std::vector<PBD::Vector> obstacle_vertices;
 				std::vector<std::array<int, 3>> obstacle_triangles;
+				PBD::Vector obstacle_box_bottom = obstacle_box.first;
+				PBD::Vector obstacle_size = obstacle_box.second;
+				obstacle_vertices = { obstacle_box_bottom, obstacle_box_bottom + PBD::Vector(0.0, 0.0, obstacle_size[2]), obstacle_box_bottom + PBD::Vector(0.0, obstacle_size[1], 0.0),
+					obstacle_box_bottom + PBD::Vector(0.0, obstacle_size[1], obstacle_size[2]), obstacle_box_bottom + PBD::Vector(obstacle_size[0], 0.0, 0.0), obstacle_box_bottom + PBD::Vector(obstacle_size[0], 0.0, obstacle_size[2]),
+					obstacle_box_bottom + PBD::Vector(obstacle_size[0], obstacle_size[1], 0.0), obstacle_box_bottom + obstacle_size };
 
-				for (int i = 0; i < obstacle_squares.size(); i++) {
-					std::array<PBD::Vector, 4> square = obstacle_squares[i];
-					for (int j = 0; j < square.size(); j++) {
-						vertices.push_back(square[j]);
-						obstacle_vertices.push_back(square[j]);
-					}
-					triangles.push_back({ vertices_before , vertices_before + 1 ,  vertices_before + 2 });
-					triangles.push_back({ vertices_before + 2 , vertices_before + 3 ,  vertices_before });
-					obstacle_triangles.push_back({ vertices_before , vertices_before + 1 ,  vertices_before + 2 });
-					obstacle_triangles.push_back({ vertices_before + 2 , vertices_before + 3 ,  vertices_before });
-					vertices_before += 4;
+				obstacle_triangles = { {1, 2, 0}, {3, 6, 2}, {7, 4, 6}, {5, 0, 4}, {6, 0, 2}, {3, 5, 7},
+									 {1, 3, 2}, {3, 7, 6}, {7, 5, 4}, {5, 1, 0}, {6, 4, 0}, {3, 1, 5} };
+
+				for (int i = 0; i < obstacle_vertices.size(); i++) {
+					vertices.push_back(obstacle_vertices[i]);
 				}
+
+				for (int j = 0; j < obstacle_triangles.size(); j++) {
+					std::array<int, 3> triangle = obstacle_triangles[j];
+					triangle[0] += vertices_before;
+					triangle[1] += vertices_before;
+					triangle[2] += vertices_before;
+					triangles.push_back(triangle);
+				}
+
 				obstacle_mesh_vertices_export = obstacle_vertices;
 				obstacle_mesh_faces_export = obstacle_triangles;
+			}
+
+			vertices_before = vertices.size();
+
+			if (obstacle_sphere_radius > 0.0) {
+				std::cout << "Obstacle sphere found!" << std::endl;
+				this->has_obstacle_sphere = true;
+				this->obstacle_sphere_radius = obstacle_sphere_radius;
+				const std::vector<geometry::TriMesh> meshes = geometry::read_tri_meshes_from_obj("../res/sphere.obj");
+				const geometry::TriMesh& sphere = meshes[0];
+				std::vector<geometry::Vector> sphere_vertices = sphere.vertices;
+				const std::vector<std::array<int, 3>> sphere_triangles = sphere.triangles;
+
+				CompactNSearch::Real scale = 2.0 / obstacle_sphere_radius;
+				for (int i = 0; i < sphere_vertices.size(); i++) {
+					sphere_vertices[i] = sphere_vertices[i] / scale;
+					vertices.push_back(sphere_vertices[i]);
+				}
+
+				for (int j = 0; j < sphere_triangles.size(); j++) {
+					std::array<int, 3> triangle = sphere_triangles[j];
+					triangle[0] += vertices_before;
+					triangle[1] += vertices_before;
+					triangle[2] += vertices_before;
+					triangles.push_back(triangle);
+				}
+
+				obstacle_sphere_mesh_vertices_export = sphere_vertices;
+				obstacle_sphere_mesh_faces_export = sphere_triangles;
 			}
 
 			this->boundary_mesh_vertices = vertices;
@@ -315,6 +390,7 @@ namespace PBD
 		}
 		this->fluid_densities.resize(fluid_particles.size());
 		this->fluid_pressures.resize(fluid_particles.size());
+		this->fluid_normals.resize(fluid_particles.size());
 	}
 
 	void PBF::update_active_status() {
@@ -411,65 +487,29 @@ namespace PBD
 			PBD::Vector new_v = fluid_velocities[i] + parameters.dt * fluid_accelerations[i];
 			PBD::Vector new_x = fluid_particles[i] + parameters.dt * new_v;
 
-			fluid_velocities[i] = new_v; // Do we need this?
+			//fluid_velocities[i] = new_v; // Do we need this?
 			fluid_particles[i] = new_x;
 		}
 	}
 
-	/*void PBF::calculate_pressure(bool first_step) {
-		CompactNSearch::Real subtractive_density = parameters.fluid_rest_density;
-		if (first_step) {
-			subtractive_density *= 1.02;
-		}
-		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
-		for (int i = 0; i < fluid_pressures.size(); i++) {
-			const CompactNSearch::Real pressure = std::max(parameters.fluid_pressure_stiffness * (fluid_densities.at(i) - subtractive_density), 0.0);
-			fluid_pressures[i] = pressure;
-		}
-	}*/
-
-	void PBF::calculate_acceleration(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id) {
+	void PBF::calculate_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id) {
 		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
 		for (int i = 0; i < (int)fluid_accelerations.size(); i++) {
 			fluid_accelerations[i] = { 0.0,0.0,0.0 };
 		}
 
 		if (!gravity_only) {
-			//calculate_pressure_acceleration(fluid_id, ps_fluid, boundary_id);
 			calculate_viscosity_acceleration(fluid_id, ps_fluid, boundary_id);
 		}
 
 		calculate_other_acceleration();
-	}
-
-	/*void PBF::calculate_pressure_acceleration(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id) {
-		// Loop over all fluid particles
-		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
-		for (int i = 0; i < ps_fluid.n_points(); ++i) {
-			// Initialize acceleration
-			PBD::Vector acceleration = { 0.0, 0.0, 0.0 };
-			// Get fluid neighbors of particles
-			for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
-				// Return the point id of the jth neighbor of the ith particle
-				const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
-				// Compute fluid-fluid interaction
-				PBD::Vector ffa = -1.0 * ((fluid_pressures.at(i) / (fluid_densities.at(i) * fluid_densities.at(i))) + (fluid_pressures.at(fpid) / (fluid_densities.at(fpid) * fluid_densities.at(fpid)))) * kernel.cubic_grad_spline(fluid_particles.at(i), fluid_particles.at(fpid));
-				acceleration += ffa;
+		if (with_surface_tension) {
+			calculate_st_acceleration(fluid_id, ps_fluid, boundary_id);
+			if (has_boundary) {
+				calculate_adhesion_acceleration(fluid_id, ps_fluid, boundary_id);
 			}
-			acceleration *= this->particle_mass;
-			// Get boundary neighbors of particles
-			if (ps_fluid.n_neighbors(boundary_id, i) > 0 && has_boundary) {
-				for (int j = 0; j < ps_fluid.n_neighbors(boundary_id, i); ++j) {
-					// Return the point id of the jth neighbor of the ith particle
-					const unsigned int bpid = ps_fluid.neighbor(boundary_id, i, j);
-					// Compute fluid-boundary interaction
-					PBD::Vector fba = -1.0 * parameters.fluid_rest_density * boundary_volumes.at(bpid) * (fluid_pressures.at(i) / (fluid_densities.at(i) * fluid_densities.at(i))) * kernel.cubic_grad_spline(fluid_particles.at(i), boundary_particles.at(bpid));
-					acceleration += fba;
-				}
-			}
-			fluid_accelerations[i] += acceleration;
 		}
-	}*/
+	}
 
 	void PBF::calculate_viscosity_acceleration(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id) {
 		// Loop over all fluid particles
@@ -517,6 +557,74 @@ namespace PBD
 		}
 	}
 
+	void PBF::calculate_fluid_normals(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid) {
+		// Loop over all fluid particles
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < ps_fluid.n_points(); ++i) {
+			// Initialize acceleration
+			PBD::Vector normal = { 0.0, 0.0, 0.0 };
+			// Get fluid neighbors of particles
+			for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
+				// Return the point id of the jth neighbor of the ith particle
+				const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
+				// Compute fluid-fluid interaction
+				PBD::Vector ffa = kernel.cubic_grad_spline(fluid_particles.at(i), fluid_particles.at(fpid)) / fluid_densities.at(fpid);
+				normal += ffa;
+			}
+			normal *= (this->particle_mass * parameters.compact_support);
+			fluid_normals[i] = normal;
+		}
+	}
+
+	void PBF::calculate_st_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id) {
+		// Loop over all fluid particles
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < ps_fluid.n_points(); ++i) {
+			if (is_fluid_particle_active[i]) {
+				// Initialize acceleration
+				PBD::Vector acceleration = { 0.0, 0.0, 0.0 };
+				// Get fluid neighbors of particles
+				for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
+					// Return the point id of the jth neighbor of the ith particle
+					const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
+					// Compute fluid-fluid interaction
+					const CompactNSearch::Real normff = (fluid_particles.at(i) - fluid_particles.at(fpid)).norm();
+					// Compute cohesion related acceleration
+					PBD::Vector co_acc = this->particle_mass * kernel.cohesion_kernel(fluid_particles.at(i), fluid_particles.at(fpid)) * (fluid_particles.at(i) - fluid_particles.at(fpid)) / normff;
+					// Compute curvature related acceleration
+					PBD::Vector curv_acc = this->fluid_normals.at(i) - this->fluid_normals.at(fpid);
+					// Add both contributions to get surface tension acceleration
+					acceleration += ((co_acc + curv_acc) / (fluid_densities.at(i) + fluid_densities.at(fpid)));
+				}
+				acceleration *= (-2.0 * parameters.fluid_rest_density * parameters.cohesion_coefficient);
+				fluid_accelerations[i] += acceleration;
+			}
+		}
+	}
+
+	void PBF::calculate_adhesion_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id) {
+		// Loop over all fluid particles
+		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+		for (int i = 0; i < ps_fluid.n_points(); ++i) {
+			if (is_fluid_particle_active[i]) {
+				// Initialize acceleration
+				PBD::Vector acceleration = { 0.0, 0.0, 0.0 };
+				// Get boundary neighbors of particles
+				if (ps_fluid.n_neighbors(boundary_id, i) > 0 && has_boundary) {
+					for (int j = 0; j < ps_fluid.n_neighbors(boundary_id, i); ++j) {
+						// Return the point id of the jth neighbor of the ith particle
+						const unsigned int bpid = ps_fluid.neighbor(boundary_id, i, j);
+						// Compute fluid-boundary interaction
+						const CompactNSearch::Real normfb = (fluid_particles.at(i) - boundary_particles.at(bpid)).norm();
+						acceleration += boundary_masses.at(bpid) * kernel.adhesion_kernel(fluid_particles.at(i), boundary_particles.at(bpid)) * (fluid_particles.at(i) - boundary_particles.at(bpid)) / normfb;
+					}
+				}
+				acceleration *= -1.0 * parameters.adhesion_coefficient;
+				fluid_accelerations[i] += acceleration;
+			}
+		}
+	}
+
 	void PBF::update_time_step_size() {
 		// TOOOOOOOOO DOOOOOOOOOOOOOOO: use squared norm in stead of norm to check max velocity
 		CompactNSearch::Real max_norm = 0.0;
@@ -536,7 +644,6 @@ namespace PBD
 	}
 
 	void PBF::update_particle_positions(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id) {
-		//TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 		// Compute fluid particles density
 		calculate_particle_density(fluid_id, ps_fluid, boundary_id);
 		// Inititalize lambda values
@@ -592,24 +699,29 @@ namespace PBD
 		// Loop over all fluid particles
 		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
 		for (int i = 0; i < ps_fluid.n_points(); ++i) {
-			// Inititalize position change vector
-			PBD::Vector deltax_i = { 0.0, 0.0, 0.0 };
-			// Get fluid neighbors of particles
-			for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
-				// Return the point id of the jth neighbor of the ith particle
-				const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
-				deltax_i += ((lambdas.at(i) + lambdas.at(fpid)) * kernel.cubic_grad_spline(fluid_particles.at(i), fluid_particles.at(fpid)));
-			}
-			// Get boundary neighbors of particles
-			if (ps_fluid.n_neighbors(boundary_id, i) > 0 && has_boundary) {
-				for (int j = 0; j < ps_fluid.n_neighbors(boundary_id, i); ++j) {
+			if (is_fluid_particle_active[i]) {
+				// Inititalize position change vector
+				PBD::Vector deltax_i = { 0.0, 0.0, 0.0 };
+				// Get fluid neighbors of particles
+				for (int j = 0; j < ps_fluid.n_neighbors(fluid_id, i); ++j) {
 					// Return the point id of the jth neighbor of the ith particle
-					const unsigned int bpid = ps_fluid.neighbor(boundary_id, i, j);
-					deltax_i += (boundary_masses.at(bpid) * lambdas.at(i) * kernel.cubic_grad_spline(fluid_particles.at(i), boundary_particles.at(bpid)) / this->particle_mass);
+					const unsigned int fpid = ps_fluid.neighbor(fluid_id, i, j);
+					deltax_i += ((lambdas.at(i) + lambdas.at(fpid)) * kernel.cubic_grad_spline(fluid_particles.at(i), fluid_particles.at(fpid)));
 				}
+				// Get boundary neighbors of particles
+				if (ps_fluid.n_neighbors(boundary_id, i) > 0 && has_boundary) {
+					for (int j = 0; j < ps_fluid.n_neighbors(boundary_id, i); ++j) {
+						// Return the point id of the jth neighbor of the ith particle
+						const unsigned int bpid = ps_fluid.neighbor(boundary_id, i, j);
+						deltax_i += (boundary_masses.at(bpid) * lambdas.at(i) * kernel.cubic_grad_spline(fluid_particles.at(i), boundary_particles.at(bpid)) / this->particle_mass);
+					}
+				}
+				deltax_i /= parameters.fluid_rest_density;
+				new_positions.at(i) = fluid_particles.at(i) + deltax_i;
 			}
-			deltax_i /= parameters.fluid_rest_density;
-			new_positions.at(i) = fluid_particles.at(i) + deltax_i;
+			else {
+				new_positions.at(i) = fluid_particles.at(i);
+			}
 		}
 
 		// Update positions
@@ -617,7 +729,6 @@ namespace PBD
 	}
 
 	void PBF::update_particle_velocities() {
-		//TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 		#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
 		for (int i = 0; i < (int)fluid_velocities.size(); i++) {
 			fluid_velocities[i] = (fluid_particles[i] - old_fluid_particles[i]) / parameters.dt;
@@ -626,18 +737,18 @@ namespace PBD
 
 	void PBF::check_particle_positions() {
 		int old_size = (int)fluid_particles.size();
-		//learnSPH::Vector bottom_left= boundary_bounds.corner(boundary_bounds.BottomLeftFloor);
-		//learnSPH::Vector top_right = boundary_bounds.corner(boundary_bounds.TopRightCeil); //TODO check
 		std::vector<bool> new_is_fluid_particle_active;
 		std::vector<PBD::Vector> new_positions;
 		std::vector<PBD::Vector> new_velocities;
 		std::vector<PBD::Vector> new_accelerations;
+		std::vector<PBD::Vector> new_normals;
 		std::vector<CompactNSearch::Real> new_densities;
 		std::vector<CompactNSearch::Real> new_pressures;
 		new_is_fluid_particle_active.reserve(old_size);
 		new_positions.reserve(old_size);
 		new_velocities.reserve(old_size);
 		new_accelerations.reserve(old_size);
+		new_normals.reserve(old_size);
 		new_densities.reserve(old_size);
 		new_pressures.reserve(old_size);
 
@@ -645,15 +756,38 @@ namespace PBD
 			PBD::Vector pos = fluid_particles[i];
 			bool is_bigger_BL = pos[0] >= this->boundary_box_bottom[0] && pos[1] >= this->boundary_box_bottom[1] && pos[2] >= this->boundary_box_bottom[2];
 			bool is_smaller_TR = pos[0] <= this->boundary_box_top[0] && pos[1] <= this->boundary_box_top[1] && pos[2] <= this->boundary_box_top[2];
-			bool is_inside = is_bigger_BL && is_smaller_TR;
+			bool keep = is_bigger_BL && is_smaller_TR;
 
-			if (!is_inside) {
+			if (open_boundary) {
+				bool is_out_top = pos[0] <= this->boundary_box_top[0] && pos[1] <= this->boundary_box_top[1] && pos[2] > this->boundary_box_top[2] && pos[2] <= (this->boundary_box_top[2] + 4 * (this->boundary_box_top[2] - this->boundary_box_bottom[2]));
+				keep = keep || is_out_top;
+			}
+
+			if (has_obstacle) {
+				PBD::Vector obstacle_bottom = this->obstacle_data.first;
+				PBD::Vector obstacle_top = this->obstacle_data.first + this->obstacle_data.second;
+				bool is_bigger_BL_obstacle = pos[0] >= obstacle_bottom[0] && pos[1] >= obstacle_bottom[1] && pos[2] >= obstacle_bottom[2];
+				bool is_smaller_TR_obstacle = pos[0] <= obstacle_top[0] && pos[1] <= obstacle_top[1] && pos[2] <= obstacle_top[2];
+				bool is_inside_obstacle = is_bigger_BL_obstacle && is_smaller_TR_obstacle;
+				keep = keep && !is_inside_obstacle;
+			}
+
+			if (has_obstacle_sphere) {
+				PBD::Vector obstacle_center = PBD::Vector(0.0, 0.0, 0.0);
+				CompactNSearch::Real obstacle_radius = this->obstacle_sphere_radius;
+				bool is_inside_obstacle_sphere = (pos - obstacle_center).norm() <= obstacle_radius;
+				keep = keep && !is_inside_obstacle_sphere;
+			}
+
+			if (!keep) {
 				continue;
 			}
+
 			new_is_fluid_particle_active.emplace_back(is_fluid_particle_active[i]);
 			new_positions.emplace_back(pos);
 			new_velocities.emplace_back(fluid_velocities[i]);
 			new_accelerations.emplace_back(fluid_accelerations[i]);
+			new_normals.emplace_back(fluid_normals[i]);
 			new_densities.emplace_back(fluid_densities[i]);
 			new_pressures.emplace_back(fluid_pressures[i]);
 		}
@@ -661,6 +795,7 @@ namespace PBD
 		this->fluid_particles = new_positions;
 		this->fluid_velocities = new_velocities;
 		this->fluid_accelerations = new_accelerations;
+		this->fluid_normals = new_normals;
 		this->fluid_densities = new_densities;
 		this->fluid_pressures = new_pressures;
 	}
