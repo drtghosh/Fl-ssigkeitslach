@@ -179,18 +179,18 @@ TEST_CASE("Italian Fountain SPH", "[Italian Fountain SPH]")
 
 	SPHParameters params;
 	MCParameters mcparams;
-	params.dt = 0.00025;
+	params.dt = 0.0001;
 	params.dt_next_frame = 0.01;
-	params.particle_radius = 0.005;
+	params.particle_radius = 0.01;
 	params.fluid_rest_density = 1000;
-	params.max_dt = 0.00025;
+	params.max_dt = 0.0002;
 	params.fluid_pressure_stiffness = 1000.0;
 	params.fluid_viscosity = 0.0025;
 	params.boundary_viscosity = 0.0;
 
 	params.particle_diameter = 2 * params.particle_radius;
 	params.fluid_sampling_distance = params.particle_diameter;
-	params.boundary_sampling_distance = 0.8 * params.particle_diameter;
+	params.boundary_sampling_distance = 0.75 * params.particle_diameter;
 	params.smoothing_length = 1.2 * params.particle_diameter;
 	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
 	params.compact_support = 2 * params.smoothing_length;
