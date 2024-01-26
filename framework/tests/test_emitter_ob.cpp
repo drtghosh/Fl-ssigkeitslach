@@ -509,6 +509,7 @@ TEST_CASE("Test Emitter Fountain PBF", "[Test Emitter Fountain PBF]")
 	params.compact_support = 2 * params.smoothing_length;
 	params.grid_cell_size = 1.2 * params.particle_radius;
 	params.emit_frequency = 1.2;
+	params.pbf_iterations =	10;
 	params.max_num_particles = 100000;
 
 	params.export_type = PBFParameters::EXPORT_WITH_SURFACE;
