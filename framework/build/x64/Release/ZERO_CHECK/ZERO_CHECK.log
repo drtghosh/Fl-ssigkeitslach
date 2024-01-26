@@ -35,7 +35,7 @@
     CMake that the project does not need compatibility with older versions.
   
   
-  -- Configuring done (0.5s)
+  -- Configuring done (0.1s)
   CMake Warning (dev) at tests/CMakeLists.txt:18 (add_executable):
     Policy CMP0115 is not set: Source file extensions must be explicit.  Run
     "cmake --help-policy CMP0115" for policy details.  Use the cmake_policy
@@ -46,5 +46,5 @@
       C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl├╝ssigkeitslach/framework/tests/test_marching_cubes.cpp
   This warning is for project developers.  Use -Wno-dev to suppress it.
   
-  -- Generating done (1.3s)
+  -- Generating done (0.9s)
   -- Build files have been written to: C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl├╝ssigkeitslach/framework/build

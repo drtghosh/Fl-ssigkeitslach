@@ -5,7 +5,7 @@
 #include "../geometry/io.h"
 
 
-/*TEST_CASE("Dam break PBF", "[Dam break PBF]")
+TEST_CASE("Dam break PBF", "[Dam break PBF]")
 {
 	std::cout << "Testing dam break in PBF" << std::endl;
 	PBD::Vector boundary_size = { 0.18, 0.8, 1.0 };
@@ -38,31 +38,25 @@
 	params.compact_support = 2 * params.smoothing_length;
 	params.export_type = PBFParameters::export_type::EXPORT;
 
-	PBD::PBF pbf(false, false, "../res/dam_break_pbf/dam_break_pbf_", params, mcparams);
-	pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+	PBD::PBF pbf(false, false, false, "../res/dam_break_pbf/dam_break_pbf_", params, mcparams);
+	pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	pbf.simulate(4);
 	pbf.printStats("Dam break PBF");
-}*/
+}
 
-/*TEST_CASE("Dam break PBF with obstacles", "[Dam break PBF with obstacles]")
+TEST_CASE("Dam break PBF with obstacles", "[Dam break PBF with obstacles]")
 {
 	std::cout << "Testing dam break in PBF with obstacles" << std::endl;
 	PBD::Vector boundary_size = { 0.18, 0.8, 1.0 };
 	PBD::Vector boundary_left = { -0.015, -0.015, -0.015 };
 	PBD::Vector fluid_size = { 0.15, 0.25, 0.5 };
 	PBD::Vector fluid_left = { 0.0, 0.0, 0.0 };
-	std::vector<std::array<PBD::Vector, 4>> obstacle_squares;
 
-	std::array<PBD::Vector, 4> square1{ PBD::Vector{0.055,0.5,-0.015}, PBD::Vector{0.085,0.5,-0.015}, PBD::Vector{0.085,0.5,0.5}, PBD::Vector{0.055,0.5,0.5} };
-	std::array<PBD::Vector, 4> square2{ PBD::Vector{0.055,0.6,-0.015}, PBD::Vector{0.085,0.6,-0.015}, PBD::Vector{0.085,0.6,0.5}, PBD::Vector{0.055,0.6,0.5} };
-	std::array<PBD::Vector, 4> square3{ PBD::Vector{0.055,0.5,0.5}, PBD::Vector{0.085,0.5,0.5}, PBD::Vector{0.085,0.6,0.5}, PBD::Vector{0.055,0.6,0.5} };
-	std::array<PBD::Vector, 4> square4{ PBD::Vector{0.055,0.5,-0.015}, PBD::Vector{0.055,0.5,0.5}, PBD::Vector{0.055,0.6,0.5}, PBD::Vector{0.055,0.6,-0.015} };
-	std::array<PBD::Vector, 4> square5{ PBD::Vector{0.085,0.5,-0.015}, PBD::Vector{0.085,0.5,0.5}, PBD::Vector{0.085,0.6,0.5}, PBD::Vector{0.085,0.6,-0.015} };
-	obstacle_squares.push_back(square1);
-	obstacle_squares.push_back(square2);
-	obstacle_squares.push_back(square3);
-	obstacle_squares.push_back(square4);
-	obstacle_squares.push_back(square5);
+	PBD::Vector obstacle_bl = { 0.055, 0.5, -0.015 };
+	PBD::Vector obstacle_size = { 0.03, 0.1, 0.515 };
+	std::pair <PBD::Vector, PBD::Vector>& obstacle_box1 = std::pair <PBD::Vector, PBD::Vector>();
+	obstacle_box1.first = obstacle_bl;
+	obstacle_box1.second = obstacle_size;
 
 	std::vector<PBD::Vector> fluid_sizes;
 	fluid_sizes.push_back(fluid_size);
@@ -70,7 +64,7 @@
 	std::vector<PBD::Vector> fluid_lefts;
 	fluid_lefts.push_back(fluid_left);
 
-	Parameters params;
+	PBFParameters params;
 	MCParameters mcparams;
 	params.dt = 0.0025;
 	params.dt_next_frame = 0.01;
@@ -87,15 +81,15 @@
 	params.smoothing_length = 1.2 * params.particle_diameter;
 	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
 	params.compact_support = 2 * params.smoothing_length;
-	params.export_type = Parameters::export_type::EXPORT;
+	params.export_type = PBFParameters::export_type::EXPORT;
 
-	PBD::PBF pbf(false, false, "../res/dam_break_pbf_obstacles/dam_break_pbf_obstacles_", params, mcparams);
-	pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts, obstacle_squares);
+	PBD::PBF pbf(false, false, false, "../res/dam_break_pbf_obstacles/dam_break_pbf_obstacles_", params, mcparams);
+	pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts, obstacle_box1);
 	pbf.simulate(4);
 	pbf.printStats("Dam break PBF with obstacles");
-}*/
+}
 
-/*TEST_CASE("Crazy stuff", "[Crazy stuff]")
+TEST_CASE("Crazy stuff", "[Crazy stuff]")
 {
 	std::cout << "Testing crazy stuff" << std::endl;
 	PBD::Vector boundary_size = { 2, 1, 2 };
@@ -131,8 +125,8 @@
 	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
 	params.compact_support = 2 * params.smoothing_length;
 
-	PBD::PBF pbf(false, false, "../res/crazy_stuff_pbf/crazy_stuff_pbf_", params, mcparams);
-	pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+	PBD::PBF pbf(false, false, false, "../res/crazy_stuff_pbf/crazy_stuff_pbf_", params, mcparams);
+	pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	pbf.simulate(0.1);
 	pbf.printStats("Crazy stuff");
 }
@@ -173,8 +167,8 @@ TEST_CASE("Crazy stuff2", "[Crazy stuff2]")
 	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
 	params.compact_support = 2 * params.smoothing_length;
 
-	PBD::PBF pbf(false, false, "../res/crazy_stuff2_pbf/crazy_stuff2_pbf_", params, mcparams);
-	pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+	PBD::PBF pbf(false, false, false, "../res/crazy_stuff2_pbf/crazy_stuff2_pbf_", params, mcparams);
+	pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	pbf.simulate(0.1);
 	pbf.printStats("Crazy stuff 2");
 }
@@ -212,8 +206,8 @@ TEST_CASE("Dam Break PBF Time Step Tests 1", "[Dam Break PBF Time Step Tests 1]"
 	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
 	params.compact_support = 2 * params.smoothing_length;
 
-	PBD::PBF pbf(false, false, "../res/dam_break_pbf_maxdt0005/dam_break_pbf_maxdt0005_", params, mcparams);
-	pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+	PBD::PBF pbf(false, false, false, "../res/dam_break_pbf_maxdt0005/dam_break_pbf_maxdt0005_", params, mcparams);
+	pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	pbf.simulate(4);
 	pbf.printStats("Dam break PBF with maxdt 0.0005");
 }
@@ -251,8 +245,8 @@ TEST_CASE("Dam Break PBF Time Step Tests 2", "[Dam Break PBF Time Step Tests 2]"
 	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
 	params.compact_support = 2 * params.smoothing_length;
 
-	PBD::PBF pbf(false, false, "../res/dam_break_pbf_maxdt002/dam_break_pbf_maxdt002_", params, mcparams);
-	pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+	PBD::PBF pbf(false, false, false, "../res/dam_break_pbf_maxdt002/dam_break_pbf_maxdt002_", params, mcparams);
+	pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	pbf.simulate(4);
 	pbf.printStats("Dam break PBF with maxdt 0.002");
 }
@@ -290,8 +284,8 @@ TEST_CASE("Dam Break PBF Time Step Tests 3", "[Dam Break PBF Time Step Tests 3]"
 	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
 	params.compact_support = 2 * params.smoothing_length;
 
-	PBD::PBF pbf(false, false, "../res/dam_break_pbf_maxdt005/dam_break_pbf_maxdt005_", params, mcparams);
-	pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+	PBD::PBF pbf(false, false, false, "../res/dam_break_pbf_maxdt005/dam_break_pbf_maxdt005_", params, mcparams);
+	pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	pbf.simulate(4);
 	pbf.printStats("Dam break PBF with maxdt 0.005");
 }
@@ -331,8 +325,8 @@ TEST_CASE("Dam Break PBF Iterations Tests 1", "[Dam Break Iterations Tests 1]")
 
 	params.pbf_iterations = 2;
 
-	PBD::PBF pbf(false, false, "../res/dam_break_pbf_iter2/dam_break_pbf_iter2_", params, mcparams);
-	pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+	PBD::PBF pbf(false, false, false, "../res/dam_break_pbf_iter2/dam_break_pbf_iter2_", params, mcparams);
+	pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	pbf.simulate(4);
 	pbf.printStats("Dam break PBF with 2 iterations");
 }
@@ -372,8 +366,8 @@ TEST_CASE("Dam Break PBF Iterations Tests 2", "[Dam Break Iterations Tests 2]")
 
 	params.pbf_iterations = 10;
 
-	PBD::PBF pbf(false, false, "../res/dam_break_pbf_iter10/dam_break_pbf_iter10_", params, mcparams);
-	pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+	PBD::PBF pbf(false, false, false, "../res/dam_break_pbf_iter10/dam_break_pbf_iter10_", params, mcparams);
+	pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	pbf.simulate(4);
 	pbf.printStats("Dam break PBF with 10 iterations");
 }
@@ -413,8 +407,8 @@ TEST_CASE("Dam Break PBF Mixed Tests 1", "[Dam Break PBF Mixed Tests 1]")
 
 	params.pbf_iterations = 10;
 
-	PBD::PBF pbf(false, false, "../res/dam_break_pbf_maxdt005_iter10/dam_break_pbf_maxdt005_iter10_", params, mcparams);
-	pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+	PBD::PBF pbf(false, false, false, "../res/dam_break_pbf_maxdt005_iter10/dam_break_pbf_maxdt005_iter10_", params, mcparams);
+	pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	pbf.simulate(4);
 	pbf.printStats("Dam break PBF with maxdt 0.005 and 10 iterations");
 }
@@ -454,8 +448,8 @@ TEST_CASE("Dam Break PBF Time Mixed Tests 2", "[Dam Break PBF Time Mixed Tests 2
 
 	params.pbf_iterations = 2;
 
-	PBD::PBF pbf(false, false, "../res/dam_break_pbf_maxdt0005_iter2/dam_break_pbf_maxdt0005_iter2_", params, mcparams);
-	pbf.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+	PBD::PBF pbf(false, false, false, "../res/dam_break_pbf_maxdt0005_iter2/dam_break_pbf_maxdt0005_iter2_", params, mcparams);
+	pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	pbf.simulate(4);
 	pbf.printStats("Dam break PBF with maxdt 0.0005 and 2 iterations");
-}*/
+}
