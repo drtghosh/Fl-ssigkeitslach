@@ -66,7 +66,6 @@ namespace WCSPH
 		timesteps = 0;
 
 		export_boundary();
-		export_obstacles();
 
 		while (t_sim < t_end) {
 			if (fluid_particles.size() <= parameters.max_num_particles) {
@@ -129,11 +128,6 @@ namespace WCSPH
 
 			// Update particle status according to emitter positions
 			update_active_status();
-
-			// Check particle positions
-			if (has_boundary) {
-				check_particle_positions();
-			}
 			
 			//Export VTK
 			if (t_sim >= t_next_frame) {
@@ -211,26 +205,29 @@ namespace WCSPH
 		}
 	}
 
-	void SPH::load_geometry(bool has_boundary, bool open_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::pair <WCSPH::Vector, WCSPH::Vector>& obstacle_box, CompactNSearch::Real obstacle_sphere_radius) {
+	void SPH::load_geometry(std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid) {
 		auto start = std::chrono::system_clock::now();
-		
-		this->has_boundary = has_boundary;
-		this->open_boundary = open_boundary;
+		std::vector<WCSPH::Vector> vertices;
+		std::vector<std::array<int, 3>> triangles;
+		int vertices_before = vertices.size();
 		if (has_boundary) {
-			this->boundary_box_bottom = bottom_left_boundary;
-			this->boundary_box_top = bottom_left_boundary + boundary_size;
-			std::vector<WCSPH::Vector> vertices = { bottom_left_boundary, bottom_left_boundary + WCSPH::Vector(0.0, 0.0, boundary_size[2]), bottom_left_boundary + WCSPH::Vector(0.0, boundary_size[1], 0.0),
-				bottom_left_boundary + WCSPH::Vector(0.0, boundary_size[1], boundary_size[2]), bottom_left_boundary + WCSPH::Vector(boundary_size[0], 0.0, 0.0), bottom_left_boundary + WCSPH::Vector(boundary_size[0], 0.0, boundary_size[2]),
-				bottom_left_boundary + WCSPH::Vector(boundary_size[0], boundary_size[1], 0.0), bottom_left_boundary + boundary_size };
-
-			std::vector<std::array<int, 3>> triangles = { {1, 2, 0}, {3, 6, 2}, {7, 4, 6}, {5, 0, 4}, {6, 0, 2}, {3, 5, 7},
-														{1, 3, 2}, {3, 7, 6}, {7, 5, 4}, {5, 1, 0}, {6, 4, 0}, {3, 1, 5} };
-			if (open_boundary) {
-				triangles = { {1, 2, 0}, {3, 6, 2}, {7, 4, 6}, {5, 0, 4}, {6, 0, 2},
-							{1, 3, 2}, {3, 7, 6}, {7, 5, 4}, {5, 1, 0}, {6, 4, 0} };
+			const std::vector<geometry::TriMesh> meshes = geometry::read_tri_meshes_from_obj("../res/ItalianFountain.obj");
+			for (int i = 0; i < (int)meshes.size(); i++) {
+				std::cout << "mesh " << i << std::endl;
+				for (int j = 0; j < (int)meshes[i].vertices.size(); j++) {
+					vertices.push_back(meshes[i].vertices[j]);
+				}
+				for (int j = 0; j < (int)meshes[i].triangles.size(); j++) {
+					if (meshes[i].triangles[j][0] > -1 && meshes[i].triangles[j][1] > -1 && meshes[i].triangles[j][2] > -1) {
+						std::array<int, 3> new_triangle = meshes[i].triangles[j];
+						for (int k = 0; k < 3; k++) {
+							new_triangle[k] += vertices_before;
+						}
+						triangles.push_back(new_triangle);
+					}
+				}
+				vertices_before = vertices.size();
 			}
-
-			int vertices_before = vertices.size();
 
 			boundary_mesh_faces_export = triangles;
 			boundary_mesh_vertices_export = vertices;
@@ -254,82 +251,14 @@ namespace WCSPH
 
 			vertices_before = vertices.size();
 
-			if (obstacle_box.second[0] > 0.001) {
-				std::cout << "Obstacle box found:" << obstacle_box.second[0] << std::endl;
-				this->obstacle_data = obstacle_box;
-				this->has_obstacle = true;
-				std::vector<WCSPH::Vector> obstacle_vertices;
-				std::vector<std::array<int, 3>> obstacle_triangles;
-				WCSPH::Vector obstacle_box_bottom = obstacle_box.first;
-				WCSPH::Vector obstacle_size = obstacle_box.second;
-				obstacle_vertices = { obstacle_box_bottom, obstacle_box_bottom + WCSPH::Vector(0.0, 0.0, obstacle_size[2]), obstacle_box_bottom + WCSPH::Vector(0.0, obstacle_size[1], 0.0),
-					obstacle_box_bottom + WCSPH::Vector(0.0, obstacle_size[1], obstacle_size[2]), obstacle_box_bottom + WCSPH::Vector(obstacle_size[0], 0.0, 0.0), obstacle_box_bottom + WCSPH::Vector(obstacle_size[0], 0.0, obstacle_size[2]),
-					obstacle_box_bottom + WCSPH::Vector(obstacle_size[0], obstacle_size[1], 0.0), obstacle_box_bottom + obstacle_size };
-
-				obstacle_triangles = { {1, 2, 0}, {3, 6, 2}, {7, 4, 6}, {5, 0, 4}, {6, 0, 2}, {3, 5, 7},
-									 {1, 3, 2}, {3, 7, 6}, {7, 5, 4}, {5, 1, 0}, {6, 4, 0}, {3, 1, 5} };
-
-				for (int i = 0; i < obstacle_vertices.size(); i++) {
-					vertices.push_back(obstacle_vertices[i]);
-				}
-
-				for (int j = 0; j < obstacle_triangles.size(); j++) {
-					std::array<int, 3> triangle = obstacle_triangles[j];
-					triangle[0] += vertices_before;
-					triangle[1] += vertices_before;
-					triangle[2] += vertices_before;
-					triangles.push_back(triangle);
-				}
-
-				obstacle_mesh_vertices_export = obstacle_vertices;
-				obstacle_mesh_faces_export = obstacle_triangles;
-			}
-
-			vertices_before = vertices.size();
-
-			if (obstacle_sphere_radius > 0.0) {
-				std::cout << "Obstacle sphere found!" << std::endl;
-				this->has_obstacle_sphere = true;
-				this->obstacle_sphere_radius = obstacle_sphere_radius;
-				const std::vector<geometry::TriMesh> meshes = geometry::read_tri_meshes_from_obj("../res/sphere.obj");
-				const geometry::TriMesh& sphere = meshes[0];
-				std::vector<geometry::Vector> sphere_vertices = sphere.vertices;
-				const std::vector<std::array<int, 3>> sphere_triangles = sphere.triangles;
-
-				CompactNSearch::Real scale = 2.0 / obstacle_sphere_radius;
-				for (int i = 0; i < sphere_vertices.size(); i++) {
-					sphere_vertices[i] = sphere_vertices[i] / scale;
-					vertices.push_back(sphere_vertices[i]);
-				}
-
-				for (int j = 0; j < sphere_triangles.size(); j++) {
-					std::array<int, 3> triangle = sphere_triangles[j];
-					triangle[0] += vertices_before;
-					triangle[1] += vertices_before;
-					triangle[2] += vertices_before;
-					triangles.push_back(triangle);
-				}
-
-				obstacle_sphere_mesh_vertices_export = sphere_vertices;
-				obstacle_sphere_mesh_faces_export = sphere_triangles;
-			}
-
 			this->boundary_mesh_vertices = vertices;
 			this->boundary_mesh_faces = triangles;
 			geometry::sampling::triangle_mesh(this->boundary_particles, this->boundary_mesh_vertices, this->boundary_mesh_faces, this->parameters.boundary_sampling_distance);
-			const CompactNSearch::Real boundary_volume = boundary_size[0] * boundary_size[1] * boundary_size[2];
-			this->boundary_particle_volume = boundary_volume / this->boundary_particles.size();
-			this->boundary_particle_mass = this->boundary_particle_volume * parameters.fluid_rest_density;
 		}
 
 		CompactNSearch::Real total_fluid_volume = 0.0;
 		for (int i = 0; i < fluid_sizes.size(); ++i) {
 			WCSPH::Vector top_right_fluid = bottom_lefts_fluid[i] + fluid_sizes[i];
-			if (has_boundary) {
-				WCSPH::Vector top_right_boundary = bottom_left_boundary + boundary_size;
-				assert(bottom_lefts_fluid[i][0] >= bottom_left_boundary[0] && fluid_sizes[i][1] >= bottom_left_boundary[1] && fluid_sizes[i][2] >= bottom_left_boundary[2]);
-				assert(top_right_fluid[0] <= top_right_boundary[0] && top_right_fluid[1] <= top_right_boundary[1] && top_right_fluid[2] <= top_right_boundary[2]);
-			}
 			geometry::sampling::fluid_box(this->fluid_particles, bottom_lefts_fluid[i], top_right_fluid, this->parameters.fluid_sampling_distance);
 			total_fluid_volume += fluid_sizes[i][0] * fluid_sizes[i][1] * fluid_sizes[i][2];
 			this->fluid_particle_counts.emplace_back(this->fluid_particles.size());
@@ -670,72 +599,6 @@ namespace WCSPH
 		CompactNSearch::Real dt_cfl = 0.5 * parameters.particle_radius / max_norm;
 		parameters.dt = std::min(parameters.max_dt, dt_cfl);
 	}
-
-	void SPH::check_particle_positions() {
-		int old_size = (int)fluid_particles.size();
-		std::vector<bool> new_is_fluid_particle_active;
-		std::vector<WCSPH::Vector> new_positions;
-		std::vector<WCSPH::Vector> new_velocities;
-		std::vector<WCSPH::Vector> new_accelerations;
-		std::vector<WCSPH::Vector> new_normals;
-		std::vector<CompactNSearch::Real> new_densities;
-		std::vector<CompactNSearch::Real> new_pressures;
-		new_is_fluid_particle_active.reserve(old_size);
-		new_positions.reserve(old_size);
-		new_velocities.reserve(old_size);
-		new_accelerations.reserve(old_size);
-		new_normals.reserve(old_size);
-		new_densities.reserve(old_size);
-		new_pressures.reserve(old_size);
-
-		for (int i = 0; i < old_size; i++) {
-			WCSPH::Vector pos = fluid_particles[i];
-			bool is_bigger_BL = pos[0] >= this->boundary_box_bottom[0] && pos[1] >= this->boundary_box_bottom[1] && pos[2] >= this->boundary_box_bottom[2];
-			bool is_smaller_TR = pos[0] <= this->boundary_box_top[0] && pos[1] <= this->boundary_box_top[1] && pos[2] <= this->boundary_box_top[2];
-			bool keep = is_bigger_BL && is_smaller_TR;
-
-			if (open_boundary) {
-				bool is_out_top = pos[0] <= this->boundary_box_top[0] && pos[1] <= this->boundary_box_top[1] && pos[2] > this->boundary_box_top[2] && pos[2] <= (this->boundary_box_top[2] + 4 * (this->boundary_box_top[2] - this->boundary_box_bottom[2]));
-				keep = keep || is_out_top;
-			}
-
-			if (has_obstacle) {
-				WCSPH::Vector obstacle_bottom = this->obstacle_data.first;
-				WCSPH::Vector obstacle_top = this->obstacle_data.first + this->obstacle_data.second;
-				bool is_bigger_BL_obstacle = pos[0] >= obstacle_bottom[0] && pos[1] >= obstacle_bottom[1] && pos[2] >= obstacle_bottom[2];
-				bool is_smaller_TR_obstacle = pos[0] <= obstacle_top[0] && pos[1] <= obstacle_top[1] && pos[2] <= obstacle_top[2];
-				bool is_inside_obstacle = is_bigger_BL_obstacle && is_smaller_TR_obstacle;
-				keep = keep && !is_inside_obstacle;
-			}
-
-			if (has_obstacle_sphere) {
-				WCSPH::Vector obstacle_center = WCSPH::Vector(0.0, 0.0, 0.0);
-				CompactNSearch::Real obstacle_radius = this->obstacle_sphere_radius;
-				bool is_inside_obstacle_sphere = (pos - obstacle_center).norm() <= obstacle_radius;
-				keep = keep && !is_inside_obstacle_sphere;
-			}
-
-			if (!keep) {
-				continue;
-			}
-			
-			new_is_fluid_particle_active.emplace_back(is_fluid_particle_active[i]);
-			new_positions.emplace_back(pos);
-			new_velocities.emplace_back(fluid_velocities[i]);
-			new_accelerations.emplace_back(fluid_accelerations[i]);
-			new_normals.emplace_back(fluid_normals[i]);
-			new_densities.emplace_back(fluid_densities[i]);
-			new_pressures.emplace_back(fluid_pressures[i]);
-		}
-		this->is_fluid_particle_active = new_is_fluid_particle_active;
-		this->fluid_particles = new_positions;
-		this->fluid_velocities = new_velocities;
-		this->fluid_accelerations = new_accelerations;
-		this->fluid_normals = new_normals;
-		this->fluid_densities = new_densities;
-		this->fluid_pressures = new_pressures;
-
-	}
 	
 	void SPH::turn_off_gravity() {
 		this->gravity_acceleration = { 0.0, 0.0, 0.0 };
@@ -946,12 +809,4 @@ namespace WCSPH
 			geometry::write_tri_mesh_to_vtk(filename, boundary_mesh_vertices_export, boundary_mesh_faces_export);
 		}
 	}
-
-	void SPH::export_obstacles() {
-		if (obstacle_mesh_vertices_export.size() > 0 && obstacle_mesh_faces_export.size() > 0) {
-			const std::string filename = this->result_path + "obstacles/boundary.vtk";
-			geometry::write_tri_mesh_to_vtk(filename, obstacle_mesh_vertices_export, obstacle_mesh_faces_export);
-		}
-	}
-
 }
