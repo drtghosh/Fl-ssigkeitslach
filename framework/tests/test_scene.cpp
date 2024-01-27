@@ -158,14 +158,12 @@ TEST_CASE("Test Emitter Fountain PBF", "[Test Emitter Fountain PBF]")
 TEST_CASE("Italian Fountain SPH", "[Italian Fountain SPH]")
 {
 	std::cout << "Testing Italian Fountain in SPH" << std::endl;
-	WCSPH::Vector boundary_size = { 0.18, 0.8, 1.0 };
-	WCSPH::Vector boundary_left = { -0.015, -0.015, -0.015 };
-	WCSPH::Vector fluid1_size = { 2.89497 - 0.015, 0.4632 - 0.015, 0.1 };
-	WCSPH::Vector fluid1_left = { 6.03216 + 0.015 , -3.96769 + 0.015, 2.65319 + 0.015 };
-	WCSPH::Vector fluid2_size = { 1.96858 - 0.015, 3.70556 - 0.015, 0.1 };
-	WCSPH::Vector fluid2_left = { 6.95855 + 0.015, -3.50449 + 0.015, 2.65319 + 0.015 };
-	WCSPH::Vector fluid3_size = { 2.89497 - 0.015, 0.463194 - 0.015, 0.1 };
-	WCSPH::Vector fluid3_left = { 6.03216 + 0.015, 0.20107 + 0.015, 2.65319 + 0.015 };
+	WCSPH::Vector fluid1_size = { 2.89497 - 0.06, 0.4632 - 0.06, 0.15 };
+	WCSPH::Vector fluid1_left = { 6.03216 + 0.03 , -3.96769 + 0.03, 2.65319 + 0.03 };
+	WCSPH::Vector fluid2_size = { 1.96858 - 0.06, 3.70556, 0.15 };
+	WCSPH::Vector fluid2_left = { 6.95855 + 0.03, -3.50449, 2.65319 + 0.03 };
+	WCSPH::Vector fluid3_size = { 2.89497 - 0.06, 0.463194 - 0.06, 0.15 };
+	WCSPH::Vector fluid3_left = { 6.03216 + 0.03, 0.20107 + 0.03, 2.65319 + 0.03 };
 
 	std::vector<WCSPH::Vector> fluid_sizes;
 	fluid_sizes.push_back(fluid1_size);
@@ -183,20 +181,46 @@ TEST_CASE("Italian Fountain SPH", "[Italian Fountain SPH]")
 	params.dt_next_frame = 0.01;
 	params.particle_radius = 0.01;
 	params.fluid_rest_density = 1000;
-	params.max_dt = 0.0002;
+	params.max_dt = 0.00025;
+	params.max_velocity_cap = 5;
 	params.fluid_pressure_stiffness = 1000.0;
 	params.fluid_viscosity = 0.0025;
 	params.boundary_viscosity = 0.0;
 
 	params.particle_diameter = 2 * params.particle_radius;
 	params.fluid_sampling_distance = params.particle_diameter;
-	params.boundary_sampling_distance = 0.75 * params.particle_diameter;
+	params.boundary_sampling_distance = 0.8 * params.particle_diameter;
 	params.smoothing_length = 1.2 * params.particle_diameter;
 	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
 	params.compact_support = 2 * params.smoothing_length;
+	params.grid_cell_size = 1.2 * params.particle_radius;
 
-	WCSPH::SPH sph(false, false, true, "../res/italian_fountain_sph/italian_fountain_sph_", params, mcparams);
+	params.cohesion_coefficient = 0.1;
+
+	params.emit_frequency = 1.2;
+	params.max_num_particles = 1000000;
+
+	params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
+	mcparams.ours = false;
+	mcparams.sparse = true;
+
+	Emitter::Emitter emitter_left(0.05, { 1.0, 0.0, 0.0 }, 0.05, { 0.0, 1.0, 0.0 }, { 6.49536, -3.0413, 2.71108 }, { 0.0, 0.0, 1.0 }, { 0.0, 0.0, 3.0 }, params.particle_diameter, params.particle_diameter);
+	Emitter::Emitter emitter_right(0.05, { 1.0, 0.0, 0.0 }, 0.05, { 0.0, 1.0, 0.0 }, { 6.49536, -0.262125, 2.71108 }, { 0.0, 0.0, 1.0 }, { 0.0, 0.0, 3.0 }, params.particle_diameter, params.particle_diameter);
+	Emitter::Emitter emitter_mid(0.015, { 0.0, 1.0, 0.0 }, 0.015, { 1.0, 0.0, 1.0 }, { 6.16818, -1.65, 4.11 }, { 1.0, 0.0, -1.0 }, { 1.0, 0.0, -1.0 }, params.particle_diameter, params.particle_diameter);
+
+	std::vector<CompactNSearch::Real> schedule;
+	schedule.push_back(0.0);
+	schedule.push_back(2.1);
+	emitter_left.set_schedule(schedule);
+	emitter_right.set_schedule(schedule);
+	emitter_mid.set_schedule(schedule);
+	std::vector<Emitter::Emitter> emitters;
+	emitters.push_back(emitter_left);
+	emitters.push_back(emitter_right);
+	emitters.push_back(emitter_mid);
+
+	WCSPH::SPH sph(false, false, true, "../res/italian_fountain_sph/italian_fountain_sph_", params, mcparams, emitters);
 	sph.load_geometry(fluid_sizes, fluid_lefts);
-	sph.simulate(0.2);
+	sph.simulate(1);
 	sph.printStats("Italian Fountain SPH");
 }
