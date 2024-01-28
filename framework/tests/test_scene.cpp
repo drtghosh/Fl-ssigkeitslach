@@ -155,7 +155,7 @@ TEST_CASE("Test Emitter Fountain PBF", "[Test Emitter Fountain PBF]")
 	pbf.simulate(2);
 }*/
 
-TEST_CASE("Italian Fountain SPH", "[Italian Fountain SPH]")
+/*TEST_CASE("Italian Fountain SPH", "[Italian Fountain SPH]")
 {
 	std::cout << "Testing Italian Fountain in SPH" << std::endl;
 	WCSPH::Vector fluid1_size = { 2.89497 - 0.06, 0.4632 - 0.06, 0.15 };
@@ -220,7 +220,150 @@ TEST_CASE("Italian Fountain SPH", "[Italian Fountain SPH]")
 	emitters.push_back(emitter_mid);
 
 	WCSPH::SPH sph(false, false, true, "../res/italian_fountain_sph/italian_fountain_sph_", params, mcparams, emitters);
-	sph.load_geometry(fluid_sizes, fluid_lefts);
+	sph.load_geometry(fluid_sizes, fluid_lefts, "../res/ItalianFountain.obj");
 	sph.simulate(1);
 	sph.printStats("Italian Fountain SPH");
 }
+
+TEST_CASE("Lotus Leave SPH", "[Lotus Leave SPH]")
+{
+	std::cout << "Testing Lotus Leave in SPH" << std::endl;
+	WCSPH::Vector fluid1_size = { 0.5, 0.5, 0.5 };
+	WCSPH::Vector fluid1_left = { -1.84 , 3.0, -3.1 };
+	WCSPH::Vector fluid2_size = { 0.25, 0.25, 0.25 };
+	WCSPH::Vector fluid2_left = { -1.7 , 3.12, -2.3 };
+
+	std::vector<WCSPH::Vector> fluid_sizes;
+	fluid_sizes.push_back(fluid1_size);
+	fluid_sizes.push_back(fluid2_size);
+
+	std::vector<WCSPH::Vector> fluid_lefts;
+	fluid_lefts.push_back(fluid1_left);
+	fluid_lefts.push_back(fluid2_left);
+
+	SPHParameters params;
+	MCParameters mcparams;
+	params.dt = 0.0001;
+	params.dt_next_frame = 0.01;
+	params.particle_radius = 0.01;
+	params.fluid_rest_density = 1000;
+	params.max_dt = 0.00025;
+	params.max_velocity_cap = 5;
+	params.fluid_pressure_stiffness = 1000.0;
+	params.fluid_viscosity = 0.0025;
+	params.boundary_viscosity = 0.0;
+
+	params.particle_diameter = 2 * params.particle_radius;
+	params.fluid_sampling_distance = params.particle_diameter;
+	params.boundary_sampling_distance = 0.8 * params.particle_diameter;
+	params.smoothing_length = 1.2 * params.particle_diameter;
+	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
+	params.compact_support = 2 * params.smoothing_length;
+	params.grid_cell_size = 1.2 * params.particle_radius;
+
+	//params.cohesion_coefficient = 0.1;
+
+	params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
+	mcparams.ours = false;
+	mcparams.sparse = true;
+
+	WCSPH::SPH sph(false, false, true, "../res/lotus_leave_sph/lotus_leave_sph_", params, mcparams);
+	sph.load_geometry(fluid_sizes, fluid_lefts, "../res/lotus.obj");
+	sph.simulate(1.2);
+	sph.printStats("Lotus Leave SPH");
+}
+
+TEST_CASE("Adhesive Lotus Leave SPH", "[Adhesive Lotus Leave SPH]")
+{
+	std::cout << "Testing Adhesive Lotus Leave in SPH" << std::endl;
+	WCSPH::Vector fluid1_size = { 0.5, 0.5, 0.5 };
+	WCSPH::Vector fluid1_left = { -1.84 , 3.0, -3.1 };
+	WCSPH::Vector fluid2_size = { 0.25, 0.25, 0.25 };
+	WCSPH::Vector fluid2_left = { -1.7 , 3.12, -2.3 };
+
+	std::vector<WCSPH::Vector> fluid_sizes;
+	fluid_sizes.push_back(fluid1_size);
+	fluid_sizes.push_back(fluid2_size);
+
+	std::vector<WCSPH::Vector> fluid_lefts;
+	fluid_lefts.push_back(fluid1_left);
+	fluid_lefts.push_back(fluid2_left);
+
+	SPHParameters params;
+	MCParameters mcparams;
+	params.dt = 0.0001;
+	params.dt_next_frame = 0.01;
+	params.particle_radius = 0.01;
+	params.fluid_rest_density = 1000;
+	params.max_dt = 0.00025;
+	params.max_velocity_cap = 5;
+	params.fluid_pressure_stiffness = 1000.0;
+	params.fluid_viscosity = 0.0025;
+	params.boundary_viscosity = 0.0;
+
+	params.particle_diameter = 2 * params.particle_radius;
+	params.fluid_sampling_distance = params.particle_diameter;
+	params.boundary_sampling_distance = 0.8 * params.particle_diameter;
+	params.smoothing_length = 1.2 * params.particle_diameter;
+	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
+	params.compact_support = 2 * params.smoothing_length;
+	params.grid_cell_size = 1.2 * params.particle_radius;
+
+	params.cohesion_coefficient = 0.1;
+	params.adhesion_coefficient = 2.0;
+
+	params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
+	mcparams.ours = false;
+	mcparams.sparse = true;
+
+	WCSPH::SPH sph(false, false, true, "../res/adhesive_lotus_leave_sph/adhesive_lotus_leave_sph_", params, mcparams);
+	sph.load_geometry(fluid_sizes, fluid_lefts, "../res/lotus.obj");
+	sph.simulate(0.9);
+	sph.printStats("Adhesive Lotus Leave SPH");
+}
+
+TEST_CASE("No Surface Tension Lotus Leave SPH", "[No Surface Tension Lotus Leave SPH]")
+{
+	std::cout << "Testing No Surface Tension Lotus Leave in SPH" << std::endl;
+	WCSPH::Vector fluid1_size = { 0.5, 0.5, 0.5 };
+	WCSPH::Vector fluid1_left = { -1.84 , 3.0, -3.1 };
+	WCSPH::Vector fluid2_size = { 0.25, 0.25, 0.25 };
+	WCSPH::Vector fluid2_left = { -1.7 , 3.12, -2.3 };
+
+	std::vector<WCSPH::Vector> fluid_sizes;
+	fluid_sizes.push_back(fluid1_size);
+	fluid_sizes.push_back(fluid2_size);
+
+	std::vector<WCSPH::Vector> fluid_lefts;
+	fluid_lefts.push_back(fluid1_left);
+	fluid_lefts.push_back(fluid2_left);
+
+	SPHParameters params;
+	MCParameters mcparams;
+	params.dt = 0.0001;
+	params.dt_next_frame = 0.01;
+	params.particle_radius = 0.01;
+	params.fluid_rest_density = 1000;
+	params.max_dt = 0.00025;
+	params.max_velocity_cap = 5;
+	params.fluid_pressure_stiffness = 1000.0;
+	params.fluid_viscosity = 0.0025;
+	params.boundary_viscosity = 0.0;
+
+	params.particle_diameter = 2 * params.particle_radius;
+	params.fluid_sampling_distance = params.particle_diameter;
+	params.boundary_sampling_distance = 0.8 * params.particle_diameter;
+	params.smoothing_length = 1.2 * params.particle_diameter;
+	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
+	params.compact_support = 2 * params.smoothing_length;
+	params.grid_cell_size = 1.2 * params.particle_radius;
+
+	params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
+	mcparams.ours = false;
+	mcparams.sparse = true;
+
+	WCSPH::SPH sph(false, false, false, "../res/no_st_lotus_leave_sph/no_st_lotus_leave_sph_", params, mcparams);
+	sph.load_geometry(fluid_sizes, fluid_lefts, "../res/lotus.obj");
+	sph.simulate(0.9);
+	sph.printStats("No Surface Tension Lotus Leave SPH");
+}*/

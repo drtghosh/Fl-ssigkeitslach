@@ -109,7 +109,7 @@ namespace WCSPH
 
 		// Functions
 		void simulate(CompactNSearch::Real t_end);
-		void load_geometry(std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid);
+		void load_geometry(std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::string filename);
 		void turn_off_gravity();
 		void turn_on_gravity();
 		void add_initial_velocity(std::vector<WCSPH::Vector> velocities);

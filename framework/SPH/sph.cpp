@@ -205,13 +205,13 @@ namespace WCSPH
 		}
 	}
 
-	void SPH::load_geometry(std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid) {
+	void SPH::load_geometry(std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::string filename) {
 		auto start = std::chrono::system_clock::now();
 		std::vector<WCSPH::Vector> vertices;
 		std::vector<std::array<int, 3>> triangles;
 		int vertices_before = vertices.size();
 		if (has_boundary) {
-			const std::vector<geometry::TriMesh> meshes = geometry::read_tri_meshes_from_obj("../res/ItalianFountain.obj");
+			const std::vector<geometry::TriMesh> meshes = geometry::read_tri_meshes_from_obj(filename);
 			for (int i = 0; i < (int)meshes.size(); i++) {
 				std::cout << "mesh " << i << std::endl;
 				for (int j = 0; j < (int)meshes[i].vertices.size(); j++) {
