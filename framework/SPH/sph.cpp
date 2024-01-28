@@ -7,6 +7,7 @@
 #include <iostream>
 #include <omp.h>
 #include <chrono>
+#include <numeric>
 
 
 #define USE_Double
@@ -137,6 +138,32 @@ namespace WCSPH
 			
 			//Export VTK
 			if (t_sim >= t_next_frame) {
+				// Store density and volume for later use
+				if (fluid_densities.size() > 0) {
+					this->average_densities.push_back(std::reduce(fluid_densities.begin(), fluid_densities.end()) / fluid_densities.size());
+					this->maximum_densities.push_back(*std::max_element(fluid_densities.begin(), fluid_densities.end()));
+					CompactNSearch::Real total_volume = 0.0;
+					for (unsigned int i = 0; i < fluid_particles.size(); i++) {
+						total_volume += (particle_mass / fluid_densities.at(i));
+					}
+					this->total_volumes.push_back(total_volume);
+				}
+
+				// Store energy data
+				if (fluid_particles.size() > 0) {
+					new_particle_counts.push_back(fluid_particles.size());
+					CompactNSearch::Real kinetic_energy = 0.0;
+					CompactNSearch::Real potential_energy = 0.0;
+					for (unsigned int i = 0; i < fluid_particles.size(); i++) {
+						CompactNSearch::Real particle_kinetic_energy = 0.5 * particle_mass * fluid_velocities[i].squaredNorm();
+						CompactNSearch::Real particle_potential_energy = particle_mass * gravity_acceleration.dot(fluid_particles[i]);
+						kinetic_energy += particle_kinetic_energy;
+						potential_energy += particle_potential_energy;
+					}
+					this->total_kinetic_energies.push_back(kinetic_energy);
+					this->total_potential_energies.push_back(potential_energy);
+				}
+
 				if (parameters.export_type == SPHParameters::export_type::EXPORT_WITH_SURFACE) {
 					create_grid();
 					reset_grid_values();
@@ -952,6 +979,33 @@ namespace WCSPH
 			const std::string filename = this->result_path + "obstacles/boundary.vtk";
 			geometry::write_tri_mesh_to_vtk(filename, obstacle_mesh_vertices_export, obstacle_mesh_faces_export);
 		}
+	}
+
+	void SPH::store_density_stats() {
+		const std::string filename1 = this->result_path + "stats/avg_density.txt";
+		std::ofstream output_file1(filename1);
+		std::ostream_iterator<std::double_t> output_iterator1(output_file1, "\n");
+		std::copy(std::begin(average_densities), std::end(average_densities), output_iterator1);
+		const std::string filename2 = this->result_path + "stats/max_density.txt";
+		std::ofstream output_file2(filename2);
+		std::ostream_iterator<std::double_t> output_iterator2(output_file2, "\n");
+		std::copy(std::begin(maximum_densities), std::end(maximum_densities), output_iterator2);
+		const std::string filename3 = this->result_path + "stats/total_potential.txt";
+		std::ofstream output_file3(filename3);
+		std::ostream_iterator<std::double_t> output_iterator3(output_file3, "\n");
+		std::copy(std::begin(total_potential_energies), std::end(total_potential_energies), output_iterator3);
+		const std::string filename4 = this->result_path + "stats/total_kinetic.txt";
+		std::ofstream output_file4(filename4);
+		std::ostream_iterator<std::double_t> output_iterator4(output_file4, "\n");
+		std::copy(std::begin(total_kinetic_energies), std::end(total_kinetic_energies), output_iterator4);
+		const std::string filename5 = this->result_path + "stats/fluid_counts.txt";
+		std::ofstream output_file5(filename5);
+		std::ostream_iterator<std::size_t> output_iterator5(output_file5, "\n");
+		std::copy(std::begin(new_particle_counts), std::end(new_particle_counts), output_iterator5);
+		const std::string filename6 = this->result_path + "stats/total_volume.txt";
+		std::ofstream output_file6(filename6);
+		std::ostream_iterator<std::double_t> output_iterator6(output_file6, "\n");
+		std::copy(std::begin(total_volumes), std::end(total_volumes), output_iterator6);
 	}
 
 }

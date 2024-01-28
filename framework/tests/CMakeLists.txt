@@ -3,17 +3,12 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Local
 set(SOURCE_FILES
+	test_compare.cpp
     	test_main.cpp
-	test_emitter.cpp
 	test_emitter_ob.cpp
 	sample_tests.cpp
 	test_kernel.cpp
-	test_marching_cubes
-	test_marching_cubes_pbf.cpp
-	test_marching_cubes_sph.cpp
-	test_nSearch.cpp
-	test_pbf.cpp
-	test_sph.cpp)
+	test_nSearch.cpp)
     
 add_executable(tests ${SOURCE_FILES})
 add_dependencies(tests SPH)

@@ -8,7 +8,7 @@
 #include <cmath>
 
 // Check out https://github.com/catchorg/Catch2 for more information about how to use Catch2
-TEST_CASE("Test Emitter Fountain SPH Open Box", "[Test Emitter Fountain SPH Open Box]")
+/*TEST_CASE("Test Emitter Fountain SPH Open Box", "[Test Emitter Fountain SPH Open Box]")
 {
 	//WCSPH::Vector boundary_size = { 3.0, 3.0, 0.5 }; // Use this in general
 	WCSPH::Vector boundary_size = { 3.0, 3.0, 1.0 }; // Use this for with obstacle
@@ -459,4 +459,4 @@ TEST_CASE("Test Emitter Sphere Obstacle PBF", "[Test Emitter Sphere Obstacle PBF
 	PBD::PBF pbf(false, false, false, "../res/emitter_sphere_obstacle_pbf_surface_ob_st/emitter_sphere_obstacle_pbf_surface_ob_st_", params, mcparams, emitters);
 	pbf.load_geometry(true, true, boundary_size_s, boundary_left_s, fluid_sizes, fluid_lefts, std::pair <PBD::Vector, PBD::Vector>(), 0.18);
 	pbf.simulate(2.0);
-}
+}*/

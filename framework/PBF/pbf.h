@@ -30,6 +30,14 @@ namespace PBD
 		bool with_surface_tension{ false };
 		std::vector<Emitter::Emitter> emitter;
 
+		// Additional Data Stored
+		std::vector<CompactNSearch::Real> average_densities;
+		std::vector<CompactNSearch::Real> maximum_densities;
+		std::vector<CompactNSearch::Real> total_volumes;
+		std::vector<CompactNSearch::Real> total_potential_energies;
+		std::vector<CompactNSearch::Real> total_kinetic_energies;
+		std::vector<int> new_particle_counts;
+
 		// Particle data for fluid
 		std::vector<PBD::Vector> fluid_particles;
 		std::vector<PBD::Vector> old_fluid_particles;
@@ -130,7 +138,7 @@ namespace PBD
 
 		// Functions
 		void simulate(CompactNSearch::Real t_end);
-		void load_geometry(bool has_boundary, bool open_boundary, PBD::Vector& boundary_size, PBD::Vector& bottom_left_boundary, std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid, std::pair <PBD::Vector, PBD::Vector>& obstacle_box = std::pair <PBD::Vector, PBD::Vector>(), CompactNSearch::Real obstacle_sphere_radius = 0.0);
+		void load_geometry(bool has_boundary, bool open_boundary, PBD::Vector& boundary_size, PBD::Vector& bottom_left_boundary, std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid, std::pair <PBD::Vector, PBD::Vector>& obstacle_box = std::pair <PBD::Vector, PBD::Vector>({ 0,0,0 }, { 0,0,0 }), CompactNSearch::Real obstacle_sphere_radius = 0.0);
 		void turn_off_gravity();
 		void turn_on_gravity();
 		void add_initial_velocity(std::vector<PBD::Vector> velocities);
@@ -139,5 +147,6 @@ namespace PBD
 		int num_fluid_particles();
 		int num_timesteps();
 		void printStats(std::string test);
+		void store_density_stats();
 	};
 }
