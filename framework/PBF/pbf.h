@@ -47,36 +47,20 @@ namespace PBD
 		CompactNSearch::Real particle_mass;
 
 		// Boundary data
-		PBD::Vector boundary_box_bottom = PBD::Vector(0.0, 0.0, 0.0);
-		PBD::Vector boundary_box_top = PBD::Vector(1.0, 1.0, 1.0);
 		bool has_boundary{ true };
-		bool open_boundary{ false };
-
-		// Obstacle data
-		std::pair <PBD::Vector, PBD::Vector>& obstacle_data = std::pair <PBD::Vector, PBD::Vector>();
-		bool has_obstacle{ false };
-		CompactNSearch::Real obstacle_sphere_radius = 0.0;
-		bool has_obstacle_sphere{ false };
 
 		// Particle data for boundary
-		CompactNSearch::Real boundary_particle_volume;
-		CompactNSearch::Real boundary_particle_mass;
 		std::vector<PBD::Vector> boundary_particles;
 		std::vector<CompactNSearch::Real> boundary_masses;
 		std::vector<CompactNSearch::Real> boundary_volumes;
 		std::vector<PBD::Vector> boundary_mesh_vertices;
 		std::vector<std::array<int, 3>> boundary_mesh_faces;
+		std::vector<CompactNSearch::Real> boundary_densities;
+		std::vector<CompactNSearch::Real> boundary_pressure;
 
 		//Export tri mesh
 		std::vector<PBD::Vector> boundary_mesh_vertices_export;
 		std::vector<std::array<int, 3>> boundary_mesh_faces_export;
-		std::vector<PBD::Vector> obstacle_mesh_vertices_export;
-		std::vector<std::array<int, 3>> obstacle_mesh_faces_export;
-		std::vector<PBD::Vector>  obstacle_sphere_mesh_vertices_export;
-		std::vector<std::array<int, 3>> obstacle_sphere_mesh_faces_export;
-
-		std::vector<CompactNSearch::Real> boundary_densities;
-		std::vector<CompactNSearch::Real> boundary_pressure;
 
 
 		//Other parameters:
@@ -105,13 +89,11 @@ namespace PBD
 		void calculate_st_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
 		void calculate_adhesion_acceleration(unsigned int fluid_id, CompactNSearch::PointSet& ps_fluid, unsigned int boundary_id);
 		void update_time_step_size();
-		void check_particle_positions();
 		void update_particle_positions(unsigned int fluid_id, CompactNSearch::PointSet const& ps_fluid, unsigned int boundary_id);
 		void update_particle_velocities();
 		void export_data(unsigned int frame);
 		void export_data_with_surface(unsigned int frame);
 		void export_boundary();
-		void export_obstacles();
 		void emit_particles(CompactNSearch::Real t_sim);
 		void update_active_status();
 
@@ -130,7 +112,7 @@ namespace PBD
 
 		// Functions
 		void simulate(CompactNSearch::Real t_end);
-		void load_geometry(bool has_boundary, bool open_boundary, PBD::Vector& boundary_size, PBD::Vector& bottom_left_boundary, std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid, std::pair <PBD::Vector, PBD::Vector>& obstacle_box = std::pair <PBD::Vector, PBD::Vector>(), CompactNSearch::Real obstacle_sphere_radius = 0.0);
+		void load_geometry(std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid, std::string filename);
 		void turn_off_gravity();
 		void turn_on_gravity();
 		void add_initial_velocity(std::vector<PBD::Vector> velocities);

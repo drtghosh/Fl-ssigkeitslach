@@ -6,6 +6,7 @@
 #include "../PBF/pbf.h"
 #include "../PBF/params.h"
 #include <cmath>
+#include<cstdlib>
 
 // Check out https://github.com/catchorg/Catch2 for more information about how to use Catch2
 /*TEST_CASE("Test Emitter Fountain SPH Open Box", "[Test Emitter Fountain SPH Open Box]")
@@ -261,8 +262,6 @@ TEST_CASE("Lotus Leave SPH", "[Lotus Leave SPH]")
 	params.compact_support = 2 * params.smoothing_length;
 	params.grid_cell_size = 1.2 * params.particle_radius;
 
-	//params.cohesion_coefficient = 0.1;
-
 	params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
 	mcparams.ours = false;
 	mcparams.sparse = true;
@@ -366,4 +365,146 @@ TEST_CASE("No Surface Tension Lotus Leave SPH", "[No Surface Tension Lotus Leave
 	sph.load_geometry(fluid_sizes, fluid_lefts, "../res/lotus.obj");
 	sph.simulate(0.9);
 	sph.printStats("No Surface Tension Lotus Leave SPH");
+}
+
+TEST_CASE("Lotus Leave Rain SPH", "[Lotus Leave Rain SPH]")
+{
+	std::cout << "Testing Lotus Leave Rain in SPH" << std::endl;
+
+	std::vector<WCSPH::Vector> fluid_sizes;
+	std::vector<WCSPH::Vector> fluid_lefts;
+	WCSPH::Vector fluid_size = { 0.2, 0.2, 0.2 };
+	WCSPH::Vector fluid_left1 = { -3.65 , 1.0, -3.12 };
+	WCSPH::Vector fluid_left2 = { -2.05 , 0.90, -3.12 };
+	WCSPH::Vector fluid_left3 = { -3.5 , 3.15, -3.12 };
+	WCSPH::Vector fluid_left4 = { -0.5 , 1.1, -3.12 };
+
+	srand((unsigned)time(NULL));
+	for (int i = 2; i < 8; i++) {
+		fluid_sizes.push_back(fluid_size);
+		fluid_lefts.push_back(fluid_left1 + i * WCSPH::Vector({ 0.5, 0.5, 0.0 }) + WCSPH::Vector({ (rand() % 10) / 50.0, (rand() % 10) / 100.0, 0.0 }));
+	}
+
+	for (int i = 0; i < 6; i++) {
+		fluid_sizes.push_back(fluid_size);
+		fluid_lefts.push_back(fluid_left2 + i * WCSPH::Vector({ 0.5, 0.5, 0.0 }) + WCSPH::Vector({ -(rand() % 10) / 40.0, (rand() % 10) / 50.0, 0.0 }));
+	}
+
+	for (int i = 0; i < 4; i++) {
+		fluid_sizes.push_back(fluid_size);
+		int random = (rand() % 10) / 10;
+		fluid_lefts.push_back(fluid_left3 + i * WCSPH::Vector({ 0.5, 0.5, 0.0 }) + WCSPH::Vector({ -(rand() % 10) / 50.0, -(rand() % 10) / 50.0, 0.0 }));
+	}
+
+	for (int i = 0; i < 2; i++) {
+		fluid_sizes.push_back(fluid_size);
+		fluid_lefts.push_back(fluid_left4 + i * WCSPH::Vector({ 0.5, 0.5, 0.0 }));
+	}
+
+	SPHParameters params;
+	MCParameters mcparams;
+	params.dt = 0.0001;
+	params.dt_next_frame = 0.01;
+	params.particle_radius = 0.01;
+	params.fluid_rest_density = 1000;
+	params.max_dt = 0.00025;
+	params.max_velocity_cap = 5;
+	params.fluid_pressure_stiffness = 1000.0;
+	params.fluid_viscosity = 0.0025;
+	params.boundary_viscosity = 0.0;
+
+	params.particle_diameter = 2 * params.particle_radius;
+	params.fluid_sampling_distance = params.particle_diameter;
+	params.boundary_sampling_distance = 0.8 * params.particle_diameter;
+	params.smoothing_length = 1.2 * params.particle_diameter;
+	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
+	params.compact_support = 2 * params.smoothing_length;
+	params.grid_cell_size = 1.2 * params.particle_radius;
+
+	//params.cohesion_coefficient = 0.1;
+
+	params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
+	mcparams.ours = false;
+	mcparams.sparse = true;
+
+	WCSPH::SPH sph(false, false, true, "../res/lotus_leave_rain_sph/lotus_leave_rain_sph_", params, mcparams);
+	sph.load_geometry(fluid_sizes, fluid_lefts, "../res/lotus.obj");
+	sph.simulate(0.3);
+	sph.printStats("Lotus Leave Rain SPH");
 }*/
+
+TEST_CASE("Italian Fountain PBF", "[Italian Fountain PBF]")
+{
+	std::cout << "Testing Italian Fountain in PBF" << std::endl;
+
+	CompactNSearch::Real particle_radius = 0.01;
+
+	PBD::Vector fluid1_size = { 2.89497 - (6* particle_radius), 0.4632 - (6 * particle_radius), 0.15};
+	PBD::Vector fluid1_left = { 6.03216 + (3 * particle_radius) , -3.96769 + (3 * particle_radius), 2.65319 + (3 * particle_radius) };
+	PBD::Vector fluid2_size = { 1.96858 - (6 * particle_radius), 3.70556, 0.15 };
+	PBD::Vector fluid2_left = { 6.95855 + (3 * particle_radius), -3.50449, 2.65319 + (3 * particle_radius) };
+	PBD::Vector fluid3_size = { 2.89497 - (6 * particle_radius), 0.463194 - (6 * particle_radius), 0.15 };
+	PBD::Vector fluid3_left = { 6.03216 + (3 * particle_radius), 0.20107 + (3 * particle_radius), 2.65319 + (3 * particle_radius) };
+
+	std::vector<PBD::Vector> fluid_sizes;
+	fluid_sizes.push_back(fluid1_size);
+	fluid_sizes.push_back(fluid2_size);
+	fluid_sizes.push_back(fluid3_size);
+
+	std::vector<PBD::Vector> fluid_lefts;
+	fluid_lefts.push_back(fluid1_left);
+	fluid_lefts.push_back(fluid2_left);
+	fluid_lefts.push_back(fluid3_left);
+
+	PBFParameters params;
+	MCParameters mcparams;
+	params.dt = 0.001;
+	params.dt_next_frame = 0.01;
+	params.particle_radius = 0.01;
+	params.fluid_rest_density = 1000;
+	params.max_dt = 0.002;
+	params.max_velocity_cap = 5;
+	params.fluid_pressure_stiffness = 1000.0;
+	params.fluid_viscosity = 0.0025;
+	params.boundary_viscosity = 0.0;
+
+	params.particle_diameter = 2 * params.particle_radius;
+	params.fluid_sampling_distance = params.particle_diameter;
+	params.boundary_sampling_distance = 0.8 * params.particle_diameter;
+	params.smoothing_length = 1.2 * params.particle_diameter;
+	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
+	params.compact_support = 2 * params.smoothing_length;
+
+	params.pbf_iterations = 10;
+
+	params.grid_cell_size = 1.2 * params.particle_radius;
+
+	params.cohesion_coefficient = 0.1;
+
+	params.emit_frequency = 1.2;
+	params.max_num_particles = 1000000;
+
+	params.export_type = PBFParameters::EXPORT_WITH_SURFACE;
+	mcparams.ours = false;
+	mcparams.sparse = true;
+
+	Emitter::Emitter emitter_left(0.025, { 1.0, 0.0, 0.0 }, 0.025, { 0.0, 1.0, 0.0 }, { 6.49536, -3.0413, 2.71108 }, { 0.0, 0.0, 1.0 }, { 0.0, 0.0, 5.0 }, params.particle_diameter, params.particle_diameter);
+	Emitter::Emitter emitter_right(0.025, { 1.0, 0.0, 0.0 }, 0.025, { 0.0, 1.0, 0.0 }, { 6.49536, -0.262125, 2.71108 }, { 0.0, 0.0, 1.0 }, { 0.0, 0.0, 5.0 }, params.particle_diameter, params.particle_diameter);
+	Emitter::Emitter emitter_mid(0.015, { 0.0, 1.0, 0.0 }, 0.015, { 1.0, 0.0, 1.0 }, { 6.16818, -1.656, 4.11 }, { 1.0, 0.0, -1.0 }, { 1.0, 0.0, -1.0 }, params.particle_diameter, params.particle_diameter);
+
+	std::vector<CompactNSearch::Real> schedule;
+	schedule.push_back(0.0);
+	schedule.push_back(2.1);
+	emitter_left.set_schedule(schedule);
+	emitter_right.set_schedule(schedule);
+	emitter_mid.set_schedule(schedule);
+	std::vector<Emitter::Emitter> emitters;
+	emitters.push_back(emitter_left);
+	emitters.push_back(emitter_right);
+	emitters.push_back(emitter_mid);
+
+	PBD::PBF pbf(false, false, true, "../res/italian_fountain_pbf/italian_fountain_pbf_", params, mcparams, emitters);
+	pbf.load_geometry(fluid_sizes, fluid_lefts, "../res/ItalianFountain.obj");
+	pbf.simulate(2);
+	pbf.printStats("Italian Fountain SPH");
+}
