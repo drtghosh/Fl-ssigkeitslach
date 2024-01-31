@@ -42,7 +42,7 @@ TEST_CASE("Dam break SPH", "[Dam break SPH]")
 
 	WCSPH::SPH sph(false, false, false, "../res/dam_break_sph/dam_break_sph_", params, mcparams);
 	sph.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
-	sph.simulate(2);
+	sph.simulate(4);
 	sph.printStats("Dam break SPH");
 	sph.store_density_stats();
 }
@@ -86,7 +86,7 @@ TEST_CASE("Double Dam Break SPH", "[Double Dam Break SPH]") {
 
 	WCSPH::SPH sph(false, false, false, "../res/double_dam_break_sph/double_dam_break_sph_", params, mcparams);
 	sph.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
-	sph.simulate(2);
+	sph.simulate(4);
 	sph.printStats("Double Dam Break SPH");
 	sph.store_density_stats();
 }
@@ -126,7 +126,7 @@ TEST_CASE("Dam Break PBF", "[Dam Break PBF]")
 
 	PBD::PBF pbf(false, false, false, "../res/dam_break_pbf/dam_break_pbf_", params, mcparams);
 	pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
-	pbf.simulate(2);
+	pbf.simulate(4);
 	pbf.printStats("Dam break PBF");
 	pbf.store_density_stats();
 }
@@ -178,7 +178,7 @@ TEST_CASE("Double Dam Break PBF", "[Double Dam Break PBF]") {
 
 	PBD::PBF pbf(false, false, false, "../res/double_dam_break_pbf/double_dam_break_pbf_", params, mcparams);
 	pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
-	pbf.simulate(2);
+	pbf.simulate(4);
 	pbf.printStats("Double Dam Break SPH");
 	pbf.store_density_stats();
 }
