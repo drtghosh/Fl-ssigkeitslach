@@ -143,8 +143,14 @@ namespace PBD
 
 			update_active_status();
 
+			// Check particle positions
+			if (has_boundary) {
+				check_particle_positions();
+			}
+
 			//Export VTK
 			if (t_sim >= t_next_frame) {
+				std::cout << "Fluid particles: " << fluid_particles.size() << std::endl;
 				if (parameters.export_type == PBFParameters::export_type::EXPORT_WITH_SURFACE) {
 					create_grid();
 					reset_grid_values();
@@ -662,6 +668,50 @@ namespace PBD
 		for (int i = 0; i < (int)fluid_velocities.size(); i++) {
 			fluid_velocities[i] = (fluid_particles[i] - old_fluid_particles[i]) / parameters.dt;
 		}
+	}
+
+	void PBF::check_particle_positions() {
+		int old_size = (int)fluid_particles.size();
+		std::vector<bool> new_is_fluid_particle_active;
+		std::vector<PBD::Vector> new_positions;
+		std::vector<PBD::Vector> new_velocities;
+		std::vector<PBD::Vector> new_accelerations;
+		std::vector<PBD::Vector> new_normals;
+		std::vector<CompactNSearch::Real> new_densities;
+		std::vector<CompactNSearch::Real> new_pressures;
+		new_is_fluid_particle_active.reserve(old_size);
+		new_positions.reserve(old_size);
+		new_velocities.reserve(old_size);
+		new_accelerations.reserve(old_size);
+		new_normals.reserve(old_size);
+		new_densities.reserve(old_size);
+		new_pressures.reserve(old_size);
+
+		for (int i = 0; i < old_size; i++) {
+			PBD::Vector pos = fluid_particles[i];
+			bool is_bigger_BL = pos[0] >= 6.03 && pos[1] >= -6.1 && pos[2] >= 2.6531;
+			bool is_smaller_TR = pos[0] <= 8.5 && pos[1] <= 2.35 && pos[2] <= 5.0;
+			bool keep = is_bigger_BL && is_smaller_TR;
+
+			if (!keep) {
+				continue;
+			}
+
+			new_is_fluid_particle_active.emplace_back(is_fluid_particle_active[i]);
+			new_positions.emplace_back(pos);
+			new_velocities.emplace_back(fluid_velocities[i]);
+			new_accelerations.emplace_back(fluid_accelerations[i]);
+			new_normals.emplace_back(fluid_normals[i]);
+			new_densities.emplace_back(fluid_densities[i]);
+			new_pressures.emplace_back(fluid_pressures[i]);
+		}
+		this->is_fluid_particle_active = new_is_fluid_particle_active;
+		this->fluid_particles = new_positions;
+		this->fluid_velocities = new_velocities;
+		this->fluid_accelerations = new_accelerations;
+		this->fluid_normals = new_normals;
+		this->fluid_densities = new_densities;
+		this->fluid_pressures = new_pressures;
 	}
 	
 	void PBF::turn_off_gravity() {
