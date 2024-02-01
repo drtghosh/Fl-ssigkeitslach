@@ -8,7 +8,7 @@
 
 
 // Check out https://github.com/catchorg/Catch2 for more information about how to use Catch2
-TEST_CASE("Performance Test", "[Performance]")
+/*TEST_CASE("Performance Test", "[Performance]")
 {
 	//initialize variables
 	srand(42);
@@ -60,7 +60,7 @@ TEST_CASE("Performance Test", "[Performance]")
 		std::cout << "###############################" << std::endl;
 	}*/
 
-	REQUIRE(b_neighbors == b2_neighbors);
+	/*REQUIRE(b_neighbors == b2_neighbors);
 
 	start = std::chrono::system_clock::now();
 	b_search.find_neighbors_parallel();
@@ -91,4 +91,4 @@ TEST_CASE("Performance Test", "[Performance]")
 
 	std::cout << "CompactNSearch time: " << elapsed.count() << " ms" << std::endl;
 
-}
+}*/

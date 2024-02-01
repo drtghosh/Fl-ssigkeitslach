@@ -72,7 +72,7 @@
 
 	auto start = std::chrono::system_clock::now();
 
-	Parameters params;
+	SPHParameters params;
 	MCParameters mcparams;
 	mcparams.sparse = false;
 
@@ -93,9 +93,9 @@
 	}
 
 	geometry::write_tri_mesh_to_vtk(file, vertices, triangles, normals);
-}*/
+}
 
-/*TEST_CASE("Dam Break with Surface Construction", "[Dam Break with Surface Construction]")
+TEST_CASE("Dam Break with Surface Construction", "[Dam Break with Surface Construction]")
 {
 	std::cout << "Testing dam break with surface construction" << std::endl;
 
@@ -110,7 +110,7 @@
 	std::vector<WCSPH::Vector> fluid_lefts;
 	fluid_lefts.push_back(fluid_left);
 
-	Parameters params;
+	SPHParameters params;
 	MCParameters mcparams;
 	params.dt = 0.00025;
 	params.dt_next_frame = 0.01;
@@ -130,28 +130,28 @@
 
 	params.grid_cell_size = 1.2 * params.particle_radius;
 
-	params.export_type = Parameters::export_type::EXPORT_WITH_SURFACE;
+	params.export_type = SPHParameters::export_type::EXPORT_WITH_SURFACE;
 
 	SECTION("Regular Marching Cubes") {
 		mcparams.ours = false;
 		mcparams.sparse = false;
-		WCSPH::SPH sph(false, false, "../res/dam_break_sph_mc/dam_break_sph_mc_", params, mcparams);
-		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		WCSPH::SPH sph(false, false, false, "../res/dam_break_sph_mc/dam_break_sph_mc_", params, mcparams);
+		sph.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(0.5);
 		sph.printStats("Dam break with regular marching cubes");
 	}
 	SECTION("Sparse Marching Cubes") {
 		mcparams.sparse = true;
-		WCSPH::SPH sph(false, false, "../res/dam_break_sph_mc_sparse/dam_break_sph_mc_sparse_", params, mcparams);
-		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		WCSPH::SPH sph(false, false, false, "../res/dam_break_sph_mc_sparse/dam_break_sph_mc_sparse_", params, mcparams);
+		sph.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(0.5);
 		sph.printStats("Dam break with sparse marching cubes");
 	}
 	SECTION("Our Marching Cubes") {
 		mcparams.sparse = false;
 		mcparams.ours = true;
-		WCSPH::SPH sph(false, false, "../res/dam_break_sph_mc_ours/dam_break_sph_mc_ours_", params, mcparams);
-		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		WCSPH::SPH sph(false, false, false, "../res/dam_break_sph_mc_ours/dam_break_sph_mc_ours_", params, mcparams);
+		sph.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(0.5);
 		sph.printStats("Dam break with our marching cubes");
 	}
@@ -177,7 +177,7 @@ TEST_CASE("Crazy Stuff with Surface Construction", "[Crazy Stuff with Surface Co
 	fluid_lefts.push_back(fluid_left);
 	fluid_lefts.push_back(fluid_left2);
 
-	Parameters params;
+	SPHParameters params;
 	MCParameters mcparams;
 	params.dt = 0.0001;
 	params.dt_next_frame = 0.01;
@@ -197,20 +197,20 @@ TEST_CASE("Crazy Stuff with Surface Construction", "[Crazy Stuff with Surface Co
 
 	params.grid_cell_size = 1.2 * params.particle_radius;
 
-	params.export_type = Parameters::export_type::EXPORT_WITH_SURFACE;
+	params.export_type = SPHParameters::export_type::EXPORT_WITH_SURFACE;
 
 	SECTION("Regular Marching Cubes") {
 		mcparams.ours = false;
 		mcparams.sparse = false;
-		WCSPH::SPH sph(false, false, "../res/crazy_stuff_sph_mc/crazy_stuff_sph_mc_", params, mcparams);
-		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		WCSPH::SPH sph(false, false, false, "../res/crazy_stuff_sph_mc/crazy_stuff_sph_mc_", params, mcparams);
+		sph.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(0.1);
 		sph.printStats("Crazy stuff with marching cubes");
 	}
 	SECTION("Sparse Marching Cubes") {
 		mcparams.sparse = true;
-		WCSPH::SPH sph(false, false, "../res/crazy_stuff_sph_mc_sparse/crazy_stuff_sph_mc_sparse_", params, mcparams);
-		sph.load_geometry(true, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
+		WCSPH::SPH sph(false, false, false, "../res/crazy_stuff_sph_mc_sparse/crazy_stuff_sph_mc_sparse_", params, mcparams);
+		sph.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		sph.simulate(0.1);
 		sph.printStats("Crazy stuff with sparse marching cubes");
 	}
