@@ -14,7 +14,7 @@
 namespace WCSPH
 {
 
-	SPH::SPH(bool gravity_only, bool with_initial_velocity, bool with_surface_tension, std::string result_path, SPHParameters params, MCParameters mcparams, std::vector<Emitter::Emitter>& emitter) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), with_surface_tension(with_surface_tension), result_path(result_path), parameters(params), mcparameters(mcparams), emitter(emitter) {
+	SPH::SPH(bool gravity_only, bool with_initial_velocity, bool with_surface_tension, std::string result_path, SPHParameters params, MCParameters mcparams, std::vector<Emitter::Emitter> emitter) : gravity_only(gravity_only), with_initial_velocity(with_initial_velocity), with_surface_tension(with_surface_tension), result_path(result_path), parameters(params), mcparameters(mcparams), emitter(emitter) {
 		auto start = std::chrono::system_clock::now();
 
 		this->kernel = kernel::Kernel(parameters.smoothing_length);
@@ -314,12 +314,29 @@ namespace WCSPH
 				obstacle_sphere_mesh_faces_export = sphere_triangles;
 			}
 
+			if (false) {
+				const std::vector<geometry::TriMesh> meshes = geometry::read_tri_meshes_from_obj("../res/meshes/riverbed.obj");
+				for (int i = 0; i < (int)meshes.size(); i++) {
+					std::cout << "mesh " << i << std::endl;
+					for (int j = 0; j < (int)meshes[i].vertices.size(); j++) {
+						vertices.push_back(meshes[i].vertices[j]);
+					}
+					for (int j = 0; j < (int)meshes[i].triangles.size(); j++) {
+						if (meshes[i].triangles[j][0] > -1 && meshes[i].triangles[j][1] > -1 && meshes[i].triangles[j][2] > -1) {
+							std::array<int, 3> new_triangle = meshes[i].triangles[j];
+							for (int k = 0; k < 3; k++) {
+								new_triangle[k] += vertices_before;
+							}
+							triangles.push_back(new_triangle);
+						}
+					}
+					vertices_before = vertices.size();
+				}
+			}
+
 			this->boundary_mesh_vertices = vertices;
 			this->boundary_mesh_faces = triangles;
 			geometry::sampling::triangle_mesh(this->boundary_particles, this->boundary_mesh_vertices, this->boundary_mesh_faces, this->parameters.boundary_sampling_distance);
-			const CompactNSearch::Real boundary_volume = boundary_size[0] * boundary_size[1] * boundary_size[2];
-			this->boundary_particle_volume = boundary_volume / this->boundary_particles.size();
-			this->boundary_particle_mass = this->boundary_particle_volume * parameters.fluid_rest_density;
 		}
 
 		CompactNSearch::Real total_fluid_volume = 0.0;
@@ -355,7 +372,7 @@ namespace WCSPH
 				continue;
 			}
 			bool emit = true;
-			#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
+			//#pragma omp parallel for num_threads(parameters.num_threads) schedule(static)
 			for (int j = 0; j < fluid_particles.size(); j++) {
 				if (!is_fluid_particle_active[j]) {
 					if ((fluid_particles[j] - emitted_particle_positions[0]).norm() <= parameters.emit_frequency * parameters.particle_diameter) {
@@ -780,10 +797,11 @@ namespace WCSPH
 
 	void SPH::printStats(std::string test) {
 		int num_boundary = boundary_particles.size();
-		int num_fluid = 0;
-		for (int i = 0;i < fluid_particle_counts.size();i++) {
-			num_fluid += fluid_particle_counts[i];
-		}
+		//int num_fluid = 0;
+		//for (int i = 0;i < fluid_particle_counts.size();i++) {
+			//num_fluid += fluid_particle_counts[i];
+		//}
+		int num_fluid = fluid_particles.size();
 
 		std::cout << test << ": " << "(boundary: " << num_boundary << ", fluid: " << num_fluid << ", timesteps: " << timesteps << ")" << std::endl;
 		std::cout << " => Time: " << duration << " ms" << std::endl;

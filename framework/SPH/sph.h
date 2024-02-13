@@ -120,14 +120,14 @@ namespace WCSPH
 
 	public:
 		// Constructor
-		SPH(bool gravity_only, bool with_initial_velocity, bool with_surface_tension, std::string result_path, SPHParameters params, MCParameters mcparams, std::vector<Emitter::Emitter>& emitter = std::vector<Emitter::Emitter>());
+		SPH(bool gravity_only, bool with_initial_velocity, bool with_surface_tension, std::string result_path, SPHParameters params, MCParameters mcparams, std::vector<Emitter::Emitter> emitter = std::vector<Emitter::Emitter>());
 
 		// Destructor
 		virtual ~SPH() = default;
 
 		// Functions
 		void simulate(CompactNSearch::Real t_end);
-		void load_geometry(bool has_boundary, bool open_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::pair <WCSPH::Vector, WCSPH::Vector>& obstacle_box = std::pair <WCSPH::Vector, WCSPH::Vector>(), CompactNSearch::Real obstacle_sphere_radius = 0.0);
+		void load_geometry(bool has_boundary, bool open_boundary, WCSPH::Vector& boundary_size, WCSPH::Vector& bottom_left_boundary, std::vector<WCSPH::Vector>& fluid_sizes, std::vector<WCSPH::Vector>& bottom_lefts_fluid, std::pair <WCSPH::Vector, WCSPH::Vector>& obstacle_box = std::pair <WCSPH::Vector, WCSPH::Vector>({ 0,0,0 }, { 0,0,0 }), CompactNSearch::Real obstacle_sphere_radius = 0.0);
 		void turn_off_gravity();
 		void turn_on_gravity();
 		void add_initial_velocity(std::vector<WCSPH::Vector> velocities);

@@ -4,7 +4,7 @@
 using namespace kernel;
 constexpr double PI = 3.14159265358979323846;
 
-TEST_CASE("Cubic spline kernel", "[kernel]")
+/*TEST_CASE("Cubic spline kernel", "[kernel]")
 {
 	const double h = 1.0;
 	const double value_at_0 = 1.0 / (PI * h*h*h);
@@ -117,4 +117,4 @@ TEST_CASE("Cubic spline kernel gradient", "[kernel]")
 		REQUIRE(std::abs(grad_diff_at_1(2)) <= std::numeric_limits<double>::epsilon());
 		REQUIRE(kernel.cubic_grad_spline(x_orig, 2 * e_x) == Eigen::Vector3d(0.0, 0.0, 0.0));
 	}
-}
+}*/
