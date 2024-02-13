@@ -663,6 +663,117 @@ TEST_CASE("Italian Fountain PBF", "[Italian Fountain PBF]")
 
 	PBD::PBF pbf(false, false, true, "../res/italian_fountain_pbf/italian_fountain_pbf_", params, mcparams, emitters);
 	pbf.load_geometry(fluid_sizes, fluid_lefts, "../res/ItalianFountain3.obj");
-	pbf.simulate(20);
+	pbf.simulate(0.01);
 	pbf.printStats("Italian Fountain PBF");
 }
+
+/*TEST_CASE("Lotus Leave PBF", "[Lotus Leave PBF]")
+{
+	std::cout << "Testing Lotus Leave in PBF" << std::endl;
+
+	CompactNSearch::Real particle_radius = 0.01;
+	PBD::Vector fluid1_size = { 0.5, 0.5, 0.5 };
+	PBD::Vector fluid1_left = { -1.84 , 3.0, -3.1 };
+	PBD::Vector fluid2_size = { 0.25, 0.25, 0.25 };
+	PBD::Vector fluid2_left = { -1.7 , 3.12, -2.3 };
+	//PBD::Vector fluid3_size = { 3.0 - (6 * particle_radius), 3.0 - (6 * particle_radius), 0.013 };
+	//PBD::Vector fluid3_left = { -1.55 + (3 * particle_radius), 3.5 + (3 * particle_radius), -4.86 + (3 * particle_radius) };
+
+	std::vector<PBD::Vector> fluid_sizes;
+	fluid_sizes.push_back(fluid1_size);
+	fluid_sizes.push_back(fluid2_size);
+	//fluid_sizes.push_back(fluid3_size);
+
+	std::vector<PBD::Vector> fluid_lefts;
+	fluid_lefts.push_back(fluid1_left);
+	fluid_lefts.push_back(fluid2_left);
+	//fluid_lefts.push_back(fluid3_left);
+
+	PBFParameters params;
+	MCParameters mcparams;
+	params.dt = 0.001;
+	params.dt_next_frame = 0.01;
+	params.particle_radius = 0.01;
+	params.fluid_rest_density = 1000;
+	params.max_dt = 0.002;
+	params.max_velocity_cap = 5;
+	params.fluid_pressure_stiffness = 1000.0;
+	params.fluid_viscosity = 0.0025;
+	params.boundary_viscosity = 0.0;
+
+	params.particle_diameter = 2 * params.particle_radius;
+	params.fluid_sampling_distance = params.particle_diameter;
+	params.boundary_sampling_distance = 0.8 * params.particle_diameter;
+	params.smoothing_length = 1.2 * params.particle_diameter;
+	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
+	params.compact_support = 2 * params.smoothing_length;
+	params.grid_cell_size = 1.2 * params.particle_radius;
+
+	params.pbf_iterations = 10;
+
+	params.export_type = PBFParameters::EXPORT_WITH_SURFACE;
+	mcparams.ours = false;
+	mcparams.sparse = true;
+
+	PBD::PBF pbf(false, false, true, "../res/lotus_leave_pbf/lotus_leave_pbf_", params, mcparams);
+	pbf.load_geometry(fluid_sizes, fluid_lefts, "../res/lotus.obj");
+	pbf.simulate(5.0);
+	pbf.printStats("Lotus Leave PBF");
+}
+
+TEST_CASE("Adhesive Lotus Leave PBF", "[Adhesive Lotus Leave PBF]")
+{
+	std::cout << "Testing Adhesive Lotus Leave in PBF" << std::endl;
+
+	CompactNSearch::Real particle_radius = 0.01;
+	PBD::Vector fluid1_size = { 0.5, 0.5, 0.5 };
+	PBD::Vector fluid1_left = { -1.84 , 3.0, -3.1 };
+	PBD::Vector fluid2_size = { 0.25, 0.25, 0.25 };
+	PBD::Vector fluid2_left = { -1.7 , 3.12, -2.3 };
+	//PBD::Vector fluid3_size = { 10.0 - (6 * particle_radius), 10.0 - (6 * particle_radius), 0.013 };
+	//PBD::Vector fluid3_left = { -5.05 + (3 * particle_radius), 0.0 + (3 * particle_radius), -4.86 + (3 * particle_radius) };
+
+	std::vector<PBD::Vector> fluid_sizes;
+	fluid_sizes.push_back(fluid1_size);
+	fluid_sizes.push_back(fluid2_size);
+	//fluid_sizes.push_back(fluid3_size);
+
+	std::vector<PBD::Vector> fluid_lefts;
+	fluid_lefts.push_back(fluid1_left);
+	fluid_lefts.push_back(fluid2_left);
+	//fluid_lefts.push_back(fluid3_left);
+
+	PBFParameters params;
+	MCParameters mcparams;
+	params.dt = 0.001;
+	params.dt_next_frame = 0.01;
+	params.particle_radius = 0.01;
+	params.fluid_rest_density = 1000;
+	params.max_dt = 0.002;
+	params.max_velocity_cap = 5;
+	params.fluid_pressure_stiffness = 1000.0;
+	params.fluid_viscosity = 0.0025;
+	params.boundary_viscosity = 0.0;
+
+	params.particle_diameter = 2 * params.particle_radius;
+	params.fluid_sampling_distance = params.particle_diameter;
+	params.boundary_sampling_distance = 0.8 * params.particle_diameter;
+	params.smoothing_length = 1.2 * params.particle_diameter;
+	params.smoothing_length_squared = params.smoothing_length * params.smoothing_length;
+	params.compact_support = 2 * params.smoothing_length;
+	params.grid_cell_size = 1.2 * params.particle_radius;
+
+	params.pbf_iterations = 10;
+
+	params.cohesion_coefficient = 0.1;
+	params.adhesion_coefficient = 2.0;
+
+	params.export_type = PBFParameters::EXPORT_WITH_SURFACE;
+	mcparams.ours = false;
+	mcparams.sparse = true;
+
+	PBD::PBF pbf(false, false, true, "../res/adhesive_lotus_leave_pbf/adhesive_lotus_leave_pbf_", params, mcparams);
+	pbf.load_geometry(fluid_sizes, fluid_lefts, "../res/lotus.obj");
+	pbf.simulate(5.0);
+	pbf.printStats("Adhesive Lotus Leave PBF");
+}*/

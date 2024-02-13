@@ -144,9 +144,9 @@ namespace PBD
 			update_active_status();
 
 			// Check particle positions
-			if (has_boundary) {
-				check_particle_positions();
-			}
+			//if (has_boundary) {
+				//check_particle_positions();
+			// }
 
 			//Export VTK
 			if (t_sim >= t_next_frame) {
