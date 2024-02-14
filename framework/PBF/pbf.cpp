@@ -53,7 +53,7 @@ namespace PBD
 		//Add fluid particles to cns
 		unsigned int fluid_particles_id = -1;
 		if (fluid_particles.size() > 0) {
-			unsigned int fluid_particles_id = this->cns.add_point_set(fluid_particles.front().data(), fluid_particles.size());
+			fluid_particles_id = this->cns.add_point_set(fluid_particles.front().data(), fluid_particles.size());
 			CompactNSearch::PointSet& pointset_fluid = this->cns.point_set(fluid_particles_id);
 			this->cns.find_neighbors();
 		}
