@@ -1,7 +1,7 @@
 ﻿  1>Checking Build System
-  CMake is re-running because C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl├╝ssigkeitslach/framework/build/SPH/CMakeFiles/generate.stamp is out-of-date.
-    the file 'C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl├╝ssigkeitslach/framework/SPH/CMakeLists.txt'
-    is newer than 'C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl├╝ssigkeitslach/framework/build/SPH/CMakeFiles/generate.stamp.depend'
+  CMake is re-running because C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl├╝ssigkeitslach/framework/build/geometry/CMakeFiles/generate.stamp is out-of-date.
+    the file 'C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl├╝ssigkeitslach/framework/geometry/CMakeLists.txt'
+    is newer than 'C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl├╝ssigkeitslach/framework/build/geometry/CMakeFiles/generate.stamp.depend'
     result='-1'
   CMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
     Compatibility with CMake < 3.5 will be removed from a future version of
@@ -35,7 +35,7 @@
     CMake that the project does not need compatibility with older versions.
   
   
-  -- Configuring done (0.1s)
+  -- Configuring done (0.3s)
   CMake Warning (dev) at tests/CMakeLists.txt:18 (add_executable):
     Policy CMP0115 is not set: Source file extensions must be explicit.  Run
     "cmake --help-policy CMP0115" for policy details.  Use the cmake_policy
@@ -46,5 +46,5 @@
       C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl├╝ssigkeitslach/framework/tests/test_marching_cubes.cpp
   This warning is for project developers.  Use -Wno-dev to suppress it.
   
-  -- Generating done (0.9s)
+  -- Generating done (1.0s)
   -- Build files have been written to: C:/Users/Acer/Documents/All_of_RWTH/Semester3/Lab/Fl├╝ssigkeitslach/framework/build

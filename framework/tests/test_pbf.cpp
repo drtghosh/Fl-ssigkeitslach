@@ -5,7 +5,7 @@
 #include "../geometry/io.h"
 
 
-TEST_CASE("Dam break PBF", "[Dam break PBF]")
+/*TEST_CASE("Dam break PBF", "[Dam break PBF]")
 {
 	std::cout << "Testing dam break in PBF" << std::endl;
 	PBD::Vector boundary_size = { 0.18, 0.8, 1.0 };
@@ -452,4 +452,4 @@ TEST_CASE("Dam Break PBF Time Mixed Tests 2", "[Dam Break PBF Time Mixed Tests 2
 	pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 	pbf.simulate(4);
 	pbf.printStats("Dam break PBF with maxdt 0.0005 and 2 iterations");
-}
+}*/

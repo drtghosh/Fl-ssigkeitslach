@@ -1,36 +1,40 @@
-﻿sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::initialize(void)" (?initialize@SPH@WCSPH@@AEAAXXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::compute_boundary_mass(unsigned int,class CompactNSearch::PointSet const &)" (?compute_boundary_mass@SPH@WCSPH@@AEAAXIAEBVPointSet@CompactNSearch@@@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::calculate_particle_density(unsigned int,class CompactNSearch::PointSet &,unsigned int)" (?calculate_particle_density@SPH@WCSPH@@AEAAXIAEAVPointSet@CompactNSearch@@I@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::semi_implicit_euler(void)" (?semi_implicit_euler@SPH@WCSPH@@AEAAXXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::calculate_acceleration(unsigned int,class CompactNSearch::PointSet &,unsigned int)" (?calculate_acceleration@SPH@WCSPH@@AEAAXIAEAVPointSet@CompactNSearch@@I@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::calculate_pressure(bool)" (?calculate_pressure@SPH@WCSPH@@AEAAX_N@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::calculate_fluid_normals(unsigned int,class CompactNSearch::PointSet &)" (?calculate_fluid_normals@SPH@WCSPH@@AEAAXIAEAVPointSet@CompactNSearch@@@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::calculate_pressure_acceleration(unsigned int,class CompactNSearch::PointSet &,unsigned int)" (?calculate_pressure_acceleration@SPH@WCSPH@@AEAAXIAEAVPointSet@CompactNSearch@@I@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::calculate_viscosity_acceleration(unsigned int,class CompactNSearch::PointSet &,unsigned int)" (?calculate_viscosity_acceleration@SPH@WCSPH@@AEAAXIAEAVPointSet@CompactNSearch@@I@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::calculate_other_acceleration(void)" (?calculate_other_acceleration@SPH@WCSPH@@AEAAXXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::calculate_st_acceleration(unsigned int,class CompactNSearch::PointSet &,unsigned int)" (?calculate_st_acceleration@SPH@WCSPH@@AEAAXIAEAVPointSet@CompactNSearch@@I@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::calculate_adhesion_acceleration(unsigned int,class CompactNSearch::PointSet &,unsigned int)" (?calculate_adhesion_acceleration@SPH@WCSPH@@AEAAXIAEAVPointSet@CompactNSearch@@I@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::update_time_step_size(void)" (?update_time_step_size@SPH@WCSPH@@AEAAXXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::check_particle_positions(void)" (?check_particle_positions@SPH@WCSPH@@AEAAXXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::export_data(unsigned int)" (?export_data@SPH@WCSPH@@AEAAXI@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::export_data_with_surface(unsigned int)" (?export_data_with_surface@SPH@WCSPH@@AEAAXI@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::export_boundary(void)" (?export_boundary@SPH@WCSPH@@AEAAXXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::export_obstacles(void)" (?export_obstacles@SPH@WCSPH@@AEAAXXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::emit_particles(double)" (?emit_particles@SPH@WCSPH@@AEAAXN@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::update_active_status(void)" (?update_active_status@SPH@WCSPH@@AEAAXXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::create_grid(void)" (?create_grid@SPH@WCSPH@@AEAAXXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::reset_grid_values(void)" (?reset_grid_values@SPH@WCSPH@@AEAAXXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::update_grid_values(unsigned int,class CompactNSearch::PointSet &)" (?update_grid_values@SPH@WCSPH@@AEAAXIAEAVPointSet@CompactNSearch@@@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "private: void __cdecl WCSPH::SPH::calculate_mc_normals(void)" (?calculate_mc_normals@SPH@WCSPH@@AEAAXXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "public: __cdecl WCSPH::SPH::SPH(bool,bool,bool,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class SPHParameters,class MCParameters,class std::vector<class Emitter::Emitter,class std::allocator<class Emitter::Emitter> > &)" (??0SPH@WCSPH@@QEAA@_N00V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@VSPHParameters@@VMCParameters@@AEAV?$vector@VEmitter@1@V?$allocator@VEmitter@1@@std@@@3@@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "public: void __cdecl WCSPH::SPH::simulate(double)" (?simulate@SPH@WCSPH@@QEAAXN@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "public: void __cdecl WCSPH::SPH::load_geometry(bool,bool,class Eigen::Matrix<double,3,1,0,3,1> &,class Eigen::Matrix<double,3,1,0,3,1> &,class std::vector<class Eigen::Matrix<double,3,1,0,3,1>,class std::allocator<class Eigen::Matrix<double,3,1,0,3,1> > > &,class std::vector<class Eigen::Matrix<double,3,1,0,3,1>,class std::allocator<class Eigen::Matrix<double,3,1,0,3,1> > > &,struct std::pair<class Eigen::Matrix<double,3,1,0,3,1>,class Eigen::Matrix<double,3,1,0,3,1> > &,double)" (?load_geometry@SPH@WCSPH@@QEAAX_N0AEAV?$Matrix@N$02$00$0A@$02$00@Eigen@@1AEAV?$vector@V?$Matrix@N$02$00$0A@$02$00@Eigen@@V?$allocator@V?$Matrix@N$02$00$0A@$02$00@Eigen@@@std@@@std@@2AEAU?$pair@V?$Matrix@N$02$00$0A@$02$00@Eigen@@V12@@6@N@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "public: void __cdecl WCSPH::SPH::turn_off_gravity(void)" (?turn_off_gravity@SPH@WCSPH@@QEAAXXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "public: void __cdecl WCSPH::SPH::turn_on_gravity(void)" (?turn_on_gravity@SPH@WCSPH@@QEAAXXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "public: void __cdecl WCSPH::SPH::add_initial_velocity(class std::vector<class Eigen::Matrix<double,3,1,0,3,1>,class std::allocator<class Eigen::Matrix<double,3,1,0,3,1> > >)" (?add_initial_velocity@SPH@WCSPH@@QEAAXV?$vector@V?$Matrix@N$02$00$0A@$02$00@Eigen@@V?$allocator@V?$Matrix@N$02$00$0A@$02$00@Eigen@@@std@@@std@@@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "public: void __cdecl WCSPH::SPH::add_relative_velocity(class Eigen::Matrix<double,3,1,0,3,1>)" (?add_relative_velocity@SPH@WCSPH@@QEAAXV?$Matrix@N$02$00$0A@$02$00@Eigen@@@Z) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "public: int __cdecl WCSPH::SPH::num_boundary_particles(void)" (?num_boundary_particles@SPH@WCSPH@@QEAAHXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "public: int __cdecl WCSPH::SPH::num_fluid_particles(void)" (?num_fluid_particles@SPH@WCSPH@@QEAAHXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "public: int __cdecl WCSPH::SPH::num_timesteps(void)" (?num_timesteps@SPH@WCSPH@@QEAAHXZ) already defined in sph_ob.obj; second definition ignored
-sph.obj : warning LNK4006: "public: void __cdecl WCSPH::SPH::printStats(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?printStats@SPH@WCSPH@@QEAAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) already defined in sph_ob.obj; second definition ignored
+﻿  sph.cpp
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\geometry\emitter.h(8,1): warning C4005: 'USE_DOUBLE': macro redefinition
+  (compiling source file '../../SPH/sph.cpp')
+  C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\geometry\emitter.h(8,1):
+  'USE_DOUBLE' previously declared on the command line
+  
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(28,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(28,28): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(28,28): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(28,28): warning C4244:             _Rep=__int64
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(28,28): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(177,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(177,28): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(177,28): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(177,28): warning C4244:             _Rep=__int64
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(177,28): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(233,24): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(255,35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(288,35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(344,28): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(344,28): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(344,28): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(344,28): warning C4244:             _Rep=__int64
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(344,28): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(766,33): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(772,44): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(772,44): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(772,44): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(772,44): warning C4244:             _Ty=CompactNSearch::Real
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(772,44): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(782,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(785,40): warning C4244: '+=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(785,40): warning C4244:         with
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(785,40): warning C4244:         [
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(785,40): warning C4244:             _Ty=CompactNSearch::Real
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(785,40): warning C4244:         ]
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(864,15): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(865,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\SPH\sph.cpp(866,17): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
   SPH.vcxproj -> C:\Users\Acer\Documents\All_of_RWTH\Semester3\Lab\Flüssigkeitslach\framework\build\SPH\Release\SPH.lib
