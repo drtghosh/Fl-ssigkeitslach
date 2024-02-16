@@ -14,7 +14,7 @@ set(SOURCE_FILES
 	test_marching_cubes_sph.cpp
 	test_nSearch.cpp
 	test_pbf.cpp
-	test_riverbed.cpp
+	test_scene.cpp
 	test_sph.cpp)
     
 add_executable(tests ${SOURCE_FILES})

@@ -131,6 +131,7 @@ namespace PBD
 		// Functions
 		void simulate(CompactNSearch::Real t_end);
 		void load_geometry(bool has_boundary, bool open_boundary, PBD::Vector & boundary_size, PBD::Vector & bottom_left_boundary, std::vector<PBD::Vector>&fluid_sizes, std::vector<PBD::Vector>&bottom_lefts_fluid, std::pair <PBD::Vector, PBD::Vector>&obstacle_box = std::pair <PBD::Vector, PBD::Vector>({ 0,0,0 }, {0,0,0}), CompactNSearch::Real obstacle_sphere_radius = 0.0);
+		void load_geometry_from_obj(std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid, std::string filename);
 		void turn_off_gravity();
 		void turn_on_gravity();
 		void add_initial_velocity(std::vector<PBD::Vector> velocities);

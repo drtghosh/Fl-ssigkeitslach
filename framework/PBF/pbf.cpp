@@ -328,26 +328,6 @@ namespace PBD
 				obstacle_sphere_mesh_faces_export = sphere_triangles;
 			}
 
-			if (false) {
-				const std::vector<geometry::TriMesh> meshes = geometry::read_tri_meshes_from_obj("../res/meshes/riverbed.obj");
-				for (int i = 0; i < (int)meshes.size(); i++) {
-					std::cout << "mesh " << i << std::endl;
-					for (int j = 0; j < (int)meshes[i].vertices.size(); j++) {
-						vertices.push_back(meshes[i].vertices[j]);
-					}
-					for (int j = 0; j < (int)meshes[i].triangles.size(); j++) {
-						if (meshes[i].triangles[j][0] > -1 && meshes[i].triangles[j][1] > -1 && meshes[i].triangles[j][2] > -1) {
-							std::array<int, 3> new_triangle = meshes[i].triangles[j];
-							for (int k = 0; k < 3; k++) {
-								new_triangle[k] += vertices_before;
-							}
-							triangles.push_back(new_triangle);
-						}
-					}
-					vertices_before = vertices.size();
-				}
-			}
-
 			this->boundary_mesh_vertices = vertices;
 			this->boundary_mesh_faces = triangles;
 			geometry::sampling::triangle_mesh(this->boundary_particles, this->boundary_mesh_vertices, this->boundary_mesh_faces, this->parameters.boundary_sampling_distance);
@@ -362,6 +342,75 @@ namespace PBD
 				assert(bottom_lefts_fluid[i][0] >= bottom_left_boundary[0] && fluid_sizes[i][1] >= bottom_left_boundary[1] && fluid_sizes[i][2] >= bottom_left_boundary[2]);
 				assert(top_right_fluid[0] <= top_right_boundary[0] && top_right_fluid[1] <= top_right_boundary[1] && top_right_fluid[2] <= top_right_boundary[2]);
 			}
+			geometry::sampling::fluid_box(this->fluid_particles, bottom_lefts_fluid[i], top_right_fluid, this->parameters.fluid_sampling_distance);
+			total_fluid_volume += fluid_sizes[i][0] * fluid_sizes[i][1] * fluid_sizes[i][2];
+			this->fluid_particle_counts.emplace_back(this->fluid_particles.size());
+		}
+		CompactNSearch::Real root = std::pow(parameters.max_num_particles, 1 / 3.) * parameters.particle_diameter;
+		total_fluid_volume += root * root * root;
+		this->particle_mass = (parameters.fluid_rest_density * total_fluid_volume) / (this->fluid_particles.size() + parameters.max_num_particles);
+
+		auto end = std::chrono::system_clock::now();
+		auto elapsed =
+			std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+		duration += elapsed.count();
+	}
+
+	void PBF::load_geometry_from_obj(std::vector<PBD::Vector>& fluid_sizes, std::vector<PBD::Vector>& bottom_lefts_fluid, std::string filename) {
+		auto start = std::chrono::system_clock::now();
+		std::vector<PBD::Vector> vertices;
+		std::vector<std::array<int, 3>> triangles;
+		int vertices_before = vertices.size();
+		if (has_boundary) {
+			const std::vector<geometry::TriMesh> meshes = geometry::read_tri_meshes_from_obj(filename);
+			for (int i = 0; i < (int)meshes.size(); i++) {
+				std::cout << "mesh " << i << std::endl;
+				for (int j = 0; j < (int)meshes[i].vertices.size(); j++) {
+					vertices.push_back(meshes[i].vertices[j]);
+				}
+				for (int j = 0; j < (int)meshes[i].triangles.size(); j++) {
+					if (meshes[i].triangles[j][0] > -1 && meshes[i].triangles[j][1] > -1 && meshes[i].triangles[j][2] > -1) {
+						std::array<int, 3> new_triangle = meshes[i].triangles[j];
+						for (int k = 0; k < 3; k++) {
+							new_triangle[k] += vertices_before;
+						}
+						triangles.push_back(new_triangle);
+					}
+				}
+				vertices_before = vertices.size();
+			}
+
+			boundary_mesh_faces_export = triangles;
+			boundary_mesh_vertices_export = vertices;
+
+			if (emitter.size() > 0) {
+				for (unsigned int i = 0; i < emitter.size(); i++) {
+					std::vector<PBD::Vector> shield_vertices = emitter[i].get_shield_vertices();
+					std::vector<std::array<int, 3>> shield_triangles = emitter[i].get_shield_triangles();
+					for (unsigned int j = 0; j < shield_vertices.size(); j++) {
+						vertices.push_back(shield_vertices[j]);
+					}
+					for (unsigned int j = 0; j < shield_triangles.size(); j++) {
+						std::array<int, 3> triangle = shield_triangles[j];
+						triangle[0] += vertices_before;
+						triangle[1] += vertices_before;
+						triangle[2] += vertices_before;
+						triangles.push_back(triangle);
+					}
+				}
+			}
+
+			vertices_before = vertices.size();
+
+			this->boundary_mesh_vertices = vertices;
+			this->boundary_mesh_faces = triangles;
+			geometry::sampling::triangle_mesh(this->boundary_particles, this->boundary_mesh_vertices, this->boundary_mesh_faces, this->parameters.boundary_sampling_distance);
+		}
+
+		//this->particle_mass = 0.0;
+		CompactNSearch::Real total_fluid_volume = 0.0;
+		for (int i = 0; i < fluid_sizes.size(); ++i) {
+			PBD::Vector top_right_fluid = bottom_lefts_fluid[i] + fluid_sizes[i];
 			geometry::sampling::fluid_box(this->fluid_particles, bottom_lefts_fluid[i], top_right_fluid, this->parameters.fluid_sampling_distance);
 			total_fluid_volume += fluid_sizes[i][0] * fluid_sizes[i][1] * fluid_sizes[i][2];
 			this->fluid_particle_counts.emplace_back(this->fluid_particles.size());
@@ -789,12 +838,12 @@ namespace PBD
 				keep = keep && !is_inside_obstacle;
 			}
 
-			if (has_obstacle_sphere) {
+			/*if (has_obstacle_sphere) {
 				PBD::Vector obstacle_center = PBD::Vector(0.0, 0.0, 0.0);
 				CompactNSearch::Real obstacle_radius = this->obstacle_sphere_radius;
 				bool is_inside_obstacle_sphere = (pos - obstacle_center).norm() <= obstacle_radius;
 				keep = keep && !is_inside_obstacle_sphere;
-			}
+			}*/
 
 			if (!keep) {
 				continue;
