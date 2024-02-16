@@ -453,7 +453,7 @@ TEST_CASE("Double Dam Break PBF Max Dt", "[Double Dam Break PBF Max Dt]") {
 
 }*/
 
-TEST_CASE("Double Dam Break PBF Max Dt Iter", "[Double Dam Break PBF Max Dt Iter]") {
+/*TEST_CASE("Double Dam Break PBF Max Dt Iter", "[Double Dam Break PBF Max Dt Iter]") {
 	PBD::Vector boundary_size = { 0.18, 1.4, 1.0 };
 	PBD::Vector boundary_left = { -0.015, -0.015, -0.015 };
 	PBD::Vector fluid_size = { 0.15, 0.25, 0.5 };
@@ -496,7 +496,7 @@ TEST_CASE("Double Dam Break PBF Max Dt Iter", "[Double Dam Break PBF Max Dt Iter
 		PBD::PBF pbf(false, false, true, "../res/double_dam_break_pbf_dt0_5_iter3/double_dam_break_pbf_dt0_5_iter3_", params, mcparams);
 		pbf.load_geometry(true, false, boundary_size, boundary_left, fluid_sizes, fluid_lefts);
 		pbf.simulate(2);
-		pbf.printStats("Double Dam Break PBF Max Dt");
+		pbf.printStats("Double Dam Break PBF Max Dt");*/
 
 		/*Data: (Iter 2)
 		Timesteps: 4001
@@ -509,8 +509,7 @@ TEST_CASE("Double Dam Break PBF Max Dt Iter", "[Double Dam Break PBF Max Dt Iter
 		Boundary Particles: 74630
 		Fluid Particles: 39780
 		Runtime: 1184690 ms
-		*/
-		}
+		}*/
 
 	/*SECTION("Max DT: 1 ms, Iter: 5") {
 		params.max_dt = 0.001;
@@ -541,7 +540,7 @@ TEST_CASE("Double Dam Break PBF Max Dt Iter", "[Double Dam Break PBF Max Dt Iter
 		Boundary Particles: 74630
 		Fluid Particles: 39696
 		Runtime: 589314 ms
-		*/
+		
 	//}
 
-}
+}*/

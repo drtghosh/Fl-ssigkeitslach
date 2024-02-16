@@ -314,26 +314,6 @@ namespace WCSPH
 				obstacle_sphere_mesh_faces_export = sphere_triangles;
 			}
 
-			if (false) {
-				const std::vector<geometry::TriMesh> meshes = geometry::read_tri_meshes_from_obj("../res/meshes/riverbed.obj");
-				for (int i = 0; i < (int)meshes.size(); i++) {
-					std::cout << "mesh " << i << std::endl;
-					for (int j = 0; j < (int)meshes[i].vertices.size(); j++) {
-						vertices.push_back(meshes[i].vertices[j]);
-					}
-					for (int j = 0; j < (int)meshes[i].triangles.size(); j++) {
-						if (meshes[i].triangles[j][0] > -1 && meshes[i].triangles[j][1] > -1 && meshes[i].triangles[j][2] > -1) {
-							std::array<int, 3> new_triangle = meshes[i].triangles[j];
-							for (int k = 0; k < 3; k++) {
-								new_triangle[k] += vertices_before;
-							}
-							triangles.push_back(new_triangle);
-						}
-					}
-					vertices_before = vertices.size();
-				}
-			}
-
 			this->boundary_mesh_vertices = vertices;
 			this->boundary_mesh_faces = triangles;
 			geometry::sampling::triangle_mesh(this->boundary_particles, this->boundary_mesh_vertices, this->boundary_mesh_faces, this->parameters.boundary_sampling_distance);
@@ -725,12 +705,12 @@ namespace WCSPH
 				keep = keep && !is_inside_obstacle;
 			}
 
-			if (has_obstacle_sphere) {
+			/*if (has_obstacle_sphere) {
 				WCSPH::Vector obstacle_center = WCSPH::Vector(0.0, 0.0, 0.0);
 				CompactNSearch::Real obstacle_radius = this->obstacle_sphere_radius;
 				bool is_inside_obstacle_sphere = (pos - obstacle_center).norm() <= obstacle_radius;
 				keep = keep && !is_inside_obstacle_sphere;
-			}
+			}*/
 
 			if (!keep) {
 				continue;

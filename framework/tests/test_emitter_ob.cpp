@@ -8,7 +8,7 @@
 #include <cmath>
 
 // Check out https://github.com/catchorg/Catch2 for more information about how to use Catch2
-/*TEST_CASE("Test Emitter Fountain SPH Open Box", "[Test Emitter Fountain SPH Open Box]")
+TEST_CASE("Test Emitter Fountain SPH Open Box", "[Test Emitter Fountain SPH Open Box]")
 {
 	//WCSPH::Vector boundary_size = { 3.0, 3.0, 0.5 }; // Use this in general
 	WCSPH::Vector boundary_size = { 3.0, 3.0, 1.0 }; // Use this for with obstacle
@@ -39,7 +39,7 @@
 	params.emit_frequency = 1.2;
 	params.max_num_particles = 100000;
 
-	Emitter::Emitter emitter(0.0625, { 1.0, 0.0, 0.0 }, 0.0625, { 0.0, 1.0, 0.0 }, { 1.5, 1.5, 0.1 }, { 0.0, 0.0, 1.0 }, { 0.0, 0.0, 5 }, params.particle_diameter, params.particle_diameter);
+	/*Emitter::Emitter emitter(0.0625, { 1.0, 0.0, 0.0 }, 0.0625, { 0.0, 1.0, 0.0 }, { 1.5, 1.5, 0.1 }, { 0.0, 0.0, 1.0 }, { 0.0, 0.0, 5 }, params.particle_diameter, params.particle_diameter);
 
 	SECTION("Fountain SPH") {
 		std::vector<CompactNSearch::Real> schedule;
@@ -187,12 +187,12 @@
 		WCSPH::SPH sph(false, false, true, "../res/emitter_4orthogonal_hoses_sph_surface_ob_st/emitter_4orthogonal_hoses_sph_surface_ob_st_", params, mcparams, emitters);
 		sph.load_geometry(true, true, boundary_size_v, boundary_left_v, fluid_sizes, fluid_lefts);
 		sph.simulate(1.2);
-	}
+	}*/
 
 	WCSPH::Vector boundary_size_s = { 4.0, 4.0, 0.75 };
 	WCSPH::Vector boundary_left_s = { -2.0, -2.0, -1.0 };
 	Emitter::Emitter emitter_sp(0.0625, { 0.0, 1.0, 0.0 }, 0.0625, { 1.0, 0.0, 0.0 }, { 0.0, 0.0, 0.2 }, { 0.0, 0.0, -1.0 }, { 0.0, 0.0, -0.5 }, params.particle_diameter, params.particle_diameter);
-	SECTION("Sphere obstacle with surface tension in SPH") {
+	/*SECTION("Sphere obstacle with surface tension in SPH") {
 		params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
 		params.fluid_viscosity = 0.02;
 		mcparams.ours = false;
@@ -230,13 +230,13 @@
 		WCSPH::SPH sph(false, false, true, "../res/emitter_adhesive_sphere_obstacle_sph_surface_ob_st/emitter_adhesive_sphere_obstacle_sph_surface_ob_st_", params, mcparams, emitters);
 		sph.load_geometry(true, true, boundary_size_s, boundary_left_s, fluid_sizes, fluid_lefts, std::pair <WCSPH::Vector, WCSPH::Vector>(), 0.18);
 		sph.simulate(2.0);
-	}
+	}*/
 
 	SECTION("Adhesive sphere obstacle with surface tension in SPH") {
 		params.export_type = SPHParameters::EXPORT_WITH_SURFACE;
 		params.fluid_viscosity = 0.005;
-		params.cohesion_coefficient = 0.5;
-		params.adhesion_coefficient = 3.0;
+		params.cohesion_coefficient = 0.1;
+		params.adhesion_coefficient = 10.0;
 		mcparams.ours = false;
 		mcparams.sparse = false;
 		std::vector<CompactNSearch::Real> schedule;
@@ -411,7 +411,7 @@ TEST_CASE("Test Emitter Fountain PBF", "[Test Emitter Fountain PBF]")
 	pbf.simulate(2);
 }
 
-TEST_CASE("Test Emitter Sphere Obstacle PBF", "[Test Emitter Sphere Obstacle PBF]")
+/*TEST_CASE("Test Emitter Sphere Obstacle PBF", "[Test Emitter Sphere Obstacle PBF]")
 {
 	PBD::Vector boundary_size = { 3.0, 3.0, 3.0 };
 	PBD::Vector boundary_left = { -0.015, -0.015, -0.015 };
@@ -445,9 +445,13 @@ TEST_CASE("Test Emitter Sphere Obstacle PBF", "[Test Emitter Sphere Obstacle PBF
 	mcparams.ours = false;
 	mcparams.sparse = false;
 
-	WCSPH::Vector boundary_size_s = { 4.0, 4.0, 0.75 };
-	WCSPH::Vector boundary_left_s = { -2.0, -2.0, -1.0 };
-	Emitter::Emitter emitter_sp(0.0625, { 0.0, 1.0, 0.0 }, 0.0625, { 1.0, 0.0, 0.0 }, { 0.0, 0.0, 0.2 }, { 0.0, 0.0, -1.0 }, { 0.0, 0.0, -0.5 }, params.particle_diameter, params.particle_diameter);
+	params.adhesion_coefficient = 10.0;
+	params.cohesion_coefficient = 0;
+	params.pbf_iterations = 10;
+
+	PBD::Vector boundary_size_s = { 4.0, 4.0, 0.75 };
+	PBD::Vector boundary_left_s = { -2.0, -2.0, -1.0 };
+	Emitter::Emitter emitter_sp(0.0625, { 0.0, 1.0, 0.0 }, 0.0625, { 1.0, 0.0, 0.0 }, { 0.0, 0.0, 0.2 }, { 0.0, 0.0, -1.0 }, { 0.0, 0.0, -0.25 }, params.particle_diameter, params.particle_diameter);
 
 	std::vector<CompactNSearch::Real> schedule;
 	schedule.push_back(0.0);

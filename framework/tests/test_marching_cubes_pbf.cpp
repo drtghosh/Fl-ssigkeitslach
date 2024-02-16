@@ -11,7 +11,7 @@
 
 // Check out https://github.com/catchorg/Catch2 for more information about how to use Catch2
 
-TEST_CASE("Dam Break PBF with Surface Construction", "[Dam Break PBF with Surface Construction]")
+/*TEST_CASE("Dam Break PBF with Surface Construction", "[Dam Break PBF with Surface Construction]")
 {
 	std::cout << "Testing dam break in PBF with surface construction" << std::endl;
 
@@ -313,4 +313,4 @@ TEST_CASE("Crazy Stuff PBF with Surface Construction2", "[Crazy Stuff PBF with S
 
 	//SECTION("Surface Nets"){ //TODO for me maybe
 	//}
-}
+}*/
